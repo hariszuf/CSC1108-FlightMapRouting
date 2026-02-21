@@ -3,7 +3,10 @@
 
 A flight routing system built using Data Structures & Algorithms.
 
-This prototype demonstrates:
+Current app (official): **Dash + dash-leaflet**
+Legacy prototype: **Streamlit** (kept for reference)
+
+
 - Graph representation using adjacency list
 - BFS (least hops search)
 - Dijkstra’s algorithm (shortest distance / time / price)
@@ -11,34 +14,13 @@ This prototype demonstrates:
 
 ---
 
-# 📦 Project Structure
-flight-map-routing/
-│
-├── app.py
-├── data/
-│ └── airline_routes.json
-│
-├── src/
-│ ├── loader.py
-│ ├── graph.py
-│ ├── models.py
-│ ├── algorithms/
-│ │ ├── bfs.py
-│ │ └── dijkstra.py
-│ └── services/
-│ └── routing.py
-│
-├── requirements.txt
-└── README.md
-
-
----
-
-# 🐍 Setup Instructions (First Time Only)
+# 🐍 Setup Instructions
 
 ## 1️⃣ Clone the Repository
+
 git clone <your-repo-url>
 cd flight-map-routing
+
 ---
 
 ## 2️⃣ Create a Virtual Environment
@@ -64,82 +46,55 @@ If `requirements.txt` does not exist:
 pip install streamlit folium streamlit-folium
 ---
 
-# ▶️ Running the Application
+📂 Dataset
 
-From the project root:
-streamlit run app.py
-
-You should see:
-Local URL: http://localhost:8501
-Open that link in your browser.
-
----
-# 🧪 Example Test Routes
-
-Try:
-
-- SIN → HND
-- LHR → JFK
-- SFO → NRT
-
----
-
-# 📂 Dataset Requirement
-
-Make sure the dataset exists at:
-
+Ensure the dataset exists at:
 
 data/airline_routes.json
 
+If your dataset is named airline_routes - Copy.json, rename it:
 
-If your file is named:
+# Windows PowerShell
+Rename-Item "data\airline_routes - Copy.json" "airline_routes.json"
+▶️ Run the Dash App (Official)
 
+From the project root:
 
-airline_routes - Copy.json
+python dash_app.py
 
+Dash will print a local URL (typically):
 
-Rename it to:
+http://127.0.0.1:8050/
+🧪 (Optional) Run Legacy Streamlit Prototype
 
+The Streamlit prototype is kept for reference only.
 
-airline_routes.json
+streamlit run legacy/streamlit_app.py
 
+Note: Streamlit dependencies are not included by default anymore.
+If you want to run this legacy prototype, install:
+pip install streamlit folium streamlit-folium
 
----
+🧠 Algorithms Implemented
 
-# 🔁 Daily Workflow (Team Members)
+BFS → least number of hops
 
-Each time you work:
+Dijkstra → shortest distance / time / price
 
-### Windows
+⚠️ Notes
 
-git pull
-.venv\Scripts\activate
-pip install -r requirements.txt
-streamlit run app.py
+Do NOT commit .venv/ or __pycache__/
 
+Always run commands from the project root
 
-### Mac / Linux
-
-git pull
-source .venv/bin/activate
-pip install -r requirements.txt
-streamlit run app.py
-
-
----
-
-# 🧠 Algorithms Implemented
-
-- **BFS** → Least number of hops  
-- **Dijkstra** → Shortest distance / time / price  
 
 ---
 
-# ⚠️ Notes
+## 5) Update `.gitignore` (if you haven’t already)
+Make sure it includes:
 
-- Do NOT commit the `.venv` folder
-- Do NOT commit `__pycache__`
-- Always run the app from the project root folder
-- If you get import errors, ensure the virtual environment is activated
-
----
+```gitignore
+.venv/
+__pycache__/
+*.pyc
+.streamlit/
