@@ -3,7 +3,6 @@
 
 A flight routing system built using Data Structures & Algorithms.
 
-This prototype demonstrates:
 - Graph representation using adjacency list
 - BFS (least hops search)
 - Dijkstra’s algorithm (shortest distance / time / price)
@@ -34,7 +33,7 @@ flight-map-routing/
 
 ---
 
-# 🐍 Setup Instructions (First Time Only)
+# 🐍 Setup Instructions
 
 ## 1️⃣ Clone the Repository
 git clone <your-repo-url>
