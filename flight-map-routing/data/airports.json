@@ -1,0 +1,599 @@
+{
+  "SIN": {
+    "iata": "SIN",
+    "name": "Singapore Changi Airport",
+    "city_name": "Singapore",
+    "country": "Singapore",
+    "latitude": 1.3644,
+    "longitude": 103.9915,
+    "routes": [
+      {"iata": "KUL", "km": 350, "min": 55, "price": 80},
+      {"iata": "BKK", "km": 1430, "min": 145, "price": 150},
+      {"iata": "HKG", "km": 2580, "min": 235, "price": 220},
+      {"iata": "NRT", "km": 5320, "min": 385, "price": 480},
+      {"iata": "SYD", "km": 6310, "min": 480, "price": 520},
+      {"iata": "LHR", "km": 10840, "min": 785, "price": 900},
+      {"iata": "DXB", "km": 5840, "min": 430, "price": 420},
+      {"iata": "ICN", "km": 4680, "min": 345, "price": 380},
+      {"iata": "PEK", "km": 4460, "min": 330, "price": 360},
+      {"iata": "CGK", "km": 1160, "min": 105, "price": 110}
+    ]
+  },
+  "KUL": {
+    "iata": "KUL",
+    "name": "Kuala Lumpur International Airport",
+    "city_name": "Kuala Lumpur",
+    "country": "Malaysia",
+    "latitude": 2.7456,
+    "longitude": 101.7099,
+    "routes": [
+      {"iata": "SIN", "km": 350, "min": 55, "price": 80},
+      {"iata": "BKK", "km": 1180, "min": 120, "price": 130},
+      {"iata": "CGK", "km": 1170, "min": 115, "price": 120},
+      {"iata": "HKG", "km": 2660, "min": 240, "price": 230},
+      {"iata": "DXB", "km": 6160, "min": 450, "price": 430},
+      {"iata": "LHR", "km": 10560, "min": 775, "price": 870},
+      {"iata": "NRT", "km": 5310, "min": 390, "price": 470},
+      {"iata": "SYD", "km": 6560, "min": 495, "price": 530}
+    ]
+  },
+  "BKK": {
+    "iata": "BKK",
+    "name": "Suvarnabhumi Airport",
+    "city_name": "Bangkok",
+    "country": "Thailand",
+    "latitude": 13.6811,
+    "longitude": 100.7475,
+    "routes": [
+      {"iata": "SIN", "km": 1430, "min": 145, "price": 150},
+      {"iata": "KUL", "km": 1180, "min": 120, "price": 130},
+      {"iata": "HKG", "km": 1710, "min": 165, "price": 170},
+      {"iata": "NRT", "km": 4600, "min": 340, "price": 400},
+      {"iata": "DXB", "km": 4900, "min": 365, "price": 390},
+      {"iata": "LHR", "km": 9540, "min": 695, "price": 820},
+      {"iata": "DEL", "km": 2910, "min": 265, "price": 270},
+      {"iata": "PEK", "km": 3270, "min": 290, "price": 300},
+      {"iata": "ICN", "km": 3700, "min": 300, "price": 320},
+      {"iata": "SYD", "km": 7540, "min": 560, "price": 600}
+    ]
+  },
+  "HKG": {
+    "iata": "HKG",
+    "name": "Hong Kong International Airport",
+    "city_name": "Hong Kong",
+    "country": "Hong Kong",
+    "latitude": 22.308,
+    "longitude": 113.9185,
+    "routes": [
+      {"iata": "SIN", "km": 2580, "min": 235, "price": 220},
+      {"iata": "BKK", "km": 1710, "min": 165, "price": 170},
+      {"iata": "NRT", "km": 2890, "min": 255, "price": 260},
+      {"iata": "ICN", "km": 2090, "min": 195, "price": 190},
+      {"iata": "PEK", "km": 1970, "min": 185, "price": 180},
+      {"iata": "LHR", "km": 9630, "min": 700, "price": 830},
+      {"iata": "SYD", "km": 7380, "min": 545, "price": 590},
+      {"iata": "DXB", "km": 6330, "min": 460, "price": 440},
+      {"iata": "LAX", "km": 11640, "min": 845, "price": 950},
+      {"iata": "SFO", "km": 11120, "min": 815, "price": 920},
+      {"iata": "KUL", "km": 2660, "min": 240, "price": 230}
+    ]
+  },
+  "NRT": {
+    "iata": "NRT",
+    "name": "Narita International Airport",
+    "city_name": "Tokyo",
+    "country": "Japan",
+    "latitude": 35.7720,
+    "longitude": 140.3929,
+    "routes": [
+      {"iata": "SIN", "km": 5320, "min": 385, "price": 480},
+      {"iata": "HKG", "km": 2890, "min": 255, "price": 260},
+      {"iata": "ICN", "km": 1160, "min": 120, "price": 130},
+      {"iata": "PEK", "km": 2100, "min": 195, "price": 200},
+      {"iata": "LAX", "km": 8770, "min": 640, "price": 720},
+      {"iata": "SFO", "km": 8270, "min": 605, "price": 680},
+      {"iata": "LHR", "km": 9540, "min": 700, "price": 830},
+      {"iata": "SYD", "km": 7820, "min": 575, "price": 620},
+      {"iata": "BKK", "km": 4600, "min": 340, "price": 400},
+      {"iata": "KUL", "km": 5310, "min": 390, "price": 470},
+      {"iata": "ORD", "km": 10140, "min": 740, "price": 810}
+    ]
+  },
+  "ICN": {
+    "iata": "ICN",
+    "name": "Incheon International Airport",
+    "city_name": "Seoul",
+    "country": "South Korea",
+    "latitude": 37.4602,
+    "longitude": 126.4407,
+    "routes": [
+      {"iata": "NRT", "km": 1160, "min": 120, "price": 130},
+      {"iata": "HKG", "km": 2090, "min": 195, "price": 190},
+      {"iata": "PEK", "km": 960, "min": 100, "price": 110},
+      {"iata": "SIN", "km": 4680, "min": 345, "price": 380},
+      {"iata": "LAX", "km": 9620, "min": 710, "price": 780},
+      {"iata": "SFO", "km": 9090, "min": 670, "price": 740},
+      {"iata": "LHR", "km": 8740, "min": 645, "price": 770},
+      {"iata": "SYD", "km": 8420, "min": 620, "price": 660},
+      {"iata": "BKK", "km": 3700, "min": 300, "price": 320},
+      {"iata": "ORD", "km": 10530, "min": 775, "price": 840}
+    ]
+  },
+  "PEK": {
+    "iata": "PEK",
+    "name": "Beijing Capital International Airport",
+    "city_name": "Beijing",
+    "country": "China",
+    "latitude": 40.0799,
+    "longitude": 116.6031,
+    "routes": [
+      {"iata": "ICN", "km": 960, "min": 100, "price": 110},
+      {"iata": "NRT", "km": 2100, "min": 195, "price": 200},
+      {"iata": "HKG", "km": 1970, "min": 185, "price": 180},
+      {"iata": "SIN", "km": 4460, "min": 330, "price": 360},
+      {"iata": "LHR", "km": 8160, "min": 600, "price": 740},
+      {"iata": "LAX", "km": 9530, "min": 705, "price": 780},
+      {"iata": "SFO", "km": 9010, "min": 665, "price": 740},
+      {"iata": "DXB", "km": 5840, "min": 435, "price": 440},
+      {"iata": "BKK", "km": 3270, "min": 290, "price": 300},
+      {"iata": "SYD", "km": 8970, "min": 665, "price": 700},
+      {"iata": "FRA", "km": 7810, "min": 580, "price": 710}
+    ]
+  },
+  "SYD": {
+    "iata": "SYD",
+    "name": "Sydney Kingsford Smith Airport",
+    "city_name": "Sydney",
+    "country": "Australia",
+    "latitude": -33.9399,
+    "longitude": 151.1753,
+    "routes": [
+      {"iata": "SIN", "km": 6310, "min": 480, "price": 520},
+      {"iata": "HKG", "km": 7380, "min": 545, "price": 590},
+      {"iata": "NRT", "km": 7820, "min": 575, "price": 620},
+      {"iata": "ICN", "km": 8420, "min": 620, "price": 660},
+      {"iata": "LAX", "km": 12060, "min": 880, "price": 980},
+      {"iata": "LHR", "km": 16990, "min": 1235, "price": 1300},
+      {"iata": "DXB", "km": 12030, "min": 875, "price": 960},
+      {"iata": "AKL", "km": 2160, "min": 195, "price": 200},
+      {"iata": "BKK", "km": 7540, "min": 560, "price": 600},
+      {"iata": "KUL", "km": 6560, "min": 495, "price": 530}
+    ]
+  },
+  "AKL": {
+    "iata": "AKL",
+    "name": "Auckland Airport",
+    "city_name": "Auckland",
+    "country": "New Zealand",
+    "latitude": -37.0082,
+    "longitude": 174.7917,
+    "routes": [
+      {"iata": "SYD", "km": 2160, "min": 195, "price": 200},
+      {"iata": "LAX", "km": 10490, "min": 765, "price": 860},
+      {"iata": "SIN", "km": 8540, "min": 630, "price": 680},
+      {"iata": "LHR", "km": 18330, "min": 1340, "price": 1450},
+      {"iata": "NRT", "km": 9010, "min": 665, "price": 710}
+    ]
+  },
+  "LHR": {
+    "iata": "LHR",
+    "name": "London Heathrow Airport",
+    "city_name": "London",
+    "country": "United Kingdom",
+    "latitude": 51.4775,
+    "longitude": -0.4614,
+    "routes": [
+      {"iata": "SIN", "km": 10840, "min": 785, "price": 900},
+      {"iata": "HKG", "km": 9630, "min": 700, "price": 830},
+      {"iata": "NRT", "km": 9540, "min": 700, "price": 830},
+      {"iata": "DXB", "km": 5480, "min": 400, "price": 450},
+      {"iata": "JFK", "km": 5560, "min": 410, "price": 460},
+      {"iata": "LAX", "km": 8760, "min": 645, "price": 750},
+      {"iata": "SYD", "km": 16990, "min": 1235, "price": 1300},
+      {"iata": "FRA", "km": 630, "min": 80, "price": 120},
+      {"iata": "CDG", "km": 340, "min": 60, "price": 90},
+      {"iata": "AMS", "km": 370, "min": 65, "price": 95},
+      {"iata": "PEK", "km": 8160, "min": 600, "price": 740},
+      {"iata": "ICN", "km": 8740, "min": 645, "price": 770},
+      {"iata": "DEL", "km": 6710, "min": 495, "price": 550},
+      {"iata": "BOM", "km": 7190, "min": 530, "price": 590},
+      {"iata": "ORD", "km": 6340, "min": 470, "price": 530},
+      {"iata": "AKL", "km": 18330, "min": 1340, "price": 1450}
+    ]
+  },
+  "DXB": {
+    "iata": "DXB",
+    "name": "Dubai International Airport",
+    "city_name": "Dubai",
+    "country": "United Arab Emirates",
+    "latitude": 25.2528,
+    "longitude": 55.3644,
+    "routes": [
+      {"iata": "LHR", "km": 5480, "min": 400, "price": 450},
+      {"iata": "SIN", "km": 5840, "min": 430, "price": 420},
+      {"iata": "BKK", "km": 4900, "min": 365, "price": 390},
+      {"iata": "JFK", "km": 11010, "min": 805, "price": 920},
+      {"iata": "LAX", "km": 13415, "min": 985, "price": 1100},
+      {"iata": "SYD", "km": 12030, "min": 875, "price": 960},
+      {"iata": "NRT", "km": 7960, "min": 590, "price": 680},
+      {"iata": "PEK", "km": 5840, "min": 435, "price": 440},
+      {"iata": "DEL", "km": 2190, "min": 205, "price": 210},
+      {"iata": "BOM", "km": 1930, "min": 180, "price": 180},
+      {"iata": "FRA", "km": 4840, "min": 360, "price": 380},
+      {"iata": "JNB", "km": 6380, "min": 470, "price": 490},
+      {"iata": "CAI", "km": 2420, "min": 225, "price": 200},
+      {"iata": "KUL", "km": 6160, "min": 450, "price": 430}
+    ]
+  },
+  "FRA": {
+    "iata": "FRA",
+    "name": "Frankfurt Airport",
+    "city_name": "Frankfurt",
+    "country": "Germany",
+    "latitude": 50.0379,
+    "longitude": 8.5622,
+    "routes": [
+      {"iata": "LHR", "km": 630, "min": 80, "price": 120},
+      {"iata": "CDG", "km": 450, "min": 70, "price": 100},
+      {"iata": "AMS", "km": 370, "min": 65, "price": 95},
+      {"iata": "DXB", "km": 4840, "min": 360, "price": 380},
+      {"iata": "JFK", "km": 6190, "min": 460, "price": 490},
+      {"iata": "LAX", "km": 9340, "min": 685, "price": 790},
+      {"iata": "SIN", "km": 10210, "min": 750, "price": 850},
+      {"iata": "NRT", "km": 9340, "min": 690, "price": 820},
+      {"iata": "PEK", "km": 7810, "min": 580, "price": 710},
+      {"iata": "ORD", "km": 7480, "min": 555, "price": 590},
+      {"iata": "GRU", "km": 9790, "min": 720, "price": 800}
+    ]
+  },
+  "CDG": {
+    "iata": "CDG",
+    "name": "Charles de Gaulle Airport",
+    "city_name": "Paris",
+    "country": "France",
+    "latitude": 49.0097,
+    "longitude": 2.5479,
+    "routes": [
+      {"iata": "LHR", "km": 340, "min": 60, "price": 90},
+      {"iata": "FRA", "km": 450, "min": 70, "price": 100},
+      {"iata": "AMS", "km": 430, "min": 70, "price": 100},
+      {"iata": "JFK", "km": 5830, "min": 435, "price": 470},
+      {"iata": "LAX", "km": 9100, "min": 670, "price": 780},
+      {"iata": "DXB", "km": 5250, "min": 390, "price": 400},
+      {"iata": "SIN", "km": 10730, "min": 790, "price": 880},
+      {"iata": "NRT", "km": 9700, "min": 715, "price": 840},
+      {"iata": "GRU", "km": 9380, "min": 695, "price": 780},
+      {"iata": "ORD", "km": 7220, "min": 540, "price": 570},
+      {"iata": "MAD", "km": 1270, "min": 130, "price": 140}
+    ]
+  },
+  "AMS": {
+    "iata": "AMS",
+    "name": "Amsterdam Airport Schiphol",
+    "city_name": "Amsterdam",
+    "country": "Netherlands",
+    "latitude": 52.3086,
+    "longitude": 4.7639,
+    "routes": [
+      {"iata": "LHR", "km": 370, "min": 65, "price": 95},
+      {"iata": "FRA", "km": 370, "min": 65, "price": 95},
+      {"iata": "CDG", "km": 430, "min": 70, "price": 100},
+      {"iata": "JFK", "km": 5860, "min": 440, "price": 480},
+      {"iata": "LAX", "km": 9110, "min": 675, "price": 790},
+      {"iata": "DXB", "km": 5160, "min": 385, "price": 390},
+      {"iata": "SIN", "km": 10358, "min": 760, "price": 870},
+      {"iata": "NRT", "km": 9280, "min": 690, "price": 810},
+      {"iata": "ORD", "km": 7180, "min": 535, "price": 565},
+      {"iata": "GRU", "km": 9360, "min": 695, "price": 780}
+    ]
+  },
+  "JFK": {
+    "iata": "JFK",
+    "name": "John F. Kennedy International Airport",
+    "city_name": "New York",
+    "country": "United States",
+    "latitude": 40.6413,
+    "longitude": -73.7781,
+    "routes": [
+      {"iata": "LHR", "km": 5560, "min": 410, "price": 460},
+      {"iata": "CDG", "km": 5830, "min": 435, "price": 470},
+      {"iata": "FRA", "km": 6190, "min": 460, "price": 490},
+      {"iata": "AMS", "km": 5860, "min": 440, "price": 480},
+      {"iata": "LAX", "km": 3980, "min": 310, "price": 280},
+      {"iata": "ORD", "km": 1190, "min": 135, "price": 120},
+      {"iata": "MIA", "km": 1760, "min": 170, "price": 150},
+      {"iata": "DXB", "km": 11010, "min": 805, "price": 920},
+      {"iata": "SIN", "km": 15340, "min": 1120, "price": 1200},
+      {"iata": "NRT", "km": 10850, "min": 800, "price": 870},
+      {"iata": "GRU", "km": 7730, "min": 575, "price": 650},
+      {"iata": "SFO", "km": 4130, "min": 320, "price": 290},
+      {"iata": "MEX", "km": 3360, "min": 265, "price": 270}
+    ]
+  },
+  "LAX": {
+    "iata": "LAX",
+    "name": "Los Angeles International Airport",
+    "city_name": "Los Angeles",
+    "country": "United States",
+    "latitude": 33.9425,
+    "longitude": -118.4081,
+    "routes": [
+      {"iata": "JFK", "km": 3980, "min": 310, "price": 280},
+      {"iata": "SFO", "km": 560, "min": 75, "price": 80},
+      {"iata": "ORD", "km": 2810, "min": 235, "price": 210},
+      {"iata": "NRT", "km": 8770, "min": 640, "price": 720},
+      {"iata": "HKG", "km": 11640, "min": 845, "price": 950},
+      {"iata": "ICN", "km": 9620, "min": 710, "price": 780},
+      {"iata": "SYD", "km": 12060, "min": 880, "price": 980},
+      {"iata": "LHR", "km": 8760, "min": 645, "price": 750},
+      {"iata": "CDG", "km": 9100, "min": 670, "price": 780},
+      {"iata": "FRA", "km": 9340, "min": 685, "price": 790},
+      {"iata": "DXB", "km": 13415, "min": 985, "price": 1100},
+      {"iata": "AKL", "km": 10490, "min": 765, "price": 860},
+      {"iata": "MEX", "km": 2490, "min": 215, "price": 200},
+      {"iata": "MIA", "km": 3760, "min": 295, "price": 260}
+    ]
+  },
+  "SFO": {
+    "iata": "SFO",
+    "name": "San Francisco International Airport",
+    "city_name": "San Francisco",
+    "country": "United States",
+    "latitude": 37.6213,
+    "longitude": -122.379,
+    "routes": [
+      {"iata": "LAX", "km": 560, "min": 75, "price": 80},
+      {"iata": "JFK", "km": 4130, "min": 320, "price": 290},
+      {"iata": "ORD", "km": 2960, "min": 245, "price": 220},
+      {"iata": "NRT", "km": 8270, "min": 605, "price": 680},
+      {"iata": "HKG", "km": 11120, "min": 815, "price": 920},
+      {"iata": "ICN", "km": 9090, "min": 670, "price": 740},
+      {"iata": "LHR", "km": 8630, "min": 635, "price": 740},
+      {"iata": "PEK", "km": 9010, "min": 665, "price": 740},
+      {"iata": "SIN", "km": 13600, "min": 1000, "price": 1080},
+      {"iata": "MEX", "km": 3070, "min": 250, "price": 230}
+    ]
+  },
+  "ORD": {
+    "iata": "ORD",
+    "name": "O'Hare International Airport",
+    "city_name": "Chicago",
+    "country": "United States",
+    "latitude": 41.9742,
+    "longitude": -87.9073,
+    "routes": [
+      {"iata": "JFK", "km": 1190, "min": 135, "price": 120},
+      {"iata": "LAX", "km": 2810, "min": 235, "price": 210},
+      {"iata": "SFO", "km": 2960, "min": 245, "price": 220},
+      {"iata": "LHR", "km": 6340, "min": 470, "price": 530},
+      {"iata": "FRA", "km": 7480, "min": 555, "price": 590},
+      {"iata": "CDG", "km": 7220, "min": 540, "price": 570},
+      {"iata": "NRT", "km": 10140, "min": 740, "price": 810},
+      {"iata": "ICN", "km": 10530, "min": 775, "price": 840},
+      {"iata": "MIA", "km": 2200, "min": 195, "price": 180},
+      {"iata": "MEX", "km": 2720, "min": 230, "price": 220},
+      {"iata": "GRU", "km": 9270, "min": 685, "price": 740}
+    ]
+  },
+  "MIA": {
+    "iata": "MIA",
+    "name": "Miami International Airport",
+    "city_name": "Miami",
+    "country": "United States",
+    "latitude": 25.7959,
+    "longitude": -80.287,
+    "routes": [
+      {"iata": "JFK", "km": 1760, "min": 170, "price": 150},
+      {"iata": "LAX", "km": 3760, "min": 295, "price": 260},
+      {"iata": "ORD", "km": 2200, "min": 195, "price": 180},
+      {"iata": "LHR", "km": 7130, "min": 530, "price": 580},
+      {"iata": "CDG", "km": 7540, "min": 560, "price": 600},
+      {"iata": "GRU", "km": 6810, "min": 510, "price": 560},
+      {"iata": "MEX", "km": 2090, "min": 190, "price": 180},
+      {"iata": "BOG", "km": 2940, "min": 245, "price": 240}
+    ]
+  },
+  "MEX": {
+    "iata": "MEX",
+    "name": "Mexico City International Airport",
+    "city_name": "Mexico City",
+    "country": "Mexico",
+    "latitude": 19.4363,
+    "longitude": -99.0721,
+    "routes": [
+      {"iata": "LAX", "km": 2490, "min": 215, "price": 200},
+      {"iata": "JFK", "km": 3360, "min": 265, "price": 270},
+      {"iata": "ORD", "km": 2720, "min": 230, "price": 220},
+      {"iata": "MIA", "km": 2090, "min": 190, "price": 180},
+      {"iata": "GRU", "km": 7510, "min": 560, "price": 610},
+      {"iata": "SFO", "km": 3070, "min": 250, "price": 230},
+      {"iata": "BOG", "km": 2850, "min": 240, "price": 240},
+      {"iata": "LHR", "km": 9020, "min": 665, "price": 720}
+    ]
+  },
+  "GRU": {
+    "iata": "GRU",
+    "name": "São Paulo/Guarulhos International Airport",
+    "city_name": "São Paulo",
+    "country": "Brazil",
+    "latitude": -23.4356,
+    "longitude": -46.4731,
+    "routes": [
+      {"iata": "JFK", "km": 7730, "min": 575, "price": 650},
+      {"iata": "MIA", "km": 6810, "min": 510, "price": 560},
+      {"iata": "LAX", "km": 10140, "min": 755, "price": 820},
+      {"iata": "LHR", "km": 9460, "min": 700, "price": 790},
+      {"iata": "CDG", "km": 9380, "min": 695, "price": 780},
+      {"iata": "FRA", "km": 9790, "min": 720, "price": 800},
+      {"iata": "MEX", "km": 7510, "min": 560, "price": 610},
+      {"iata": "ORD", "km": 9270, "min": 685, "price": 740},
+      {"iata": "BOG", "km": 2600, "min": 235, "price": 220},
+      {"iata": "JNB", "km": 7590, "min": 565, "price": 610}
+    ]
+  },
+  "BOG": {
+    "iata": "BOG",
+    "name": "El Dorado International Airport",
+    "city_name": "Bogotá",
+    "country": "Colombia",
+    "latitude": 4.7016,
+    "longitude": -74.1469,
+    "routes": [
+      {"iata": "MIA", "km": 2940, "min": 245, "price": 240},
+      {"iata": "MEX", "km": 2850, "min": 240, "price": 240},
+      {"iata": "GRU", "km": 2600, "min": 235, "price": 220},
+      {"iata": "JFK", "km": 4620, "min": 355, "price": 370},
+      {"iata": "LHR", "km": 8760, "min": 650, "price": 720},
+      {"iata": "MAD", "km": 8740, "min": 650, "price": 720}
+    ]
+  },
+  "JNB": {
+    "iata": "JNB",
+    "name": "O.R. Tambo International Airport",
+    "city_name": "Johannesburg",
+    "country": "South Africa",
+    "latitude": -26.1392,
+    "longitude": 28.246,
+    "routes": [
+      {"iata": "DXB", "km": 6380, "min": 470, "price": 490},
+      {"iata": "LHR", "km": 9010, "min": 665, "price": 720},
+      {"iata": "GRU", "km": 7590, "min": 565, "price": 610},
+      {"iata": "NBO", "km": 3250, "min": 280, "price": 270},
+      {"iata": "SIN", "km": 8960, "min": 660, "price": 700},
+      {"iata": "SYD", "km": 11030, "min": 810, "price": 860},
+      {"iata": "CAI", "km": 6270, "min": 460, "price": 470}
+    ]
+  },
+  "NBO": {
+    "iata": "NBO",
+    "name": "Jomo Kenyatta International Airport",
+    "city_name": "Nairobi",
+    "country": "Kenya",
+    "latitude": -1.3192,
+    "longitude": 36.9275,
+    "routes": [
+      {"iata": "JNB", "km": 3250, "min": 280, "price": 270},
+      {"iata": "DXB", "km": 3380, "min": 295, "price": 290},
+      {"iata": "LHR", "km": 6810, "min": 505, "price": 560},
+      {"iata": "CDG", "km": 6600, "min": 495, "price": 540},
+      {"iata": "CAI", "km": 3480, "min": 300, "price": 280},
+      {"iata": "BOM", "km": 4420, "min": 345, "price": 360}
+    ]
+  },
+  "CAI": {
+    "iata": "CAI",
+    "name": "Cairo International Airport",
+    "city_name": "Cairo",
+    "country": "Egypt",
+    "latitude": 30.1219,
+    "longitude": 31.4056,
+    "routes": [
+      {"iata": "DXB", "km": 2420, "min": 225, "price": 200},
+      {"iata": "LHR", "km": 3510, "min": 295, "price": 330},
+      {"iata": "FRA", "km": 2930, "min": 255, "price": 270},
+      {"iata": "CDG", "km": 3210, "min": 275, "price": 290},
+      {"iata": "JNB", "km": 6270, "min": 460, "price": 470},
+      {"iata": "NBO", "km": 3480, "min": 300, "price": 280},
+      {"iata": "IST", "km": 1260, "min": 130, "price": 140},
+      {"iata": "BOM", "km": 4050, "min": 330, "price": 320}
+    ]
+  },
+  "IST": {
+    "iata": "IST",
+    "name": "Istanbul Airport",
+    "city_name": "Istanbul",
+    "country": "Turkey",
+    "latitude": 41.2608,
+    "longitude": 28.7418,
+    "routes": [
+      {"iata": "LHR", "km": 2510, "min": 225, "price": 240},
+      {"iata": "FRA", "km": 2230, "min": 205, "price": 220},
+      {"iata": "CDG", "km": 2240, "min": 205, "price": 220},
+      {"iata": "DXB", "km": 3610, "min": 305, "price": 290},
+      {"iata": "CAI", "km": 1260, "min": 130, "price": 140},
+      {"iata": "DEL", "km": 4500, "min": 360, "price": 360},
+      {"iata": "SIN", "km": 8680, "min": 645, "price": 700},
+      {"iata": "JFK", "km": 8000, "min": 595, "price": 660},
+      {"iata": "BOM", "km": 3990, "min": 325, "price": 320},
+      {"iata": "MAD", "km": 2940, "min": 255, "price": 250}
+    ]
+  },
+  "MAD": {
+    "iata": "MAD",
+    "name": "Adolfo Suárez Madrid–Barajas Airport",
+    "city_name": "Madrid",
+    "country": "Spain",
+    "latitude": 40.4936,
+    "longitude": -3.5668,
+    "routes": [
+      {"iata": "LHR", "km": 1260, "min": 130, "price": 140},
+      {"iata": "CDG", "km": 1270, "min": 130, "price": 140},
+      {"iata": "FRA", "km": 1800, "min": 165, "price": 170},
+      {"iata": "IST", "km": 2940, "min": 255, "price": 250},
+      {"iata": "JFK", "km": 5770, "min": 435, "price": 470},
+      {"iata": "LAX", "km": 9090, "min": 670, "price": 780},
+      {"iata": "BOG", "km": 8740, "min": 650, "price": 720},
+      {"iata": "GRU", "km": 8260, "min": 615, "price": 700},
+      {"iata": "MIA", "km": 7680, "min": 570, "price": 620}
+    ]
+  },
+  "DEL": {
+    "iata": "DEL",
+    "name": "Indira Gandhi International Airport",
+    "city_name": "New Delhi",
+    "country": "India",
+    "latitude": 28.5665,
+    "longitude": 77.103,
+    "routes": [
+      {"iata": "DXB", "km": 2190, "min": 205, "price": 210},
+      {"iata": "LHR", "km": 6710, "min": 495, "price": 550},
+      {"iata": "BKK", "km": 2910, "min": 265, "price": 270},
+      {"iata": "SIN", "km": 4150, "min": 320, "price": 340},
+      {"iata": "IST", "km": 4500, "min": 360, "price": 360},
+      {"iata": "NRT", "km": 5870, "min": 440, "price": 490},
+      {"iata": "BOM", "km": 1150, "min": 110, "price": 110},
+      {"iata": "HKG", "km": 3790, "min": 305, "price": 310},
+      {"iata": "CDG", "km": 6580, "min": 490, "price": 550},
+      {"iata": "FRA", "km": 6260, "min": 465, "price": 530}
+    ]
+  },
+  "BOM": {
+    "iata": "BOM",
+    "name": "Chhatrapati Shivaji Maharaj International Airport",
+    "city_name": "Mumbai",
+    "country": "India",
+    "latitude": 19.0896,
+    "longitude": 72.8656,
+    "routes": [
+      {"iata": "DXB", "km": 1930, "min": 180, "price": 180},
+      {"iata": "LHR", "km": 7190, "min": 530, "price": 590},
+      {"iata": "DEL", "km": 1150, "min": 110, "price": 110},
+      {"iata": "SIN", "km": 3900, "min": 310, "price": 320},
+      {"iata": "HKG", "km": 4220, "min": 340, "price": 350},
+      {"iata": "BKK", "km": 3080, "min": 275, "price": 280},
+      {"iata": "NBO", "km": 4420, "min": 345, "price": 360},
+      {"iata": "CAI", "km": 4050, "min": 330, "price": 320},
+      {"iata": "IST", "km": 3990, "min": 325, "price": 320},
+      {"iata": "FRA", "km": 6350, "min": 470, "price": 540},
+      {"iata": "CDG", "km": 6910, "min": 510, "price": 580}
+    ]
+  },
+  "CGK": {
+    "iata": "CGK",
+    "name": "Soekarno-Hatta International Airport",
+    "city_name": "Jakarta",
+    "country": "Indonesia",
+    "latitude": -6.1256,
+    "longitude": 106.6559,
+    "routes": [
+      {"iata": "SIN", "km": 1160, "min": 105, "price": 110},
+      {"iata": "KUL", "km": 1170, "min": 115, "price": 120},
+      {"iata": "BKK", "km": 2260, "min": 210, "price": 210},
+      {"iata": "HKG", "km": 3250, "min": 290, "price": 280},
+      {"iata": "NRT", "km": 5760, "min": 430, "price": 490},
+      {"iata": "SYD", "km": 5550, "min": 415, "price": 460},
+      {"iata": "DXB", "km": 6820, "min": 500, "price": 510},
+      {"iata": "LHR", "km": 11690, "min": 855, "price": 930}
+    ]
+  }
+}
