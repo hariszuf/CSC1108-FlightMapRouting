@@ -42,8 +42,6 @@ If activated successfully, you should see:
 ## 3️⃣ Install Dependencies
 pip install -r requirements.txt
 
-If `requirements.txt` does not exist:
-pip install streamlit folium streamlit-folium
 ---
 
 📂 Dataset
