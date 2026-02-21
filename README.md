@@ -10,34 +10,13 @@ A flight routing system built using Data Structures & Algorithms.
 
 ---
 
-# 📦 Project Structure
-flight-map-routing/
-│
-├── app.py
-├── data/
-│ └── airline_routes.json
-│
-├── src/
-│ ├── loader.py
-│ ├── graph.py
-│ ├── models.py
-│ ├── algorithms/
-│ │ ├── bfs.py
-│ │ └── dijkstra.py
-│ └── services/
-│ └── routing.py
-│
-├── requirements.txt
-└── README.md
-
-
----
-
 # 🐍 Setup Instructions
 
 ## 1️⃣ Clone the Repository
+
 git clone <your-repo-url>
 cd flight-map-routing
+
 ---
 
 ## 2️⃣ Create a Virtual Environment
