@@ -40,7 +40,11 @@ If activated successfully, you should see:
 ---
 
 ## 3️⃣ Install Dependencies
-pip install -r requirements.txt
+Windows:
+command: pip install -r requirements.txt
+
+Mac:
+command: python3 -m pip install -r requirements.txt
 
 ---
 
@@ -57,8 +61,11 @@ Rename-Item "data\airline_routes - Copy.json" "airline_routes.json"
 ▶️ Run the Dash App (Official)
 
 From the project root:
-
+Windows:
 python dash_app.py
+
+Mac:
+python3 dash_app.py
 
 Dash will print a local URL (typically):
 
