@@ -1732,7 +1732,7 @@ if __name__ == "__main__":
     print(f"   ├─ Cache Manager: {'✅' if CACHE_AVAILABLE else '❌'}")
     print(f"   └─ Data Enhancer: {'✅' if ENHANCER_AVAILABLE else '❌'}")
     print(f"\n{'='*60}")
-    print("🌐 Open http://localhost:8060 in your browser")
+    print("🌐 Open http://localhost:8051 in your browser")
     print(f"{'='*60}\n")
     
-    app.run(debug=True, port=8060)
+    app.run(debug=True, port=8051)
