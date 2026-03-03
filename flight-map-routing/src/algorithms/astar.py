@@ -2,6 +2,9 @@ import heapq
 from typing import Callable, Dict, List, Optional, Tuple
 from math import radians, sin, cos, sqrt, atan2
 
+from ..graph import FlightGraph
+from ..models import Edge
+
 def haversine(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
     """Haversine formula for great-circle distance heuristic"""
     R = 6371  # Earth's radius in km

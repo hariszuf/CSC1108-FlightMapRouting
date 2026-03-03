@@ -6,6 +6,8 @@ import math
 import random
 from dataclasses import dataclass, field
 from src.algorithms.dijkstra import dijkstra
+from ..graph import FlightGraph
+from ..models import Edge
 
 @dataclass
 class TSPResult:

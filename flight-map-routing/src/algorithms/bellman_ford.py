@@ -1,3 +1,7 @@
+from typing import Optional, List
+from ..graph import FlightGraph
+from ..models import Edge
+
 def bellman_ford_cheapest(graph: FlightGraph, start: str, goal: str) -> Optional[List[str]]:
     """
     Bellman-Ford algorithm - handles negative weights (discounts/promotions)

@@ -2,6 +2,7 @@ from typing import List, Optional, Dict
 from src.algorithms.dijkstra import dijkstra
 from src.algorithms.bfs import bfs_least_hops
 from src.models import Edge
+from ..graph import FlightGraph
 
 class RouteExplorer:
     def __init__(self, graph: FlightGraph):

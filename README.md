@@ -211,9 +211,10 @@ source .venv/bin/activate
 ### 3️⃣ Install Dependencies
 **Windows:**
 ```bash
-pip install -r requirements.txt
-pip install dash-bootstrap-components
-pip install networkx
+py -m pip install pandas
+py -m pip install -r requirements.txt
+py -m pip install dash-bootstrap-components
+py -m pip install dash pandas networkx plotly
 ```
 
 **Mac:**
