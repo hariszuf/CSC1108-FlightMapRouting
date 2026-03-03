@@ -41,10 +41,16 @@ If activated successfully, you should see:
 
 ## 3️⃣ Install Dependencies
 Windows:
-command: pip install -r requirements.txt
+command: 
+-pip install -r requirements.txt
+-pip install dash-bootstrap-components
+-pip install networkx
 
 Mac:
-command: python3 -m pip install -r requirements.txt
+command: 
+-python3 -m pip install -r requirements.txt
+-pip3 install dash-bootstrap-components
+-pip3 install networkx
 
 ---
 
@@ -63,9 +69,11 @@ Rename-Item "data\airline_routes - Copy.json" "airline_routes.json"
 From the project root:
 Windows:
 python dash_app.py
+python dash_app_enhanced.py
 
 Mac:
 python3 dash_app.py
+python3 dash_app_enhanced.py
 
 Dash will print a local URL (typically):
 
