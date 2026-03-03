@@ -419,44 +419,94 @@ app.index_string = '''
                 backdrop-filter: blur(5px);
             }
             
-            /* Dropdown Styling */
+            /* ============================= */
+            /* CLEAN DROPDOWN STYLING FIXED */
+            /* ============================= */
+
             .Select-control {
                 background-color: #1e2b4a !important;
-                border: 1px solid rgba(255, 255, 255, 0.15) !important;
+                border: 1px solid rgba(255,255,255,0.15) !important;
                 border-radius: 14px !important;
+                height: 42px !important;
+                min-height: 42px !important;
                 color: #ffffff !important;
             }
-            
+
+            .Select-placeholder,
             .Select-value-label {
-                color: #ffffff !important;
+                line-height: 42px !important;
+                color: #e5e9f0 !important;
             }
-            
-            .Select-placeholder {
-                color: #8f9bb3 !important;
+
+            /* Keep the typing/search input INSIDE the top box (no fake extra search bar) */
+            .Select-control{
+                display: flex !important;
+                align-items: center !important;
             }
-            
+
+            .Select-control .Select-input{
+                position: static !important;   /* <-- key fix */
+                flex: 1 1 auto !important;
+                height: 42px !important;
+                margin-left: 12px !important;
+            }
+
+            .Select-control .Select-input > input{
+                width: 100% !important;
+                height: 42px !important;
+                line-height: 42px !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                background: transparent !important;
+                border: 0 !important;
+                box-shadow: none !important;
+                outline: none !important;
+            }
+
+            .Select-control .Select-input > input {
+                height: 42px !important;
+                line-height: 42px !important;
+                padding-left: 12px !important;
+
+                background: transparent !important;
+                border: none !important;
+                box-shadow: none !important;
+                outline: none !important;
+            }
+
+            /* REMOVE the extra search bar inside dropdown menu */
+            .Select-menu-outer .Select-input {
+                display: none !important;
+            }
+
+            /* Dropdown menu styling */
             .Select-menu-outer {
                 background-color: #1e2b4a !important;
-                border: 1px solid rgba(255, 255, 255, 0.15) !important;
+                border: 1px solid rgba(255,255,255,0.15) !important;
                 border-radius: 14px !important;
                 box-shadow: 0 20px 30px -10px black !important;
-                z-index: 1000 !important;
+                z-index: 999999 !important;   /* overlay map */
+                margin-top: 6px !important;
             }
-            
+
             .Select-option {
                 background-color: #1e2b4a !important;
                 color: #e5e9f0 !important;
             }
-            
-            .Select-option:hover {
-                background: linear-gradient(135deg, #2d3b5e 0%, #1e2b4a 100%) !important;
-                color: #ffffff !important;
-            }
-            
+
+            .Select-option:hover,
             .Select-option.is-focused {
                 background: linear-gradient(135deg, #2d3b5e 0%, #1e2b4a 100%) !important;
                 color: #ffffff !important;
             }
+
+            /* Force dropdown above leaflet map */
+            .leaflet-container,
+            .leaflet-pane,
+            .leaflet-control-container {
+                z-index: 0 !important;
+            }
+            
             
             /* Radio Items */
             .dash-radio-items {
@@ -546,12 +596,10 @@ app.index_string = '''
             }
             
             /* Input Fields */
-            input, textarea {
-                background: #1e2b4a !important;
-                border: 1px solid rgba(255, 255, 255, 0.15) !important;
-                border-radius: 14px !important;
-                color: #ffffff !important;
+            .dash-input, .dash-textarea {
                 padding: 12px 16px !important;
+                border-radius: 14px !important;
+                /* keep the rest of your styling here */
             }
             
             input:focus, textarea:focus {
@@ -633,7 +681,173 @@ app.index_string = '''
                 color: #ef4444 !important;
                 background: transparent !important;
             }
-        </style>
+            /* ===== Remove extra dropdown search bar ===== */
+
+            /* Hide search bar inside dropdown menu */
+            .airport-dd .Select-menu-outer .Select-search{
+                display: none !important;
+            }
+
+            /* Remove blank space above options */
+            .airport-dd .Select-menu-outer{
+                padding-top: 0 !important;
+                z-index: 999999 !important;
+                position: absolute !important;
+            }
+
+            /* Keep dropdown above map */
+            .leaflet-container,
+            .leaflet-pane,
+            .leaflet-control-container{
+                z-index: 0 !important;
+            }
+        
+/* ===== DROPDOWN OVERFLOW FIX ===== */
+.Select-menu-outer {
+    position: absolute !important;
+    z-index: 999999 !important;
+}
+
+.gsearch-wrap {
+    position: relative;
+    z-index: 1000;
+}
+
+/* Ensure sidebar never clips dropdown */
+.sidebar, .left-panel, .config-panel {
+    overflow: visible !important;
+}
+
+
+
+/* ===== WHITE DROPDOWN (SEARCHABLE) WITH BLUE TEXT ===== */
+.airport-dd .Select-control{
+    background: #ffffff !important;
+    border: 1px solid rgba(30, 58, 138, 0.35) !important;
+    border-radius: 18px !important;
+    height: 56px !important;
+    min-height: 56px !important;
+    box-shadow: none !important;
+}
+
+.airport-dd .Select-placeholder,
+.airport-dd .Select-value-label{
+    color: #1e3a8a !important;
+    font-size: 20px !important;
+    line-height: 56px !important;
+}
+
+.airport-dd .Select-input{
+    height: 56px !important;
+}
+
+.airport-dd .Select-input > input{
+    height: 56px !important;
+    line-height: 56px !important;
+    font-size: 20px !important;
+    color: #1e3a8a !important;
+    padding-left: 18px !important;
+}
+
+/* Remove the "box inside box" feel */
+.airport-dd .Select-control,
+.airport-dd .Select-input > input{
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+/* Dropdown menu (suggestions) */
+.airport-dd .Select-menu-outer{
+    background: #ffffff !important;
+    border: 1px solid rgba(30, 58, 138, 0.18) !important;
+    border-radius: 16px !important;
+    box-shadow: 0 18px 40px rgba(0,0,0,0.18) !important;
+    margin-top: 8px !important;
+    z-index: 999999 !important;
+    position: absolute !important;
+}
+
+.airport-dd .Select-option{
+    background: #ffffff !important;
+    color: #1e3a8a !important;
+    padding: 12px 16px !important;
+    font-size: 16px !important;
+}
+.airport-dd .Select-option.is-focused,
+.airport-dd .Select-option:hover{
+    background: #f3f4f6 !important;
+}
+
+/* Keep dropdown above leaflet */
+.leaflet-container,
+.leaflet-pane,
+.leaflet-control-container{
+    z-index: 0 !important;
+}
+
+
+/* ===== FINAL FIX - FORCE DARK PURPLE SELECTED TEXT ===== */
+
+/* React-Select newer versions */
+.airport-dd .Select__single-value {
+    color: #3b0764 !important;
+    font-weight: 700 !important;
+    opacity: 1 !important;
+}
+
+/* If Dash marks it as disabled style */
+.airport-dd .Select__control--is-disabled .Select__single-value {
+    color: #3b0764 !important;
+    opacity: 1 !important;
+}
+
+/* Older React-Select fallback */
+.airport-dd .Select-value-label {
+    color: #3b0764 !important;
+    font-weight: 700 !important;
+    opacity: 1 !important;
+}
+
+/* Remove faded look */
+.airport-dd .Select__single-value,
+.airport-dd .Select__single-value span {
+    -webkit-text-fill-color: #3b0764 !important;
+}
+
+/* Keep placeholder different */
+.airport-dd .Select__placeholder {
+    color: #3b82f6 !important;
+    opacity: 1 !important;
+}
+
+
+/* ===== BROAD HAMMER: FORCE PURPLE ON EVERYTHING INSIDE CONTROL WHEN SELECTED ===== */
+
+/* Old react-select */
+.airport-dd.has-value .Select-control,
+.airport-dd.has-value .Select-control * {
+    color: #3b0764 !important;
+    opacity: 1 !important;
+    -webkit-text-fill-color: #3b0764 !important;
+    font-weight: 700 !important;
+}
+
+/* New react-select */
+.airport-dd .Select__control,
+.airport-dd .Select__control * {
+    color: #3b0764 !important;
+    -webkit-text-fill-color: #3b0764 !important;
+}
+
+/* But keep placeholder blue */
+.airport-dd .Select-placeholder,
+.airport-dd .Select__placeholder {
+    color: #3b82f6 !important;
+    -webkit-text-fill-color: #3b82f6 !important;
+    font-weight: 500 !important;
+}
+
+</style>
     </head>
     <body>
         <div class="app-container">
@@ -691,17 +905,22 @@ app.layout = html.Div([
                         dcc.Dropdown(
                             id='src-dropdown',
                             options=get_airport_options(GRAPH),
-                            placeholder="Select departure...",
+                            placeholder="Type to search departure...",
                             value='SIN' if 'SIN' in GRAPH.airports else None,
-                            clearable=True
+                            searchable=True,
+                            clearable=True,
+                            className="airport-dd"
                         ),
                         
                         html.Label("To:", style={'fontWeight': 'bold', 'marginTop': '15px'}),
                         dcc.Dropdown(
                             id='dst-dropdown',
-                            placeholder="Select arrival...",
+                            options=get_airport_options(GRAPH),
+                            placeholder="Type to search arrival...",
                             value='HND' if 'HND' in GRAPH.airports else None,
-                            clearable=True
+                            searchable=True,
+                            clearable=True,
+                            className="airport-dd"
                         ),
                         
                         html.Label("Optimize for:", style={'fontWeight': 'bold', 'marginTop': '15px'}),
@@ -769,7 +988,7 @@ app.layout = html.Div([
                     html.Div([
                         dcc.Dropdown(
                             id='multi-city-selector',
-                            options=get_airport_options(GRAPH),
+                            
                             placeholder="Select cities to visit...",
                             multi=True,
                             value=['SIN', 'HND', 'LHR'] if all(c in GRAPH.airports for c in ['SIN', 'HND', 'LHR']) else []
@@ -795,11 +1014,18 @@ app.layout = html.Div([
                 html.Div([
                     html.Div(f"🔄 K-Shortest Paths {'' if YEN_AVAILABLE else '(Not Available)'}", className="card-header"),
                     html.Div([
-                        dcc.Dropdown(id='k-src', placeholder="From...", options=get_airport_options(GRAPH)),
-                        dcc.Dropdown(id='k-dst', placeholder="To...", options=get_airport_options(GRAPH)),
+                        dcc.Dropdown(id='k-src', placeholder="From...", ),
+                        dcc.Dropdown(id='k-dst', placeholder="To...", ),
                         html.Div([
-                            dcc.Input(id='k-value', type='number', min=1, max=10, value=3, 
-                                     style={'width': '80px', 'marginRight': '10px'}),
+                            dcc.Input(
+                                id='k-value',
+                                type='number',
+                                min=1,
+                                max=10,
+                                value=3,
+                                className="dash-input",
+                                style={'width': '80px', 'marginRight': '10px'}
+                            ),
                             dcc.RadioItems(
                                 id='k-mode',
                                 options=[
@@ -821,8 +1047,8 @@ app.layout = html.Div([
                 html.Div([
                     html.Div("⚡ Algorithm Comparison", className="card-header"),
                     html.Div([
-                        dcc.Dropdown(id='compare-src', placeholder="From...", options=get_airport_options(GRAPH)),
-                        dcc.Dropdown(id='compare-dst', placeholder="To...", options=get_airport_options(GRAPH)),
+                        dcc.Dropdown(id='compare-src', placeholder="From...", ),
+                        dcc.Dropdown(id='compare-dst', placeholder="To...", ),
                         html.Button("📊 Compare All Algorithms", id='compare-algos-btn', 
                                   className="btn-secondary", n_clicks=0),
                         html.Div(id='comparison-results')
@@ -864,8 +1090,8 @@ app.layout = html.Div([
                 html.Div([
                     html.Div("🔄 Route Explorer", className="card-header"),
                     html.Div([
-                        dcc.Dropdown(id='explore-src', placeholder="From...", options=get_airport_options(GRAPH)),
-                        dcc.Dropdown(id='explore-dst', placeholder="To...", options=get_airport_options(GRAPH)),
+                        dcc.Dropdown(id='explore-src', placeholder="From...", ),
+                        dcc.Dropdown(id='explore-dst', placeholder="To...", ),
                         html.Button("🔍 Explore Alternatives", id='explore-routes-btn', 
                                   className="btn-secondary", n_clicks=0),
                         html.Div(id='explore-results')
@@ -902,16 +1128,28 @@ app.layout = html.Div([
 ])
 
 
-# Callbacks
+
+# --- Autocomplete dropdown options (search-as-you-type) ---
+@app.callback(
+    Output('src-dropdown', 'options'),
+    Input('src-dropdown', 'search_value')
+)
+def filter_src_options(search_value):
+    # Limit results for performance
+    return get_airport_options(GRAPH, search_value or "")[:50]
+
 @app.callback(
     Output('dst-dropdown', 'options'),
-    Input('src-dropdown', 'value')
+    [Input('dst-dropdown', 'search_value'),
+     Input('src-dropdown', 'value')]
 )
-def update_dst_options(src):
-    all_options = get_airport_options(GRAPH)
-    if src:
-        return [opt for opt in all_options if opt['value'] != src]
-    return all_options
+def filter_dst_options(search_value, src_value):
+    opts = get_airport_options(GRAPH, search_value or "")[:80]
+    if src_value:
+        opts = [o for o in opts if o['value'] != src_value]
+    return opts
+
+# Callbacks
 
 @app.callback(
     [Output('route-summary', 'children'),
