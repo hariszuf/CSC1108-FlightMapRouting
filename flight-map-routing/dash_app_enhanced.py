@@ -222,6 +222,16 @@ app.index_string = '''
                 border-radius: 12px 12px 0 0 !important;
             }
 
+            .dash-dropdown-value{
+            
+                color: black !important;
+            }
+
+            #k-value{
+                color: black !important;
+                height: fit-content !important;
+            }
+
             /* Add margin top to the results tabs container */
             #results-tabs {
                 margin-top: 20px !important;
