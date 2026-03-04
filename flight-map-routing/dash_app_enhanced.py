@@ -284,7 +284,7 @@ app.index_string = '''
             /* Modern Metric Grid */
             .metric-grid {
                 display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+                grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
                 gap: 16px;
                 margin: 20px 0;
             }
@@ -319,6 +319,7 @@ app.index_string = '''
                 -webkit-background-clip: text;
                 -webkit-text-fill-color: transparent;
                 line-height: 1.2;
+                white-space: nowrap;
             }
             
             /* Luxurious Buttons */
@@ -419,65 +420,7 @@ app.index_string = '''
                 backdrop-filter: blur(5px);
             }
             
-            /* ============================= */
-            /* CLEAN DROPDOWN STYLING FIXED */
-            /* ============================= */
-
-            .Select-control {
-                background-color: #1e2b4a !important;
-                border: 1px solid rgba(255,255,255,0.15) !important;
-                border-radius: 14px !important;
-                height: 42px !important;
-                min-height: 42px !important;
-                color: #ffffff !important;
-            }
-
-            .Select-placeholder,
-            .Select-value-label {
-                line-height: 42px !important;
-                color: #e5e9f0 !important;
-            }
-
-            /* Keep the typing/search input INSIDE the top box (no fake extra search bar) */
-            .Select-control{
-                display: flex !important;
-                align-items: center !important;
-            }
-
-            .Select-control .Select-input{
-                position: static !important;   /* <-- key fix */
-                flex: 1 1 auto !important;
-                height: 42px !important;
-                margin-left: 12px !important;
-            }
-
-            .Select-control .Select-input > input{
-                width: 100% !important;
-                height: 42px !important;
-                line-height: 42px !important;
-                padding: 0 !important;
-                margin: 0 !important;
-                background: transparent !important;
-                border: 0 !important;
-                box-shadow: none !important;
-                outline: none !important;
-            }
-
-            .Select-control .Select-input > input {
-                height: 42px !important;
-                line-height: 42px !important;
-                padding-left: 12px !important;
-
-                background: transparent !important;
-                border: none !important;
-                box-shadow: none !important;
-                outline: none !important;
-            }
-
-            /* REMOVE the extra search bar inside dropdown menu */
-            .Select-menu-outer .Select-input {
-                display: none !important;
-            }
+           
 
             /* Dropdown menu styling */
             .Select-menu-outer {
@@ -508,13 +451,11 @@ app.index_string = '''
             }
             
             
-            /* Radio Items */
-            .dash-radio-items {
-                color: #e5e9f0 !important;
-            }
-            
-            .dash-radio-item {
-                padding: 8px 0 !important;
+
+
+
+            .dash-radio-item input[type="radio"] {
+            margin-top: 0 !important;
             }
             
             input[type="radio"] {
@@ -617,7 +558,6 @@ app.index_string = '''
                 color: #a5b4fc !important;
                 font-weight: 500 !important;
                 margin-bottom: 8px !important;
-                display: block !important;
             }
             
             /* Loading Spinner */
@@ -681,12 +621,7 @@ app.index_string = '''
                 color: #ef4444 !important;
                 background: transparent !important;
             }
-            /* ===== Remove extra dropdown search bar ===== */
-
-            /* Hide search bar inside dropdown menu */
-            .airport-dd .Select-menu-outer .Select-search{
-                display: none !important;
-            }
+            
 
             /* Remove blank space above options */
             .airport-dd .Select-menu-outer{
@@ -721,6 +656,7 @@ app.index_string = '''
 
 
 /* ===== WHITE DROPDOWN (SEARCHABLE) WITH BLUE TEXT ===== */
+
 .airport-dd .Select-control{
     background: #ffffff !important;
     border: 1px solid rgba(30, 58, 138, 0.35) !important;
@@ -755,6 +691,8 @@ app.index_string = '''
     outline: none !important;
     box-shadow: none !important;
 }
+
+
 
 /* Dropdown menu (suggestions) */
 .airport-dd .Select-menu-outer{
@@ -847,6 +785,19 @@ app.index_string = '''
     font-weight: 500 !important;
 }
 
+
+.opt-radio label{
+  display: inline-flex !important;   /* override your global label {display:block!important;} */
+  align-items: center !important;
+  gap: 10px !important;
+  margin: 8px 0 !important;
+}
+
+.opt-radio input[type="radio"]{
+  margin: 0 !important;
+}
+
+
 </style>
     </head>
     <body>
@@ -926,16 +877,21 @@ app.layout = html.Div([
                 ),
 
                 html.Label("Optimize for:", style={'fontWeight': 'bold', 'marginTop': '15px'}),
-                dcc.RadioItems(
+               dcc.RadioItems(
                     id='optimization-mode',
                     options=[
-                        {'label': ' 🛬 Least Connections (BFS)', 'value': 'hops'},
-                        {'label': ' 📏 Shortest Distance', 'value': 'distance'},
-                        {'label': ' ⏱️ Fastest Time', 'value': 'time'},
-                        {'label': ' 💰 Cheapest Price', 'value': 'price'},
+                        {'label': '🛬 Least Connections (BFS)', 'value': 'hops'},
+                        {'label': '📏 Shortest Distance', 'value': 'distance'},
+                        {'label': '⏱️ Fastest Time', 'value': 'time'},
+                        {'label': '💰 Cheapest Price', 'value': 'price'},
                     ],
                     value='distance',
-                    labelStyle={'display': 'block', 'margin': '5px 0'}
+                    labelStyle={
+                        'display': 'flex',
+                        'alignItems': 'center',
+                        'gap': '10px',
+                        'marginBottom': '12px'
+                    }
                 ),
 
                 html.Button("🔍 Find Route", id='find-route-btn',
@@ -1185,7 +1141,7 @@ app.layout = html.Div([
 )
 def filter_src_options(search_value):
     # Limit results for performance
-    return get_airport_options(GRAPH, search_value or "")[:50]
+    return get_airport_options(GRAPH, search_value or "")
 
 @app.callback(
     Output('dst-dropdown', 'options'),
@@ -1193,7 +1149,7 @@ def filter_src_options(search_value):
      Input('src-dropdown', 'value')]
 )
 def filter_dst_options(search_value, src_value):
-    opts = get_airport_options(GRAPH, search_value or "")[:80]
+    opts = get_airport_options(GRAPH, search_value or "")
     if src_value:
         opts = [o for o in opts if o['value'] != src_value]
     return opts
