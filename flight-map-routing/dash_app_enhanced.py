@@ -897,85 +897,97 @@ app.layout = html.Div([
         dcc.Tab(label='🎯 Basic Routing', value='basic-routing', children=[
             html.Div([
                 # Left Column
-                html.Div([
-                    html.Div([
-                        html.Div("Route Configuration", className="card-header"),
-                        
-                        html.Label("From:", style={'fontWeight': 'bold'}),
-                        dcc.Dropdown(
-                            id='src-dropdown',
-                            options=get_airport_options(GRAPH),
-                            placeholder="Type to search departure...",
-                            value='SIN' if 'SIN' in GRAPH.airports else None,
-                            searchable=True,
-                            clearable=True,
-                            className="airport-dd"
-                        ),
-                        
-                        html.Label("To:", style={'fontWeight': 'bold', 'marginTop': '15px'}),
-                        dcc.Dropdown(
-                            id='dst-dropdown',
-                            options=get_airport_options(GRAPH),
-                            placeholder="Type to search arrival...",
-                            value='HND' if 'HND' in GRAPH.airports else None,
-                            searchable=True,
-                            clearable=True,
-                            className="airport-dd"
-                        ),
-                        
-                        html.Label("Optimize for:", style={'fontWeight': 'bold', 'marginTop': '15px'}),
-                        dcc.RadioItems(
-                            id='optimization-mode',
-                            options=[
-                                {'label': ' 🛬 Least Connections (BFS)', 'value': 'hops'},
-                                {'label': ' 📏 Shortest Distance', 'value': 'distance'},
-                                {'label': ' ⏱️ Fastest Time', 'value': 'time'},
-                                {'label': ' 💰 Cheapest Price', 'value': 'price'},
-                            ],
-                            value='distance',
-                            labelStyle={'display': 'block', 'margin': '5px 0'}
-                        ),
-                        
-                        html.Button("🔍 Find Route", id='find-route-btn', 
-                                  className="btn-primary", n_clicks=0, style={'marginTop': '20px'}),
-                    ], className="card"),
-                    
-                    # Route Summary
-                    html.Div([
-                        html.Div("📋 Route Summary", className="card-header"),
-                        html.Div(id='route-summary', children=[
-                            html.P("Select airports and click 'Find Route'", 
-                                  style={'color': '#8f9bb3', 'textAlign': 'center'})
-                        ])
-                    ], className="card"),
-                    
-                ], style={'width': '30%', 'display': 'inline-block', 'verticalAlign': 'top', 'paddingRight': '15px'}),
-                
-                # Right Column
-                html.Div([
-                    dcc.Tabs(id='results-tabs', value='map-tab', children=[
-                        dcc.Tab(label='🗺️ Route Map', value='map-tab', children=[
-                            dl.Map(
-                                id='flight-map',
-                                center=[20, 0],
-                                zoom=2,
-                                style={'width': '100%', 'height': '500px', 'borderRadius': '10px'},
-                                children=[
-                                    dl.TileLayer(),
-                                    dl.LayerGroup(id='map-layers'),
-                                ]
-                            ),
-                        ]),
-                        
-                        dcc.Tab(label='📊 Route Analysis', value='analysis-tab', children=[
-                            dcc.Graph(id='route-analysis', style={'height': '500px'})
-                        ]),
-                        
-                        dcc.Tab(label='📈 Performance', value='performance-tab', children=[
-                            dcc.Graph(id='performance-metrics', style={'height': '500px'})
-                        ]),
+            html.Div([
+
+            # ROUTE CONFIG
+            html.Div([
+                html.Div("Route Configuration", className="card-header"),
+
+                html.Label("From:", style={'fontWeight': 'bold'}),
+                dcc.Dropdown(
+                    id='src-dropdown',
+                    options=get_airport_options(GRAPH),
+                    placeholder="Type to search departure...",
+                    value='SIN' if 'SIN' in GRAPH.airports else None,
+                    searchable=True,
+                    clearable=True,
+                    className="airport-dd"
+                ),
+
+                html.Label("To:", style={'fontWeight': 'bold', 'marginTop': '15px'}),
+                dcc.Dropdown(
+                    id='dst-dropdown',
+                    options=get_airport_options(GRAPH),
+                    placeholder="Type to search arrival...",
+                    value='HND' if 'HND' in GRAPH.airports else None,
+                    searchable=True,
+                    clearable=True,
+                    className="airport-dd"
+                ),
+
+                html.Label("Optimize for:", style={'fontWeight': 'bold', 'marginTop': '15px'}),
+                dcc.RadioItems(
+                    id='optimization-mode',
+                    options=[
+                        {'label': ' 🛬 Least Connections (BFS)', 'value': 'hops'},
+                        {'label': ' 📏 Shortest Distance', 'value': 'distance'},
+                        {'label': ' ⏱️ Fastest Time', 'value': 'time'},
+                        {'label': ' 💰 Cheapest Price', 'value': 'price'},
+                    ],
+                    value='distance',
+                    labelStyle={'display': 'block', 'margin': '5px 0'}
+                ),
+
+                html.Button("🔍 Find Route", id='find-route-btn',
+                            className="btn-primary", n_clicks=0,
+                            style={'marginTop': '20px'}),
+
+            ], className="card", style={'width':'22%'}),
+
+
+            # MAP
+            html.Div([
+                dcc.Tabs(id='results-tabs', value='map-tab', children=[
+
+                    dcc.Tab(label='🗺️ Route Map', value='map-tab', children=[
+                        dl.Map(
+                            id='flight-map',
+                            center=[20,0],
+                            zoom=2,
+                            style={'width':'100%','height':'520px'},
+                            children=[
+                                dl.TileLayer(),
+                                dl.LayerGroup(id='map-layers')
+                            ]
+                        )
                     ]),
-                ], style={'width': '70%', 'display': 'inline-block', 'verticalAlign': 'top'}),
+
+                    dcc.Tab(label='📊 Route Analysis', value='analysis-tab',
+                        children=[dcc.Graph(id='route-analysis', style={'height':'520px'})]),
+
+                    dcc.Tab(label='📈 Performance', value='performance-tab',
+                        children=[dcc.Graph(id='performance-metrics', style={'height':'520px'})])
+
+                ])
+            ], style={'width':'56%'}),
+
+
+            # ROUTE SUMMARY
+            html.Div([
+                html.Div("📋 Route Summary", className="card-header"),
+                html.Div(id='route-summary', children=[
+                    html.P("Select airports and click 'Find Route'",
+                        style={'color':'#8f9bb3','textAlign':'center'})
+                ])
+            ], className="card", style={'width':'22%'}),
+
+        ],
+        style={
+            'display':'flex',
+            'gap':'20px',
+            'alignItems':'flex-start'
+        }),
+                
             ])
         ]),
         
@@ -987,12 +999,13 @@ app.layout = html.Div([
                     html.Div("🗺️ Multi-City Trip Planner", className="card-header"),
                     html.Div([
                         dcc.Dropdown(
-                            id='multi-city-selector',
-                            
-                            placeholder="Select cities to visit...",
-                            multi=True,
-                            value=['SIN', 'HND', 'LHR'] if all(c in GRAPH.airports for c in ['SIN', 'HND', 'LHR']) else []
-                        ),
+                                id='multi-city-selector',
+                                options=get_airport_options(GRAPH),
+                                placeholder="Select cities to visit.",
+                                multi=True,
+                                value=['SIN', 'HND', 'LHR'] if all(c in GRAPH.airports for c in ['SIN','HND','LHR']) else [],
+                                searchable=True
+                            ),
                         html.Div([
                             dcc.RadioItems(
                                 id='tsp-method',
@@ -1014,8 +1027,18 @@ app.layout = html.Div([
                 html.Div([
                     html.Div(f"🔄 K-Shortest Paths {'' if YEN_AVAILABLE else '(Not Available)'}", className="card-header"),
                     html.Div([
-                        dcc.Dropdown(id='k-src', placeholder="From...", ),
-                        dcc.Dropdown(id='k-dst', placeholder="To...", ),
+                        dcc.Dropdown(
+                                id='ksp-from',
+                                options=get_airport_options(GRAPH),
+                                placeholder="From...",
+                                searchable=True
+                            ),
+                        dcc.Dropdown(
+                                id='ksp-to',
+                                options=get_airport_options(GRAPH),
+                                placeholder="To...",
+                                searchable=True
+                            ),
                         html.Div([
                             dcc.Input(
                                 id='k-value',
@@ -1047,8 +1070,21 @@ app.layout = html.Div([
                 html.Div([
                     html.Div("⚡ Algorithm Comparison", className="card-header"),
                     html.Div([
-                        dcc.Dropdown(id='compare-src', placeholder="From...", ),
-                        dcc.Dropdown(id='compare-dst', placeholder="To...", ),
+                        dcc.Dropdown(
+                            id='compare-from',
+                            options=get_airport_options(GRAPH),
+                            placeholder="From...",
+                            searchable=True,
+                            clearable=True
+                        ),
+
+                        dcc.Dropdown(
+                            id='compare-to',
+                            options=get_airport_options(GRAPH),
+                            placeholder="To...",
+                            searchable=True,
+                            clearable=True
+                        ),
                         html.Button("📊 Compare All Algorithms", id='compare-algos-btn', 
                                   className="btn-secondary", n_clicks=0),
                         html.Div(id='comparison-results')
@@ -1090,8 +1126,21 @@ app.layout = html.Div([
                 html.Div([
                     html.Div("🔄 Route Explorer", className="card-header"),
                     html.Div([
-                        dcc.Dropdown(id='explore-src', placeholder="From...", ),
-                        dcc.Dropdown(id='explore-dst', placeholder="To...", ),
+                        dcc.Dropdown(
+                            id='explorer-from',
+                            options=get_airport_options(GRAPH),
+                            placeholder="From...",
+                            searchable=True,
+                            clearable=True
+                        ),
+
+                        dcc.Dropdown(
+                            id='explorer-to',
+                            options=get_airport_options(GRAPH),
+                            placeholder="To...",
+                            searchable=True,
+                            clearable=True
+                        ),
                         html.Button("🔍 Explore Alternatives", id='explore-routes-btn', 
                                   className="btn-secondary", n_clicks=0),
                         html.Div(id='explore-results')
@@ -1390,8 +1439,8 @@ def plan_multi_city(n_clicks, cities, method):
 @app.callback(
     Output('k-paths-results', 'children'),
     Input('find-k-paths-btn', 'n_clicks'),
-    [State('k-src', 'value'),
-     State('k-dst', 'value'),
+    [State('ksp-from', 'value'),
+     State('ksp-to', 'value'),
      State('k-value', 'value'),
      State('k-mode', 'value')]
 )
@@ -1428,8 +1477,8 @@ def find_k_paths(n_clicks, src, dst, k, mode):
 @app.callback(
     Output('comparison-results', 'children'),
     Input('compare-algos-btn', 'n_clicks'),
-    [State('compare-src', 'value'),
-     State('compare-dst', 'value')]
+    [State('compare-from', 'value'),
+     State('compare-to', 'value')]
 )
 def compare_algorithms(n_clicks, src, dst):
     if not n_clicks or not src or not dst:
@@ -1457,8 +1506,15 @@ def compare_algorithms(n_clicks, src, dst):
                 data=df.to_dict('records'),
                 columns=[{'name': i, 'id': i} for i in df.columns],
                 style_table={'overflowX': 'auto'},
-                style_cell={'textAlign': 'left', 'padding': '10px'},
-                style_header={'fontWeight': 'bold', 'backgroundColor': '#f8f9fa'}
+                style_cell={
+                    'color': 'black',
+                    'backgroundColor': 'white',
+                    'textAlign': 'center'
+                },
+                style_header={
+                    'color': 'black',
+                    'fontWeight': 'bold'
+                }
             )
         ])
     
@@ -1482,8 +1538,22 @@ def compare_algorithms(n_clicks, src, dst):
                 data=data,
                 columns=[{'name': i, 'id': i} for i in ['Algorithm', 'Found', 'Cost', 'Path']],
                 style_table={'overflowX': 'auto'},
-                style_cell={'textAlign': 'left', 'padding': '10px'},
-                style_header={'fontWeight': 'bold', 'backgroundColor': '#f8f9fa'}
+                
+                style_cell={
+                    'textAlign': 'left',
+                    'padding': '10px'
+                },
+
+                style_data={
+                    'color': 'black',
+                    'backgroundColor': 'white'
+                },
+
+                style_header={
+                    'backgroundColor': '#f8f9fa',
+                    'color': 'black',
+                    'fontWeight': 'bold'
+                }
             )
         ])
     except Exception as e:
@@ -1650,10 +1720,10 @@ def network_analytics(hubs_clicks, isolated_clicks, suggest_clicks):
     return html.Div("Processing complete", className="info-message")
 
 @app.callback(
-    Output('explore-results', 'children'),
-    Input('explore-routes-btn', 'n_clicks'),
-    [State('explore-src', 'value'),
-     State('explore-dst', 'value')]
+    Output('explore-results','children'),
+    Input('explore-routes-btn','n_clicks'),
+    State('explorer-from','value'),
+    State('explorer-to','value')
 )
 def explore_routes(n_clicks, src, dst):
     if not n_clicks or not src or not dst:
