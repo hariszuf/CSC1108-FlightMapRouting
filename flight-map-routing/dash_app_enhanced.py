@@ -774,13 +774,16 @@ def compare_algorithms(n_clicks, src, dst):
                 columns=[{'name': i, 'id': i} for i in df.columns],
                 style_table={'overflowX': 'auto'},
                 style_cell={
-                    'color': 'black',
-                    'backgroundColor': 'white',
-                    'textAlign': 'center'
+                    'color': '#e5e9f0',
+                    'backgroundColor': '#1e2b4a',
+                    'textAlign': 'center',
+                    'border': '1px solid rgba(255, 255, 255, 0.08)'
                 },
                 style_header={
-                    'color': 'black',
-                    'fontWeight': 'bold'
+                    'backgroundColor': '#2d3b5e',
+                    'color': '#ffffff',
+                    'fontWeight': 'bold',
+                    'border': '1px solid rgba(165, 180, 252, 0.3)'
                 }
             )
         ])
@@ -805,21 +808,25 @@ def compare_algorithms(n_clicks, src, dst):
                 data=data,
                 columns=[{'name': i, 'id': i} for i in ['Algorithm', 'Found', 'Cost', 'Path']],
                 style_table={'overflowX': 'auto'},
-                
+
                 style_cell={
                     'textAlign': 'left',
-                    'padding': '10px'
+                    'padding': '10px',
+                    'color': '#e5e9f0',
+                    'backgroundColor': '#1e2b4a',
+                    'border': '1px solid rgba(255, 255, 255, 0.08)'
                 },
 
                 style_data={
-                    'color': 'black',
-                    'backgroundColor': 'white'
+                    'color': '#e5e9f0',
+                    'backgroundColor': '#1e2b4a'
                 },
 
                 style_header={
-                    'backgroundColor': '#f8f9fa',
-                    'color': 'black',
-                    'fontWeight': 'bold'
+                    'backgroundColor': '#2d3b5e',
+                    'color': '#ffffff',
+                    'fontWeight': 'bold',
+                    'border': '1px solid rgba(165, 180, 252, 0.3)'
                 }
             )
         ])
