@@ -8,7 +8,7 @@ import base64
 import io
 import json
 from pathlib import Path
-
+import math
 # Dash components
 from dash import Dash, html, dcc, Input, Output, State, dash_table, no_update, callback_context
 import plotly.graph_objects as go
@@ -216,19 +216,40 @@ app.layout = html.Div([
 
             # MAP
             html.Div([
+                
                 dcc.Tabs(id='results-tabs', value='map-tab', children=[
-
+                    
                     dcc.Tab(label='🗺️ Route Map', value='map-tab', children=[
-                        dl.Map(
-                            id='flight-map',
-                            center=[20,0],
-                            zoom=2,
-                            style={'width':'100%','height':'520px'},
-                            children=[
-                                dl.TileLayer(),
-                                dl.LayerGroup(id='map-layers')
-                            ]
+                dl.Map(
+                    id='flight-map',
+                    center=[20,0],
+                    zoom=2,
+                    style={'width':'100%','height':'520px'},
+                    children=[
+                        dl.TileLayer(
+                            url="https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png"
+                        ),
+
+                        dl.LayerGroup(id='map-layers'),
+                        dl.Polyline(
+                            id="animated-route",
+                            positions=[],
+                            color="#ff3300",
+                            weight=6
+                        ),
+
+                        # ADD THIS
+                        dl.Marker(
+                            id="plane-marker",
+                            position=[0,0],
+                            icon={
+                                "iconUrl": "https://cdn-icons-png.flaticon.com/512/7893/7893979.png",
+                                "iconSize": [40,40],
+                                "iconAnchor": [20,20]
+                            }
                         )
+                    ]
+                )
                     ]),
 
                     dcc.Tab(label='📊 Route Analysis', value='analysis-tab',
@@ -433,7 +454,13 @@ app.layout = html.Div([
     # Hidden div for storing current route
     dcc.Store(id='current-route-store'),
     dcc.Download(id='download-data'),
-    
+    dcc.Interval(
+        id="plane-anim",
+        interval=100,
+        n_intervals=0
+    ),
+
+    dcc.Store(id="route-coords"),
     # Footer
     html.Div([
         html.P("© 2025 FlightRoute Pro - Complete Flight Routing System"),
@@ -443,7 +470,8 @@ app.layout = html.Div([
             " | Yen's K-Shortest" + (" ✓" if YEN_AVAILABLE else "")
         ])
     ], className="footer")
-])
+        ])
+
 
 # --- Autocomplete dropdown options (search-as-you-type) ---
 @app.callback(
@@ -545,11 +573,14 @@ def find_route(n_clicks, src, dst, mode):
     # Create map layers
     coords = path_to_coords(GRAPH, route_result.path)
     
+    coords = path_to_coords(GRAPH, route_result.path)
+
     markers = []
-    colors = ['green', 'blue', 'red']
+
     for i, code in enumerate(route_result.path):
         airport = GRAPH.airports[code]
         color = 'green' if i == 0 else 'red' if i == len(route_result.path)-1 else 'blue'
+
         markers.append(
             dl.Marker(
                 position=(airport.lat, airport.lon),
@@ -562,9 +593,40 @@ def find_route(n_clicks, src, dst, mode):
                 }
             )
         )
-    
-    polyline = dl.Polyline(positions=coords, color='#667eea', weight=4)
-    map_layers = [polyline] + markers
+
+    # ADD THE PLANE HERE (outside the loop)
+    plane = dl.Marker(
+        id="plane-marker",
+        position=coords[0],
+        icon={
+            "iconUrl": "https://cdn-icons-png.flaticon.com/512/7893/7893979.png",
+            "iconSize": [40,40],
+            "iconAnchor": [20,20],
+            "className": "plane-icon"
+        }
+    )
+    glow1 = dl.Polyline(
+        positions=coords,
+        color="#ff6b6b",
+        weight=14,
+        opacity=0.15
+    )
+
+    glow2 = dl.Polyline(
+        positions=coords,
+        color="#ff6b6b",
+        weight=8,
+        opacity=0.35
+    )
+
+    route_line = dl.Polyline(
+        positions=coords,
+        color="#3bffef",
+        weight=5,
+        opacity=0.9
+    )
+  
+    map_layers = [glow1, glow2, route_line] + markers + [plane]
     
     # Create analysis figure
     analysis_fig = create_route_analysis(GRAPH, route_result.path)
@@ -572,6 +634,7 @@ def find_route(n_clicks, src, dst, mode):
     # Create performance comparison
     performance_fig = create_performance_comparison(GRAPH, src, dst, mode)
     
+    route_data["coords"] = coords
     return summary, map_layers, analysis_fig, performance_fig, route_data
 
 # dash_app_enhanced.py (fixed multi-city callback)
@@ -1295,8 +1358,82 @@ def create_performance_comparison(graph, src, dst, mode):
             ) for _, row in df.iterrows()
         ] if not df.empty else []
     )
+
     
     return fig
+
+@app.callback(
+    Output("plane-anim", "n_intervals"),
+    Input("current-route-store", "data")
+)
+def reset_plane_animation(route_data):
+    return 0
+
+@app.callback(
+    Output("plane-marker", "position"),
+    Input("plane-anim", "n_intervals"),
+    State("current-route-store", "data")
+)
+
+def animate_plane(n, route_data):
+    if not route_data or "coords" not in route_data:
+        return no_update
+
+    coords = route_data["coords"]
+
+    if len(coords) < 2:
+        return coords[0]
+
+    steps_per_segment = 40
+
+    total_steps = (len(coords) - 1) * steps_per_segment
+    step = n % total_steps
+
+    segment = step // steps_per_segment
+    progress = (step % steps_per_segment) / steps_per_segment
+
+    lat1, lon1 = coords[segment]
+    lat2, lon2 = coords[segment + 1]
+
+    lat = lat1 + (lat2 - lat1) * progress
+    lon = lon1 + (lon2 - lon1) * progress
+
+    return [lat, lon]
+
+@app.callback(
+    Output("animated-route", "positions"),
+    Input("plane-anim", "n_intervals"),
+    State("current-route-store", "data")
+)
+def animate_route(n, route_data):
+
+    if not route_data or "coords" not in route_data:
+        return []
+
+    coords = route_data["coords"]
+
+    if len(coords) < 2:
+        return coords
+
+    steps_per_segment = 40
+    total_steps = (len(coords) - 1) * steps_per_segment
+
+    step = n % total_steps
+
+    segment = step // steps_per_segment
+    progress = (step % steps_per_segment) / steps_per_segment
+
+    route_so_far = coords[:segment+1]
+
+    lat1, lon1 = coords[segment]
+    lat2, lon2 = coords[segment+1]
+
+    lat = lat1 + (lat2 - lat1) * progress
+    lon = lon1 + (lon2 - lon1) * progress
+
+    route_so_far.append([lat, lon])
+
+    return route_so_far
 
 if __name__ == "__main__":
     print(f"\n{'='*60}")

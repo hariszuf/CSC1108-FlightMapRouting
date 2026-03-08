@@ -691,3 +691,22 @@ label {
 .opt-radio input[type="radio"] {
     margin: 0 !important;
 }
+
+.moving-route {
+    stroke-dashoffset: 0;
+    animation: dashmove 2s linear infinite;
+}
+
+.plane-icon img{
+    transform: rotate(45deg);
+}
+
+@keyframes dashmove {
+    from {
+        stroke-dashoffset: 0;
+    }
+    to {
+        stroke-dashoffset: -30;
+    }
+}
+
