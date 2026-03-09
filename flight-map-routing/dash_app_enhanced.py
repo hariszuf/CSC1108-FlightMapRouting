@@ -234,9 +234,27 @@ app.layout = html.Div([
                     zoom=2,
                     style={'width':'100%','height':'520px'},
                     children=[
-                        dl.TileLayer(
-                            url="https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png"
-                        ),
+                        dl.LayersControl([
+    
+                # Normal Map
+                dl.BaseLayer(
+                    dl.TileLayer(
+                        url="https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png"
+                    ),
+                    name="Map",
+                    checked=True
+                ),
+
+                # Satellite Map
+                dl.BaseLayer(
+                    dl.TileLayer(
+                        url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+                    ),
+                    name="Satellite",
+                    checked=False
+                )
+
+            ]),
                         dl.FullScreenControl(position="topright"),
 
 
