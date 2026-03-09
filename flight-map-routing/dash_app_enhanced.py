@@ -409,20 +409,7 @@ app.layout = html.Div([
             
             # Right column advanced features
             html.Div([
-                # Network Analytics
-                html.Div([
-                    html.Div("📊 Network Analytics", className="card-header"),
-                    html.Div([
-                        html.Button("🏆 Show Hub Airports", id='show-hubs-btn', 
-                                  className="btn-secondary", n_clicks=0),
-                        html.Button("🔌 Find Isolated Airports", id='show-isolated-btn', 
-                                  className="btn-secondary", n_clicks=0),
-                        html.Button("💡 Suggest New Routes", id='suggest-routes-btn', 
-                                  className="btn-secondary", n_clicks=0),
-                        html.Div(id='network-analytics-results', style={'marginTop': '15px'})
-                    ])
-                ], className="card"),
-                
+             
                 # Export Options
                 html.Div([
                     html.Div("📤 Export & Share", className="card-header"),
@@ -921,13 +908,7 @@ def compare_algorithms(n_clicks, src, dst):
     except Exception as e:
         return html.Div(f"Error: {str(e)}", className="error-message")
 
-@app.callback(
-    Output('network-analytics-results', 'children'),
-    [Input('show-hubs-btn', 'n_clicks'),
-     Input('show-isolated-btn', 'n_clicks'),
-     Input('suggest-routes-btn', 'n_clicks')],
-    prevent_initial_call=True
-)
+
 def network_analytics(hubs_clicks, isolated_clicks, suggest_clicks):
     ctx = callback_context
     if not ctx.triggered:
