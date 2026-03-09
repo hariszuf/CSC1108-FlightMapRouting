@@ -124,7 +124,13 @@ ASSETS_PATH = Path(__file__).parent / "src" / "assets"
 app = Dash(
     __name__,
     assets_folder=str(ASSETS_PATH),
-    suppress_callback_exceptions=True
+    suppress_callback_exceptions=True,
+    external_stylesheets=[
+        "https://unpkg.com/leaflet.fullscreen@1.6.0/Control.FullScreen.css"
+    ],
+    external_scripts=[
+        "https://unpkg.com/leaflet.fullscreen@1.6.0/Control.FullScreen.js"
+    ]
 )
 app.title = "FlightRoute Pro - Complete Flight Routing System"
 
@@ -231,6 +237,8 @@ app.layout = html.Div([
                         dl.TileLayer(
                             url="https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png"
                         ),
+                        dl.FullScreenControl(position="topright"),
+
 
                         dl.LayerGroup(id='map-layers'),
                         dl.Polyline(
