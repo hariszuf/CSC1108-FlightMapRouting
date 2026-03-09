@@ -536,13 +536,23 @@ def find_route(n_clicks, src, dst, mode):
         return html.P("Select airports and click 'Find Route'", style={'color': '#666'}), [], empty_fig, empty_fig, None
     
     start_time = time.time()
-    
-    if flight_system:
-        route_result = flight_system.find_route(src, dst, mode)
-    else:
-        from src.services.routing import find_route as basic_find_route
-        route_result = basic_find_route(GRAPH, src, dst, mode)
-    
+
+    route_result = None
+
+    if flight_system and flight_system.cache_manager:
+        route_result = flight_system.cache_manager.get_shortest_path(src, dst, mode)
+
+
+    if not route_result:
+        if flight_system:
+            route_result = flight_system.find_route(src, dst, mode)
+        else:
+            from src.services.routing import find_route as basic_find_route
+            route_result = basic_find_route(GRAPH, src, dst, mode)
+
+        if route_result and flight_system and flight_system.cache_manager:
+            flight_system.cache_manager.cache_route(src, dst, mode, route_result)
+
     elapsed_time = (time.time() - start_time) * 1000
     
     if not route_result:
