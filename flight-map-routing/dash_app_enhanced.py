@@ -121,9 +121,11 @@ def format_duration(minutes):
 ASSETS_PATH = Path(__file__).parent / "src" / "assets"
 
 # Initialize the app
-app = Dash(__name__, 
-           assets_folder=str(ASSETS_PATH),  # Point to src/assets
-           )
+app = Dash(
+    __name__,
+    assets_folder=str(ASSETS_PATH),
+    suppress_callback_exceptions=True
+)
 app.title = "FlightRoute Pro - Complete Flight Routing System"
 
 # Main Layout
@@ -239,15 +241,7 @@ app.layout = html.Div([
                         ),
 
                         # ADD THIS
-                        dl.Marker(
-                            id="plane-marker",
-                            position=[0,0],
-                            icon={
-                                "iconUrl": "https://cdn-icons-png.flaticon.com/512/7893/7893979.png",
-                                "iconSize": [40,40],
-                                "iconAnchor": [20,20]
-                            }
-                        )
+
                     ]
                 )
                     ]),
@@ -594,7 +588,7 @@ def find_route(n_clicks, src, dst, mode):
             )
         )
 
-    # ADD THE PLANE HERE (outside the loop)
+
     plane = dl.Marker(
         id="plane-marker",
         position=coords[0],
@@ -1376,13 +1370,14 @@ def reset_plane_animation(route_data):
 )
 
 def animate_plane(n, route_data):
+
     if not route_data or "coords" not in route_data:
-        return no_update
+        return [0,0], 0   # hide plane
 
     coords = route_data["coords"]
 
     if len(coords) < 2:
-        return coords[0]
+        return coords[0], 1
 
     steps_per_segment = 40
 
