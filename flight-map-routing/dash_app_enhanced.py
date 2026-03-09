@@ -230,16 +230,20 @@ app.layout = html.Div([
                     dcc.Tab(label='🗺️ Route Map', value='map-tab', children=[
                 dl.Map(
                     id='flight-map',
-                    center=[20,0],
+                    center=[20, 0],
                     zoom=2,
-                    style={'width':'100%','height':'520px'},
+                    maxBounds=[[-90, -180], [90, 180]],
+                    maxBoundsViscosity=1.0,
+                    worldCopyJump=False,
+                    style={'width': '100%', 'height': '520px'},
                     children=[
                         dl.LayersControl([
     
                 # Normal Map
                 dl.BaseLayer(
                     dl.TileLayer(
-                        url="https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png"
+                        url="https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png",
+                        noWrap=True
                     ),
                     name="Map",
                     checked=True
@@ -248,7 +252,8 @@ app.layout = html.Div([
                 # Satellite Map
                 dl.BaseLayer(
                     dl.TileLayer(
-                        url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+                        url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+                        noWrap=True
                     ),
                     name="Satellite",
                     checked=False
