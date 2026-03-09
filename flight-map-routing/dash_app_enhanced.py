@@ -468,8 +468,9 @@ app.layout = html.Div([
     dcc.Download(id='download-data'),
     dcc.Interval(
         id="plane-anim",
-        interval=100,
+        interval=300,
         n_intervals=0
+
     ),
 
     dcc.Store(id="route-coords"),
