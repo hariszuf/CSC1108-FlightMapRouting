@@ -233,12 +233,15 @@ app.layout = html.Div([
                     center=[20, 0],
                     zoom=2,
                     minZoom=2,
-                    maxZoom=8,
+                    maxZoom=12,
                     bounceAtZoomLimits=False,
                     preferCanvas=True,
+                    inertia=True,
                     maxBounds=[[-85, -180], [85, 180]],
                     maxBoundsViscosity=0.3,
-                    worldCopyJump=False,
+                    worldCopyJump=True,
+                    zoomSnap=0.25,
+                    zoomDelta=0.5,
                     style={'width': '100%', 'height': '420px', 'borderRadius': '18px'},
                     children=[
                         dl.ScaleControl(position="bottomleft"),
@@ -268,16 +271,7 @@ app.layout = html.Div([
                         dl.FullScreenControl(position="topright"),
 
 
-                        dl.LayerGroup(id='map-layers'),
-                        dl.Polyline(
-                            id="animated-route",
-                            positions=[],
-                            color="#ff3300",
-                            weight=6
-                        ),
-
-                        # ADD THIS
-
+                        dl.LayerGroup(id='map-layers')
                     ]
                 )
                     ]),
@@ -469,7 +463,7 @@ app.layout = html.Div([
     dcc.Download(id='download-data'),
     dcc.Interval(
         id="plane-anim",
-        interval=300,
+        interval=900,
         n_intervals=0
 
     ),
@@ -612,7 +606,7 @@ def find_route(n_clicks, src, dst, mode):
                 icon={
                     'iconUrl': f'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-{color}.png',
                     'shadowUrl': 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
-                    'iconSize': [25, 41],
+                    'iconSize': [20,32],
                     'iconAnchor': [12, 41]
                 }
             )
@@ -629,29 +623,16 @@ def find_route(n_clicks, src, dst, mode):
             "className": "plane-icon"
         }
     )
-    glow1 = dl.Polyline(
-        positions=coords,
-        color="#ff6b6b",
-        weight=14,
-        opacity=0.15
-    )
 
-    glow2 = dl.Polyline(
-        positions=coords,
-        color="#ff6b6b",
-        weight=8,
-        opacity=0.35
-    )
 
     route_line = dl.Polyline(
         positions=coords,
         color="#3bffef",
-        weight=5,
+        weight=3,
         opacity=0.9
     )
   
-    map_layers = [glow1, glow2, route_line] + markers + [plane]
-    
+    map_layers = [route_line] + markers + [plane]
     # Create analysis figure
     analysis_fig = create_route_analysis(GRAPH, route_result.path)
     
@@ -1403,8 +1384,7 @@ def animate_plane(n, route_data):
     if len(coords) < 2:
         return coords[0], 1
 
-    steps_per_segment = 40
-
+    steps_per_segment = 15
     total_steps = (len(coords) - 1) * steps_per_segment
     step = n % total_steps
 
