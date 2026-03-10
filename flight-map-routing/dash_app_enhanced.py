@@ -219,7 +219,7 @@ app.layout = html.Div([
                             className="btn-primary", n_clicks=0,
                             style={'marginTop': '20px'}),
 
-            ], className="card", style={'width':'22%'}),
+            ], className="card layout-panel layout-left"),
 
 
             # MAP
@@ -284,7 +284,7 @@ app.layout = html.Div([
                         children=[dcc.Graph(id='performance-metrics', style={'height':'520px'})])
 
                 ])
-            ], style={'width':'56%'}),
+            ], className="layout-panel layout-center"),
 
 
             # ROUTE SUMMARY
@@ -294,14 +294,10 @@ app.layout = html.Div([
                     html.P("Select airports and click 'Find Route'",
                         style={'color':'#8f9bb3','textAlign':'center'})
                 ])
-            ], className="card", style={'width':'22%'}),
+            ], className="card layout-panel layout-right"),
 
         ],
-        style={
-            'display':'flex',
-            'gap':'20px',
-            'alignItems':'flex-start'
-        }),
+        className="main-responsive-layout"),
                 
             ])
         ]),

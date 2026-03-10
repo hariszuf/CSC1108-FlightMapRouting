@@ -701,6 +701,66 @@ label {
     transform: rotate(45deg);
 }
 
+.main-responsive-layout {
+    display: flex;
+    gap: 20px;
+    align-items: stretch;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.layout-panel {
+    min-width: 280px;
+    box-sizing: border-box;
+}
+
+.layout-left,
+.layout-right {
+    flex: 1 1 300px;
+    max-width: 360px;
+}
+
+.layout-center {
+    flex: 2 1 600px;
+    min-width: 420px;
+}
+
+/* Tablet */
+@media (max-width: 1100px) {
+    .layout-left,
+    .layout-right,
+    .layout-center {
+        max-width: 100%;
+    }
+
+    .layout-left,
+    .layout-right {
+        flex: 1 1 100%;
+    }
+
+    .layout-center {
+        flex: 1 1 100%;
+        min-width: 100%;
+    }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .main-responsive-layout {
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .layout-panel {
+        width: 100%;
+        min-width: 100%;
+    }
+
+    .layout-center {
+        min-width: 100%;
+    }
+}
+
 @keyframes dashmove {
     from {
         stroke-dashoffset: 0;
