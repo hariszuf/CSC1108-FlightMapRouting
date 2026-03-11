@@ -770,3 +770,31 @@ label {
     }
 }
 
+/* ===== FIX DROPDOWN OVERLAP WITH MAP ===== */
+
+.airport-dd .Select-menu-outer {
+    position: absolute !important;
+    z-index: 999999 !important;
+    max-height: 220px !important;
+    overflow-y: auto !important;
+}
+
+/* Ensure left route panel stays above map */
+.layout-left {
+    position: relative;
+    z-index: 1000;
+}
+
+/* Prevent dropdown stretching */
+.airport-dd {
+    width: 100%;
+}
+
+/* Make dropdown scroll instead of expanding */
+.airport-dd .Select-menu {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+
+
