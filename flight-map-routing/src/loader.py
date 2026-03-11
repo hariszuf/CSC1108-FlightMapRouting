@@ -1,3 +1,4 @@
+# src/loader.py
 import json
 from .graph import FlightGraph
 from .models import Airport, Edge

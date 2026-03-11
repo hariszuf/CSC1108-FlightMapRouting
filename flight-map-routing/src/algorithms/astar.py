@@ -1,3 +1,4 @@
+# src/algorithms/astar.py
 import heapq
 from typing import Callable, Dict, List, Optional, Tuple
 from math import radians, sin, cos, sqrt, atan2
