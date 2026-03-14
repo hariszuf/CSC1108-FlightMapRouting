@@ -1,5 +1,5 @@
 import time
-from dash import html, Output, Input, State, no_update
+from dash import html, Output, Input, State, no_update, callback_context
 import dash_leaflet as dl
 import plotly.graph_objects as go
 
@@ -8,6 +8,40 @@ from utils.charts import create_route_analysis, create_performance_comparison
 
 
 def register_routing_callbacks(app, graph, flight_system):
+
+    # --- Trip type toggle (visual only) ---
+    @app.callback(
+        [Output('trip-oneway', 'className'),
+         Output('trip-roundtrip', 'className'),
+         Output('trip-multicity', 'className')],
+        [Input('trip-oneway', 'n_clicks'),
+         Input('trip-roundtrip', 'n_clicks'),
+         Input('trip-multicity', 'n_clicks')]
+    )
+    def toggle_trip_type(n1, n2, n3):
+        ctx = callback_context
+        base = "trip-type-btn"
+        active = "trip-type-btn trip-type-active"
+        if not ctx.triggered or ctx.triggered[0]['prop_id'] == '.':
+            return active, base, base
+        triggered_id = ctx.triggered[0]['prop_id'].split('.')[0]
+        return (
+            active if triggered_id == 'trip-oneway' else base,
+            active if triggered_id == 'trip-roundtrip' else base,
+            active if triggered_id == 'trip-multicity' else base,
+        )
+
+    # --- Swap airports ---
+    @app.callback(
+        [Output('src-dropdown', 'value'),
+         Output('dst-dropdown', 'value')],
+        Input('swap-airports-btn', 'n_clicks'),
+        [State('src-dropdown', 'value'),
+         State('dst-dropdown', 'value')],
+        prevent_initial_call=True
+    )
+    def swap_airports(n_clicks, src, dst):
+        return dst, src
 
     # --- Autocomplete: source dropdown ---
     @app.callback(
@@ -46,7 +80,7 @@ def register_routing_callbacks(app, graph, flight_system):
         empty_fig.update_layout(
             title="No data to display",
             annotations=[{
-                'text': 'Select airports and click Find Route',
+                'text': 'Select airports and click Search flights',
                 'xref': 'paper',
                 'yref': 'paper',
                 'showarrow': False
@@ -56,7 +90,7 @@ def register_routing_callbacks(app, graph, flight_system):
 
         if not n_clicks or not src or not dst:
             return (
-                html.P("Select airports and click 'Find Route'", style={'color': '#666'}),
+                html.P("Select airports and click 'Search flights'", style={'color': '#666'}),
                 [], empty_fig, empty_fig, None
             )
 

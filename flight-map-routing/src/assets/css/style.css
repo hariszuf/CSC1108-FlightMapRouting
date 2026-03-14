@@ -6,356 +6,504 @@
 }
 
 body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    background: #0a0f1e;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #0f172a;
     min-height: 100vh;
-    color: #e5e9f0;
+    color: #e2e8f0;
 }
 
+/* ===== APP CONTAINER ===== */
 .app-container {
     max-width: 1800px;
     margin: 0 auto;
-    padding: 24px;
+    padding: 16px 24px;
 }
 
-/* Modern Glass Header */
+/* ===== HEADER ===== */
 .header {
-    background: rgba(18, 25, 45, 0.95);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    border-radius: 24px;
-    padding: 32px;
-    margin-bottom: 40px;
-    /* Increased margin for better spacing */
-    box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
-}
-
-.header h1 {
-    font-size: 2.5em;
-    font-weight: 600;
-    background: linear-gradient(135deg, #fff 0%, #a5b4fc 50%, #c084fc 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    margin-bottom: 8px;
-    letter-spacing: -0.02em;
-}
-
-.header p {
-    color: #8f9bb3;
-    font-size: 1.1em;
-    font-weight: 300;
+    background: #1e293b;
+    border-radius: 16px;
+    padding: 16px 28px;
     margin-bottom: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
-/* Luxurious Stats Badges */
+.header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.brand-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.brand-name {
+    font-size: 1.6em;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: 0.04em;
+}
+
+.brand-center {
+    flex: 1;
+    text-align: center;
+}
+
+.brand-tagline {
+    color: #94a3b8;
+    font-size: 0.95em;
+    font-weight: 400;
+}
+
+.brand-right {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
 .stats-badge {
-    background: linear-gradient(135deg, #1e2b4a 0%, #1a243b 100%);
-    border: 1px solid rgba(165, 180, 252, 0.2);
-    color: #e5e9f0;
-    padding: 10px 20px;
-    border-radius: 30px;
-    display: inline-block;
-    margin-right: 12px;
-    font-size: 0.9em;
+    background: rgba(59, 130, 246, 0.12);
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    color: #93c5fd;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.8em;
     font-weight: 500;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    transition: all 0.3s ease;
+    white-space: nowrap;
 }
 
-.stats-badge:hover {
-    transform: translateY(-2px);
-    border-color: rgba(165, 180, 252, 0.5);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-}
-
-/* Tabs Container - Fixed spacing issue */
+/* ===== TABS ===== */
 .dash-tabs-container {
-    margin-top: 30px !important;
-    /* Added spacing after header */
-    margin-bottom: 30px !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+    margin-bottom: 16px !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
     background: transparent !important;
 }
 
 .dash-tab {
     background: transparent !important;
-    color: #8f9bb3 !important;
+    color: #94a3b8 !important;
     border: none !important;
-    padding: 15px 30px !important;
-    /* Increased padding */
+    padding: 12px 24px !important;
     font-weight: 500 !important;
-    font-size: 1.1em !important;
-    /* Slightly larger font */
-    transition: all 0.3s ease !important;
-    margin-right: 10px !important;
-    /* Space between tabs */
-    margin-top: 20px;
-    border-radius: 12px 12px 0 0 !important;
-}
-
-.dash-dropdown-value {
-
-    color: black !important;
-}
-
-#k-value {
-    color: black !important;
-    height: fit-content !important;
-}
-
-/* Add margin top to the results tabs container */
-#results-tabs {
-    margin-top: 20px !important;
+    font-size: 0.95em !important;
+    transition: color 0.2s ease !important;
+    border-radius: 8px 8px 0 0 !important;
 }
 
 .dash-tab:hover {
-    color: #ffffff !important;
-    background: rgba(165, 180, 252, 0.1) !important;
+    color: #e2e8f0 !important;
 }
 
 .dash-tab--selected {
-    color: #a5b4fc !important;
-    border-bottom: 3px solid #a5b4fc !important;
-    /* Thicker border */
-    background: linear-gradient(to top, rgba(165, 180, 252, 0.15), transparent) !important;
+    color: #3b82f6 !important;
+    border-bottom: 2px solid #3b82f6 !important;
+    background: transparent !important;
     font-weight: 600 !important;
 }
 
-/* Elegant Cards */
+/* Sub-tabs (results-tabs) */
+#results-tabs {
+    margin-top: 8px !important;
+}
+
+#results-tabs .dash-tabs-container {
+    margin-bottom: 8px !important;
+}
+
+/* ===== CARDS ===== */
 .card {
-    background: rgba(18, 25, 45, 0.9);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    border-radius: 24px;
+    background: #1e293b;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 16px;
     padding: 24px;
-    box-shadow: 0 15px 35px -10px rgba(0, 0, 0, 0.5);
-    margin-top: 20px;
-    margin-bottom: 24px;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    margin-bottom: 16px;
+    transition: border-color 0.2s ease;
+    overflow: visible;
 }
 
 .card:hover {
-    transform: translateY(-5px) scale(1.02);
-    border-color: rgba(165, 180, 252, 0.2);
-    box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.6);
+    border-color: rgba(59, 130, 246, 0.2);
 }
 
 .card-header {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    padding-bottom: 16px;
-    margin-bottom: 20px;
-    font-size: 1.3em;
+    font-size: 1.1em;
     font-weight: 600;
-    color: #ffffff;
-    /* Brighter white for headers */
-    display: flex;
-    align-items: center;
-    gap: 10px;
+    color: #f1f5f9;
+    padding-bottom: 14px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
-.card-header i {
-    color: #a5b4fc;
-    font-size: 1.2em;
-}
-
-/* Fix text visibility in cards */
 .card p,
 .card label,
 .card div {
-    color: #e5e9f0;
+    color: #e2e8f0;
 }
 
-/* Modern Metric Grid */
-.metric-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 16px;
-    margin: 20px 0;
+/* ===== TRIP TYPE SELECTOR ===== */
+.trip-type-group {
+    display: flex;
+    gap: 0;
+    margin-bottom: 20px;
+    background: #0f172a;
+    border-radius: 10px;
+    padding: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
-.metric-box {
-    background: linear-gradient(135deg, #1e2b4a 0%, #151f37 100%);
-    border-radius: 20px;
-    padding: 20px;
-    text-align: center;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    transition: all 0.3s ease;
-}
-
-.metric-box:hover {
-    border-color: #a5b4fc;
-    transform: scale(1.05);
-}
-
-.metric-label {
-    color: #a5b4fc;
-    /* Brighter color for labels */
+.trip-type-btn {
+    flex: 1;
+    padding: 8px 12px;
+    border: none;
+    background: transparent;
+    color: #94a3b8;
     font-size: 0.85em;
+    font-weight: 500;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.trip-type-btn:hover {
+    color: #e2e8f0;
+}
+
+.trip-type-active {
+    background: #3b82f6 !important;
+    color: #ffffff !important;
+}
+
+/* ===== FIELD GROUPS ===== */
+.field-label {
+    color: #94a3b8 !important;
+    font-size: 0.82em !important;
+    font-weight: 500 !important;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    margin-bottom: 8px;
-    font-weight: 500;
+    margin-bottom: 6px !important;
+    display: block;
 }
 
-.metric-value {
-    font-size: 1.8em;
-    font-weight: 700;
-    background: linear-gradient(135deg, #fff 0%, #a5b4fc 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    line-height: 1.2;
-    white-space: nowrap;
+.field-group {
+    margin-bottom: 12px;
 }
 
-/* Luxurious Buttons */
-.btn-primary {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    border: none;
-    padding: 14px 28px;
-    border-radius: 16px;
+.origin-dest-section {
+    margin-bottom: 16px;
+}
+
+.swap-container {
+    display: flex;
+    justify-content: center;
+    margin: 4px 0;
+}
+
+.swap-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(59, 130, 246, 0.15);
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    color: #3b82f6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-size: 1em;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+    transition: background 0.2s ease;
+}
+
+.swap-icon:hover {
+    background: rgba(59, 130, 246, 0.3);
+}
+
+.optimize-section {
+    margin-bottom: 16px;
+}
+
+/* ===== BUTTONS ===== */
+.btn-primary {
+    background: #3b82f6;
+    color: #ffffff !important;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-size: 0.95em;
     font-weight: 600;
     cursor: pointer;
     width: 100%;
-    transition: all 0.3s ease;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    box-shadow: 0 10px 20px -8px rgba(102, 126, 234, 0.3);
+    transition: background 0.2s ease;
+    letter-spacing: 0.01em;
 }
 
 .btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 15px 25px -8px rgba(102, 126, 234, 0.5);
+    background: #2563eb;
 }
 
 .btn-secondary {
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(5px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: #ffffff;
-    padding: 12px 24px;
-    border-radius: 14px;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: #e2e8f0 !important;
+    padding: 10px 20px;
+    border-radius: 10px;
     cursor: pointer;
-    margin: 5px;
     font-weight: 500;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
 }
 
 .btn-secondary:hover {
-    background: rgba(165, 180, 252, 0.15);
-    border-color: #a5b4fc;
-    color: #ffffff;
-    transform: translateY(-2px);
+    background: rgba(59, 130, 246, 0.1);
+    border-color: rgba(59, 130, 246, 0.3);
 }
 
 .download-btn {
-    background: linear-gradient(135deg, #059669 0%, #047857 100%);
-    color: white;
+    background: #3b82f6;
+    color: #ffffff !important;
     border: none;
-    padding: 10px 20px;
-    border-radius: 12px;
+    padding: 10px 18px;
+    border-radius: 10px;
     cursor: pointer;
-    margin: 5px;
     font-weight: 500;
-    transition: all 0.3s ease;
+    font-size: 0.9em;
+    transition: background 0.2s ease;
 }
 
 .download-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 20px -8px rgba(5, 150, 105, 0.4);
+    background: #2563eb;
 }
 
-/* Fix button text visibility */
-.btn-primary,
-.btn-secondary,
-.download-btn {
-    color: #ffffff !important;
+.export-btn-group {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
 }
 
-/* Elegant Messages */
-.success-message {
-    background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(5, 150, 105, 0.15) 100%);
-    border: 1px solid rgba(16, 185, 129, 0.3);
-    color: #10b981;
-    padding: 16px;
-    border-radius: 16px;
-    margin: 10px 0;
-    font-weight: 500;
-    backdrop-filter: blur(5px);
+/* ===== DROPDOWNS (Dash 4) ===== */
+
+/* Outer wrapper */
+.airport-dd.dash-dropdown {
+    position: relative;
+    width: 100%;
 }
 
-.info-message {
-    background: linear-gradient(135deg, rgba(96, 165, 250, 0.15) 0%, rgba(59, 130, 246, 0.15) 100%);
-    border: 1px solid rgba(96, 165, 250, 0.3);
-    color: #60a5fa;
-    padding: 16px;
-    border-radius: 16px;
-    margin: 10px 0;
-    font-weight: 500;
-    backdrop-filter: blur(5px);
+/* Trigger / control area */
+.airport-dd .dash-dropdown-trigger {
+    background: #f8fafc !important;
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 10px !important;
+    height: 44px !important;
+    min-height: 44px !important;
+    cursor: pointer !important;
+    padding: 0 12px !important;
 }
 
-.error-message {
-    background: linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, rgba(185, 28, 28, 0.15) 100%);
-    border: 1px solid rgba(239, 68, 68, 0.3);
-    color: #ef4444;
-    padding: 16px;
-    border-radius: 16px;
-    margin: 10px 0;
-    font-weight: 500;
-    backdrop-filter: blur(5px);
+/* Selected value text */
+.airport-dd .dash-dropdown-value-item {
+    color: #0f172a !important;
+    font-weight: 600 !important;
+    font-size: 0.92em !important;
+    -webkit-text-fill-color: #0f172a !important;
 }
 
+/* Placeholder text */
+.airport-dd .dash-dropdown-placeholder {
+    color: #94a3b8 !important;
+    font-weight: 400 !important;
+    font-size: 0.92em !important;
+    -webkit-text-fill-color: #94a3b8 !important;
+}
 
+/* Multi-select tag values */
+.airport-dd .dash-dropdown-value-item {
+    color: #0f172a !important;
+    -webkit-text-fill-color: #0f172a !important;
+}
 
-/* Dropdown menu styling */
-.Select-menu-outer {
-    background-color: #1e2b4a !important;
-    border: 1px solid rgba(255, 255, 255, 0.15) !important;
-    border-radius: 14px !important;
-    box-shadow: 0 20px 30px -10px black !important;
+/* Search input inside open dropdown */
+.airport-dd .dash-dropdown-search {
+    color: #f1f5f9 !important;
+    background: transparent !important;
+    border: none !important;
+    outline: none !important;
+    font-size: 0.9em !important;
+    -webkit-text-fill-color: #f1f5f9 !important;
+    width: 100% !important;
+}
+
+/* Dropdown popup */
+.airport-dd .dash-dropdown-content {
+    background: #1e293b !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 10px !important;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4) !important;
     z-index: 999999 !important;
-    /* overlay map */
-    margin-top: 6px !important;
+    margin-top: 4px !important;
 }
 
-.Select-option {
-    background-color: #1e2b4a !important;
-    color: #e5e9f0 !important;
+/* Options list */
+.airport-dd .dash-dropdown-options {
+    max-height: 200px !important;
+    overflow-y: auto !important;
 }
 
-.Select-option:hover,
-.Select-option.is-focused {
-    background: linear-gradient(135deg, #2d3b5e 0%, #1e2b4a 100%) !important;
+/* Individual option */
+.airport-dd .dash-dropdown-option {
+    background: #1e293b !important;
+    color: #f1f5f9 !important;
+    padding: 10px 14px !important;
+    font-size: 0.9em !important;
+    cursor: pointer !important;
+}
+
+.airport-dd .dash-dropdown-option:hover {
+    background: rgba(59, 130, 246, 0.2) !important;
     color: #ffffff !important;
 }
 
-/* Force dropdown above leaflet map */
-.leaflet-container,
-.leaflet-pane,
-.leaflet-control-container {
-    z-index: 0 !important;
+#k-value {
+    color: #e2e8f0 !important;
+    background: #0f172a;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    height: fit-content !important;
+    padding: 8px 12px;
 }
 
+/* Multi-select value tags */
+.airport-dd .dash-dropdown-value-count {
+    color: #64748b !important;
+    font-size: 0.85em !important;
+}
 
+/* ===== RADIO BUTTONS ===== */
+.opt-radio label {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    margin: 6px 0 !important;
+    color: #cbd5e1 !important;
+    font-size: 0.9em;
+}
 
+.opt-radio-grid {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px 16px;
+}
 
+.opt-radio-grid label {
+    margin: 4px 0 !important;
+}
+
+.opt-radio input[type="radio"] {
+    margin: 0 !important;
+}
 
 .dash-radio-item input[type="radio"] {
     margin-top: 0 !important;
 }
 
 input[type="radio"] {
-    margin-right: 8px !important;
-    accent-color: #a5b4fc !important;
+    margin-right: 6px !important;
+    accent-color: #3b82f6 !important;
 }
 
-/* Table Styling */
+label {
+    color: #94a3b8 !important;
+    font-weight: 500 !important;
+    margin-bottom: 6px !important;
+}
+
+/* ===== METRIC GRID ===== */
+.metric-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin: 16px 0;
+}
+
+.metric-box {
+    background: #0f172a;
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.metric-box:hover {
+    border-color: rgba(59, 130, 246, 0.3);
+}
+
+.metric-label {
+    color: #64748b;
+    font-size: 0.78em;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 6px;
+    font-weight: 600;
+}
+
+.metric-value {
+    font-size: 1.5em;
+    font-weight: 700;
+    color: #f1f5f9;
+    line-height: 1.2;
+    white-space: nowrap;
+}
+
+/* ===== MESSAGES ===== */
+.success-message {
+    background: rgba(34, 197, 94, 0.1);
+    border: 1px solid rgba(34, 197, 94, 0.2);
+    color: #4ade80;
+    padding: 14px;
+    border-radius: 10px;
+    margin: 10px 0;
+    font-weight: 500;
+}
+
+.info-message {
+    background: rgba(59, 130, 246, 0.1);
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    color: #60a5fa;
+    padding: 14px;
+    border-radius: 10px;
+    margin: 10px 0;
+    font-weight: 500;
+}
+
+.error-message {
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    color: #f87171;
+    padding: 14px;
+    border-radius: 10px;
+    margin: 10px 0;
+    font-weight: 500;
+}
+
+/* ===== MAP ===== */
+.leaflet-container {
+    border-radius: 12px !important;
+    border: 1px solid rgba(255, 255, 255, 0.06) !important;
+}
+
+.leaflet-container,
+.leaflet-pane,
+.leaflet-control-container {
+    z-index: 0 !important;
+}
+
+/* ===== TABLE ===== */
 .dash-table-container {
-    border-radius: 16px !important;
+    border-radius: 10px !important;
     overflow: hidden !important;
 }
 
@@ -364,347 +512,136 @@ input[type="radio"] {
 }
 
 .dash-table table {
-    background: rgba(30, 43, 74, 0.8) !important;
+    background: #1e293b !important;
     border-collapse: separate !important;
     border-spacing: 0 !important;
 }
 
 .dash-table th {
-    background: linear-gradient(135deg, #2d3b5e 0%, #1e2b4a 100%) !important;
-    color: #ffffff !important;
+    background: #0f172a !important;
+    color: #f1f5f9 !important;
     font-weight: 600 !important;
-    padding: 15px !important;
-    border-bottom: 2px solid rgba(165, 180, 252, 0.3) !important;
+    padding: 12px 14px !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
 }
 
 .dash-table td {
-    color: #e5e9f0 !important;
-    padding: 12px 15px !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+    color: #e2e8f0 !important;
+    padding: 10px 14px !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04) !important;
 }
 
 .dash-table tr:hover td {
-    background: rgba(45, 59, 94, 0.8) !important;
-    color: #ffffff !important;
+    background: rgba(59, 130, 246, 0.08) !important;
 }
 
-/* Footer */
-.footer {
-    text-align: center;
-    padding: 30px;
-    background: rgba(18, 25, 45, 0.9);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border-radius: 24px;
-    margin-top: 40px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    color: #8f9bb3;
-}
-
-.footer p {
-    margin: 5px 0;
-}
-
-/* Feature Badge */
-.feature-badge {
-    display: inline-block;
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-size: 0.75em;
-    font-weight: 600;
-    margin-left: 8px;
-    background: linear-gradient(135deg, #059669 0%, #047857 100%);
-    color: white;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-}
-
-/* Map Container */
-.leaflet-container {
-    border-radius: 20px !important;
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
-    margin-top: 20px;
-}
-
-/* Input Fields */
+/* ===== INPUT FIELDS ===== */
 .dash-input,
 .dash-textarea {
-    padding: 12px 16px !important;
-    border-radius: 14px !important;
-    /* keep the rest of your styling here */
+    padding: 10px 14px !important;
+    border-radius: 10px !important;
+    background: #0f172a;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #e2e8f0;
 }
 
 input:focus,
 textarea:focus {
-    border-color: #a5b4fc !important;
+    border-color: #3b82f6 !important;
     outline: none !important;
-    box-shadow: 0 0 0 3px rgba(165, 180, 252, 0.2) !important;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.15) !important;
 }
 
 input::placeholder {
-    color: #8f9bb3 !important;
+    color: #64748b !important;
 }
 
-/* Labels */
-label {
-    color: #a5b4fc !important;
-    font-weight: 500 !important;
-    margin-bottom: 8px !important;
+/* ===== FOOTER ===== */
+.footer {
+    text-align: center;
+    padding: 20px;
+    background: #1e293b;
+    border-radius: 12px;
+    margin-top: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    color: #64748b;
+    font-size: 0.85em;
 }
 
-/* Loading Spinner */
-.dash-spinner {
-    border-color: #a5b4fc !important;
+.footer p {
+    margin: 4px 0;
 }
 
-/* Custom Scrollbar */
-::-webkit-scrollbar {
-    width: 10px;
-    height: 10px;
+/* ===== FEATURE BADGE ===== */
+.feature-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 16px;
+    font-size: 0.72em;
+    font-weight: 600;
+    margin-left: 8px;
+    background: rgba(59, 130, 246, 0.15);
+    color: #60a5fa;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
 }
 
-::-webkit-scrollbar-track {
-    background: #1a243b;
-}
-
-::-webkit-scrollbar-thumb {
-    background: linear-gradient(135deg, #2d3b5e 0%, #1e2b4a 100%);
-    border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(135deg, #3d4b6e 0%, #2e3b5a 100%);
-}
-
-/* Fix for Plotly graphs */
+/* ===== PLOTLY CHARTS ===== */
 .js-plotly-plot .plotly .main-svg {
     background: transparent !important;
 }
 
 .js-plotly-plot .plotly .bg {
-    fill: rgba(18, 25, 45, 0.9) !important;
+    fill: #1e293b !important;
 }
 
 .js-plotly-plot .plotly text {
-    fill: #e5e9f0 !important;
+    fill: #e2e8f0 !important;
 }
 
-/* Additional spacing for advanced features */
-.advanced-section {
-    margin-top: 20px;
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
 }
 
-/* Fix for multi-select dropdown */
-.Select-value {
-    background: linear-gradient(135deg, #2d3b5e 0%, #1e2b4a 100%) !important;
-    border: 1px solid rgba(165, 180, 252, 0.3) !important;
-    color: #ffffff !important;
+::-webkit-scrollbar-track {
+    background: #0f172a;
 }
 
-.Select-value-label {
-    color: #ffffff !important;
+::-webkit-scrollbar-thumb {
+    background: #334155;
+    border-radius: 8px;
 }
 
-.Select-value-icon {
-    color: #a5b4fc !important;
+::-webkit-scrollbar-thumb:hover {
+    background: #475569;
 }
 
-.Select-value-icon:hover {
-    color: #ef4444 !important;
-    background: transparent !important;
+/* ===== LOADING SPINNER ===== */
+.dash-spinner {
+    border-color: #3b82f6 !important;
 }
 
-
-/* Remove blank space above options */
-.airport-dd .Select-menu-outer {
-    padding-top: 0 !important;
-    z-index: 999999 !important;
-    position: absolute !important;
-}
-
-/* Keep dropdown above map */
-.leaflet-container,
-.leaflet-pane,
-.leaflet-control-container {
-    z-index: 0 !important;
-}
-
-/* ===== DROPDOWN OVERFLOW FIX ===== */
-.Select-menu-outer {
-    position: absolute !important;
-    z-index: 999999 !important;
-}
-
-.gsearch-wrap {
-    position: relative;
-    z-index: 1000;
-}
-
-/* Ensure sidebar never clips dropdown */
-.sidebar,
-.left-panel,
-.config-panel {
-    overflow: visible !important;
-}
-
-
-
-/* ===== WHITE DROPDOWN (SEARCHABLE) WITH BLUE TEXT ===== */
-
-.airport-dd .Select-control {
-    background: #ffffff !important;
-    border: 1px solid rgba(30, 58, 138, 0.35) !important;
-    border-radius: 18px !important;
-    height: 56px !important;
-    min-height: 56px !important;
-    box-shadow: none !important;
-}
-
-.airport-dd .Select-placeholder,
-.airport-dd .Select-value-label {
-    color: #1e3a8a !important;
-    font-size: 20px !important;
-    line-height: 56px !important;
-}
-
-.airport-dd .Select-input {
-    height: 56px !important;
-}
-
-.airport-dd .Select-input>input {
-    height: 56px !important;
-    line-height: 56px !important;
-    font-size: 20px !important;
-    color: #1e3a8a !important;
-    padding-left: 18px !important;
-}
-
-/* Remove the "box inside box" feel */
-.airport-dd .Select-control,
-.airport-dd .Select-input>input {
-    outline: none !important;
-    box-shadow: none !important;
-}
-
-
-
-/* Dropdown menu (suggestions) */
-.airport-dd .Select-menu-outer {
-    background: #ffffff !important;
-    border: 1px solid rgba(30, 58, 138, 0.18) !important;
-    border-radius: 16px !important;
-    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.18) !important;
-    margin-top: 8px !important;
-    z-index: 999999 !important;
-    position: absolute !important;
-}
-
-.airport-dd .Select-option {
-    background: #ffffff !important;
-    color: #1e3a8a !important;
-    padding: 12px 16px !important;
-    font-size: 16px !important;
-}
-
-.airport-dd .Select-option.is-focused,
-.airport-dd .Select-option:hover {
-    background: #f3f4f6 !important;
-}
-
-/* Keep dropdown above leaflet */
-.leaflet-container,
-.leaflet-pane,
-.leaflet-control-container {
-    z-index: 0 !important;
-}
-
-
-/* ===== FINAL FIX - FORCE DARK PURPLE SELECTED TEXT ===== */
-
-/* React-Select newer versions */
-.airport-dd .Select__single-value {
-    color: #3b0764 !important;
-    font-weight: 700 !important;
-    opacity: 1 !important;
-}
-
-/* If Dash marks it as disabled style */
-.airport-dd .Select__control--is-disabled .Select__single-value {
-    color: #3b0764 !important;
-    opacity: 1 !important;
-}
-
-/* Older React-Select fallback */
-.airport-dd .Select-value-label {
-    color: #3b0764 !important;
-    font-weight: 700 !important;
-    opacity: 1 !important;
-}
-
-/* Remove faded look */
-.airport-dd .Select__single-value,
-.airport-dd .Select__single-value span {
-    -webkit-text-fill-color: #3b0764 !important;
-}
-
-/* Keep placeholder different */
-.airport-dd .Select__placeholder {
-    color: #3b82f6 !important;
-    opacity: 1 !important;
-}
-
-
-/* ===== BROAD HAMMER: FORCE PURPLE ON EVERYTHING INSIDE CONTROL WHEN SELECTED ===== */
-
-/* Old react-select */
-.airport-dd.has-value .Select-control,
-.airport-dd.has-value .Select-control * {
-    color: #3b0764 !important;
-    opacity: 1 !important;
-    -webkit-text-fill-color: #3b0764 !important;
-    font-weight: 700 !important;
-}
-
-/* New react-select */
-.airport-dd .Select__control,
-.airport-dd .Select__control * {
-    color: #3b0764 !important;
-    -webkit-text-fill-color: #3b0764 !important;
-}
-
-/* But keep placeholder blue */
-.airport-dd .Select-placeholder,
-.airport-dd .Select__placeholder {
-    color: #3b82f6 !important;
-    -webkit-text-fill-color: #3b82f6 !important;
-    font-weight: 500 !important;
-}
-
-
-.opt-radio label {
-    display: inline-flex !important;
-    /* override your global label {display:block!important;} */
-    align-items: center !important;
-    gap: 10px !important;
-    margin: 8px 0 !important;
-}
-
-.opt-radio input[type="radio"] {
-    margin: 0 !important;
-}
-
+/* ===== ANIMATION ===== */
 .moving-route {
     stroke-dashoffset: 0;
     animation: dashmove 2s linear infinite;
 }
 
-.plane-icon img{
+@keyframes dashmove {
+    from { stroke-dashoffset: 0; }
+    to { stroke-dashoffset: -30; }
+}
+
+.plane-icon img {
     transform: rotate(45deg);
 }
 
+/* ===== RESPONSIVE LAYOUT (BASIC ROUTING) ===== */
 .main-responsive-layout {
     display: flex;
-    gap: 20px;
+    gap: 16px;
     align-items: stretch;
     flex-wrap: wrap;
     width: 100%;
@@ -718,7 +655,7 @@ label {
 .layout-left,
 .layout-right {
     flex: 1 1 300px;
-    max-width: 360px;
+    max-width: 340px;
 }
 
 .layout-center {
@@ -726,7 +663,203 @@ label {
     min-width: 420px;
 }
 
-/* Tablet */
+.layout-left {
+    position: relative;
+    z-index: 1000;
+}
+
+/* ===== ADVANCED FEATURES LAYOUT ===== */
+.adv-layout {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    padding-top: 8px;
+}
+
+.adv-col {
+    flex: 1 1 400px;
+    min-width: 340px;
+}
+
+.adv-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    color: #1e293b;
+}
+
+.adv-card:hover {
+    border-color: #93c5fd;
+}
+
+.adv-card .card-header {
+    color: #0f172a;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.adv-card p,
+.adv-card label,
+.adv-card div {
+    color: #334155;
+}
+
+.adv-card label {
+    color: #475569 !important;
+}
+
+.adv-card .opt-radio label {
+    color: #334155 !important;
+}
+
+/* Advanced features dropdowns (Dash 4) */
+.adv-card .dash-dropdown-trigger {
+    background: #f8fafc !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 10px !important;
+    height: 44px !important;
+    min-height: 44px !important;
+    cursor: pointer !important;
+}
+
+.adv-card .dash-dropdown-value-item {
+    color: #0f172a !important;
+    font-weight: 600 !important;
+    -webkit-text-fill-color: #0f172a !important;
+}
+
+.adv-card .dash-dropdown-placeholder {
+    color: #94a3b8 !important;
+    font-weight: 400 !important;
+    -webkit-text-fill-color: #94a3b8 !important;
+}
+
+.adv-card .dash-dropdown-search {
+    color: #0f172a !important;
+    -webkit-text-fill-color: #0f172a !important;
+}
+
+.adv-card .dash-dropdown-content {
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 10px !important;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1) !important;
+    z-index: 999999 !important;
+}
+
+.adv-card .dash-dropdown-option {
+    background: #ffffff !important;
+    color: #334155 !important;
+    padding: 10px 14px !important;
+    font-size: 0.9em !important;
+}
+
+.adv-card .dash-dropdown-option:hover {
+    background: #eff6ff !important;
+    color: #1e40af !important;
+}
+
+.adv-card input[type="radio"] {
+    accent-color: #3b82f6 !important;
+}
+
+.adv-card .dash-input {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    color: #0f172a;
+}
+
+.adv-card .btn-primary {
+    background: #3b82f6;
+}
+
+.adv-card .btn-primary:hover {
+    background: #2563eb;
+}
+
+.adv-card .btn-secondary {
+    background: transparent;
+    border: 1px solid #e2e8f0;
+    color: #334155 !important;
+}
+
+.adv-card .btn-secondary:hover {
+    background: #f1f5f9;
+    border-color: #93c5fd;
+}
+
+.adv-card .download-btn {
+    background: #3b82f6;
+    color: #ffffff !important;
+}
+
+.adv-card .download-btn:hover {
+    background: #2563eb;
+}
+
+.adv-card .success-message {
+    background: rgba(34, 197, 94, 0.08);
+    border-color: rgba(34, 197, 94, 0.2);
+    color: #16a34a;
+}
+
+.adv-card .info-message {
+    background: rgba(59, 130, 246, 0.08);
+    border-color: rgba(59, 130, 246, 0.2);
+    color: #2563eb;
+}
+
+.adv-card .error-message {
+    background: rgba(239, 68, 68, 0.08);
+    border-color: rgba(239, 68, 68, 0.2);
+    color: #dc2626;
+}
+
+/* Advanced tab table overrides */
+.adv-card .dash-table table {
+    background: #ffffff !important;
+}
+
+.adv-card .dash-table th {
+    background: #f8fafc !important;
+    color: #0f172a !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+}
+
+.adv-card .dash-table td {
+    color: #334155 !important;
+    border-bottom: 1px solid #f1f5f9 !important;
+}
+
+.adv-card .dash-table tr:hover td {
+    background: #eff6ff !important;
+}
+
+/* ===== DROPDOWN OVERFLOW FIX ===== */
+.gsearch-wrap {
+    position: relative;
+    z-index: 1000;
+}
+
+.sidebar,
+.left-panel,
+.config-panel {
+    overflow: visible !important;
+}
+
+.airport-dd {
+    width: 100%;
+}
+
+/* Ensure all parent containers allow dropdown overflow */
+.layout-panel,
+.layout-left,
+.layout-right,
+.field-group,
+.origin-dest-section,
+.card {
+    overflow: visible !important;
+}
+
+/* ===== TABLET ===== */
 @media (max-width: 1100px) {
     .layout-left,
     .layout-right,
@@ -743,13 +876,22 @@ label {
         flex: 1 1 100%;
         min-width: 100%;
     }
+
+    .header-inner {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .brand-right {
+        justify-content: center;
+    }
 }
 
-/* Mobile */
+/* ===== MOBILE ===== */
 @media (max-width: 768px) {
     .main-responsive-layout {
         flex-direction: column;
-        gap: 16px;
+        gap: 12px;
     }
 
     .layout-panel {
@@ -760,42 +902,12 @@ label {
     .layout-center {
         min-width: 100%;
     }
-}
 
-@keyframes dashmove {
-    from {
-        stroke-dashoffset: 0;
+    .adv-layout {
+        flex-direction: column;
     }
-    to {
-        stroke-dashoffset: -30;
+
+    .adv-col {
+        min-width: 100%;
     }
 }
-
-/* ===== FIX DROPDOWN OVERLAP WITH MAP ===== */
-
-.airport-dd .Select-menu-outer {
-    position: absolute !important;
-    z-index: 999999 !important;
-    max-height: 220px !important;
-    overflow-y: auto !important;
-}
-
-/* Ensure left route panel stays above map */
-.layout-left {
-    position: relative;
-    z-index: 1000;
-}
-
-/* Prevent dropdown stretching */
-.airport-dd {
-    width: 100%;
-}
-
-/* Make dropdown scroll instead of expanding */
-.airport-dd .Select-menu {
-    max-height: 200px;
-    overflow-y: auto;
-}
-
-
-

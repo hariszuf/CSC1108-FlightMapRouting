@@ -2,42 +2,52 @@ from dash import html, dcc
 
 
 def create_advanced_features_tab(graph, get_airport_options, yen_available, cache_available):
-    return dcc.Tab(label='🔧 Advanced Features', value='advanced', children=[
+    return dcc.Tab(label='Advanced Features', value='advanced', children=[
         html.Div([
             # Left Column
             html.Div([
                 # Multi-City Planning
                 html.Div([
-                    html.Div("🗺️ Multi-City Trip Planner", className="card-header"),
+                    html.Div("Multi-City Trip Planner", className="card-header"),
                     html.Div([
                         dcc.Dropdown(
                             id='multi-city-selector',
                             options=get_airport_options(graph),
-                            placeholder="Select cities to visit.",
+                            placeholder="Select cities to visit",
                             multi=True,
-                            value=['SIN', 'HND', 'LHR'] if all(c in graph.airports for c in ['SIN', 'HND', 'LHR']) else [],
+                            value=['SIN', 'HND', 'LHR'] if all(
+                                c in graph.airports for c in ['SIN', 'HND', 'LHR']) else [],
                             searchable=True
                         ),
                         html.Div([
                             dcc.RadioItems(
                                 id='tsp-method',
                                 options=[
-                                    {'label': ' Auto (DP for ≤8 cities)', 'value': 'auto'},
-                                    {'label': ' Heuristic (Nearest Neighbor)', 'value': 'heuristic'},
+                                    {'label': 'Auto (DP for ≤8 cities)',
+                                     'value': 'auto'},
+                                    {'label': 'Heuristic (Nearest Neighbor)',
+                                     'value': 'heuristic'},
                                 ],
                                 value='auto',
-                                labelStyle={'display': 'inline-block', 'marginRight': '20px'}
+                                className="opt-radio",
+                                labelStyle={'display': 'inline-block',
+                                            'marginRight': '20px'}
                             ),
-                        ], style={'marginTop': '10px'}),
-                        html.Button("📋 Plan Optimal Route", id='plan-multi-city-btn',
-                                    className="btn-secondary", n_clicks=0),
-                        html.Div(id='multi-city-results', style={'marginTop': '15px'})
+                        ], style={'marginTop': '12px'}),
+                        html.Button("Plan Optimal Route",
+                                    id='plan-multi-city-btn',
+                                    className="btn-primary", n_clicks=0,
+                                    style={'marginTop': '12px'}),
+                        html.Div(id='multi-city-results',
+                                 style={'marginTop': '15px'})
                     ])
-                ], className="card"),
+                ], className="card adv-card"),
 
                 # K-Shortest Paths
                 html.Div([
-                    html.Div(f"🔄 K-Shortest Paths {'' if yen_available else '(Not Available)'}", className="card-header"),
+                    html.Div(
+                        f"K-Shortest Paths {'' if yen_available else '(Not Available)'}",
+                        className="card-header"),
                     html.Div([
                         dcc.Dropdown(
                             id='ksp-from',
@@ -64,23 +74,28 @@ def create_advanced_features_tab(graph, get_airport_options, yen_available, cach
                             dcc.RadioItems(
                                 id='k-mode',
                                 options=[
-                                    {'label': ' Distance', 'value': 'distance'},
-                                    {'label': ' Time', 'value': 'time'},
-                                    {'label': ' Price', 'value': 'price'},
+                                    {'label': 'Distance', 'value': 'distance'},
+                                    {'label': 'Time', 'value': 'time'},
+                                    {'label': 'Price', 'value': 'price'},
                                 ],
                                 value='distance',
-                                inline=True
+                                inline=True,
+                                className="opt-radio"
                             ),
-                        ], style={'marginTop': '10px', 'display': 'flex', 'alignItems': 'center'}),
-                        html.Button("🔍 Find K Paths", id='find-k-paths-btn',
-                                    className="btn-secondary", n_clicks=0, disabled=not yen_available),
+                        ], style={'marginTop': '10px', 'display': 'flex',
+                                  'alignItems': 'center'}),
+                        html.Button("Find K Paths", id='find-k-paths-btn',
+                                    className="btn-primary",
+                                    n_clicks=0,
+                                    disabled=not yen_available,
+                                    style={'marginTop': '12px'}),
                         html.Div(id='k-paths-results')
                     ])
-                ], className="card"),
+                ], className="card adv-card"),
 
                 # Algorithm Comparison
                 html.Div([
-                    html.Div("⚡ Algorithm Comparison", className="card-header"),
+                    html.Div("Algorithm Comparison", className="card-header"),
                     html.Div([
                         dcc.Dropdown(
                             id='compare-from',
@@ -96,33 +111,37 @@ def create_advanced_features_tab(graph, get_airport_options, yen_available, cach
                             searchable=True,
                             clearable=True
                         ),
-                        html.Button("📊 Compare All Algorithms", id='compare-algos-btn',
-                                    className="btn-secondary", n_clicks=0),
+                        html.Button("Compare All Algorithms",
+                                    id='compare-algos-btn',
+                                    className="btn-primary", n_clicks=0,
+                                    style={'marginTop': '12px'}),
                         html.Div(id='comparison-results')
                     ])
-                ], className="card"),
+                ], className="card adv-card"),
 
-            ], style={'width': '48%', 'display': 'inline-block', 'marginRight': '2%'}),
+            ], className="adv-col"),
 
             # Right Column
             html.Div([
                 # Export Options
                 html.Div([
-                    html.Div("📤 Export & Share", className="card-header"),
+                    html.Div("Export & Share", className="card-header"),
                     html.Div([
-                        html.Button("📄 Export as JSON", id='export-json-btn',
-                                    className="download-btn", n_clicks=0),
-                        html.Button("📊 Export as CSV", id='export-csv-btn',
-                                    className="download-btn", n_clicks=0),
-                        html.Button("📝 Export as Text", id='export-text-btn',
-                                    className="download-btn", n_clicks=0),
+                        html.Div([
+                            html.Button("Export JSON", id='export-json-btn',
+                                        className="download-btn", n_clicks=0),
+                            html.Button("Export CSV", id='export-csv-btn',
+                                        className="download-btn", n_clicks=0),
+                            html.Button("Export Text", id='export-text-btn',
+                                        className="download-btn", n_clicks=0),
+                        ], className="export-btn-group"),
                         html.Div(id='export-link', style={'marginTop': '15px'})
                     ])
-                ], className="card"),
+                ], className="card adv-card"),
 
                 # Route Explorer
                 html.Div([
-                    html.Div("🔄 Route Explorer", className="card-header"),
+                    html.Div("Route Explorer", className="card-header"),
                     html.Div([
                         dcc.Dropdown(
                             id='explorer-from',
@@ -138,23 +157,28 @@ def create_advanced_features_tab(graph, get_airport_options, yen_available, cach
                             searchable=True,
                             clearable=True
                         ),
-                        html.Button("🔍 Explore Alternatives", id='explore-routes-btn',
-                                    className="btn-secondary", n_clicks=0),
+                        html.Button("Explore Alternatives",
+                                    id='explore-routes-btn',
+                                    className="btn-primary", n_clicks=0,
+                                    style={'marginTop': '12px'}),
                         html.Div(id='explore-results')
                     ])
-                ], className="card"),
+                ], className="card adv-card"),
 
                 # Cache Status
                 html.Div([
-                    html.Div("💾 Cache Status", className="card-header"),
+                    html.Div("Cache Status", className="card-header"),
                     html.Div(id='cache-status', children=[
-                        html.P(f"Cache Manager: {'✅ Active' if cache_available else '❌ Not Available'}",
-                               style={'color': '#e5e9f0'})
+                        html.P(
+                            f"Cache Manager: {'Active' if cache_available else 'Not Available'}",
+                            style={'color': '#64748b'})
                     ]),
-                    html.Button("🗑️ Clear Cache", id='clear-cache-btn',
-                                className="btn-secondary", n_clicks=0, disabled=not cache_available),
-                ], className="card"),
+                    html.Button("Clear Cache", id='clear-cache-btn',
+                                className="btn-secondary", n_clicks=0,
+                                disabled=not cache_available,
+                                style={'marginTop': '12px'}),
+                ], className="card adv-card"),
 
-            ], style={'width': '48%', 'display': 'inline-block', 'verticalAlign': 'top'}),
-        ]),
+            ], className="adv-col"),
+        ], className="adv-layout"),
     ])
