@@ -101,28 +101,22 @@ app.layout = html.Div([
     # Header
     html.Div([
         html.Div([
-            html.I(className="fas fa-globe-americas",
-                   style={'fontSize': '3em', 'color': '#a5b4fc', 'marginRight': '20px'})
-        ], style={'display': 'inline-block', 'verticalAlign': 'middle'}),
-        html.Div([
-            html.H1("FlightRoute Pro"),
-            html.P("Advanced Flight Network Intelligence",
-                   style={'fontSize': '1.2em', 'color': '#8f9bb3', 'fontWeight': '300'}),
-        ], style={'display': 'inline-block', 'verticalAlign': 'middle'}),
-        html.Div([
-            html.Span([
-                html.I(className="fas fa-plane-departure", style={'marginRight': '8px'}),
-                f"{len(GRAPH.airports):,} Airports"
-            ], className="stats-badge"),
-            html.Span([
-                html.I(className="fas fa-route", style={'marginRight': '8px'}),
-                f"{count_routes(GRAPH):,} Routes"
-            ], className="stats-badge"),
-            html.Span([
-                html.I(className="fas fa-map-marker-alt", style={'marginRight': '8px'}),
-                f"{len(set(a.country for a in GRAPH.airports.values()))} Countries"
-            ], className="stats-badge"),
-        ], style={'float': 'right', 'marginTop': '20px'})
+            html.Div([
+                html.Img(src='/assets/logo.svg', className="brand-logo"),
+                html.Span("FlightRoute Pro", className="brand-name"),
+            ], className="brand-left"),
+            html.Div([
+                html.P("find the best route across the globe", className="brand-tagline"),
+            ], className="brand-center"),
+            html.Div([
+                html.Span(f"{len(GRAPH.airports):,} airports", className="stats-badge"),
+                html.Span(f"{count_routes(GRAPH):,} routes", className="stats-badge"),
+                html.Span(
+                    f"{len(set(a.country for a in GRAPH.airports.values()))} countries",
+                    className="stats-badge"
+                ),
+            ], className="brand-right"),
+        ], className="header-inner"),
     ], className="header"),
 
     # Main Tabs
@@ -139,14 +133,14 @@ app.layout = html.Div([
 
     # Footer
     html.Div([
-        html.P("© 2025 FlightRoute Pro - Complete Flight Routing System"),
+        html.P("FlightRoute Pro - Complete Flight Routing System"),
         html.P([
             "Algorithms: BFS | Dijkstra | A*" + (" ✓" if ASTAR_AVAILABLE else "") +
             " | Bellman-Ford" + (" ✓" if BELLMAN_FORD_AVAILABLE else "") +
             " | Yen's K-Shortest" + (" ✓" if YEN_AVAILABLE else "")
         ])
     ], className="footer")
-])
+], className="app-container")
 
 # --- Register all callbacks ---
 register_routing_callbacks(app, GRAPH, flight_system)

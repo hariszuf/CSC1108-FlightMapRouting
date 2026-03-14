@@ -3,65 +3,82 @@ import dash_leaflet as dl
 
 
 def create_basic_routing_tab(graph, get_airport_options):
-    return dcc.Tab(label='🎯 Basic Routing', value='basic-routing', children=[
+    return dcc.Tab(label='Basic Routing', value='basic-routing', children=[
         html.Div([
             # Left Column - Route Configuration
             html.Div([
                 html.Div([
                     html.Div("Route Configuration", className="card-header"),
 
-                    html.Label("From:", style={'fontWeight': 'bold'}),
-                    dcc.Dropdown(
-                        id='src-dropdown',
-                        options=get_airport_options(graph),
-                        placeholder="Type to search departure...",
-                        value='SIN' if 'SIN' in graph.airports else None,
-                        searchable=True,
-                        clearable=True,
-                        className="airport-dd"
-                    ),
+                    # Trip type selector
+                    html.Div([
+                        html.Button("One way", className="trip-type-btn trip-type-active",
+                                    id='trip-oneway'),
+                        html.Button("Round trip", className="trip-type-btn",
+                                    id='trip-roundtrip'),
+                        html.Button("Multi-city", className="trip-type-btn",
+                                    id='trip-multicity'),
+                    ], className="trip-type-group"),
 
-                    html.Label("To:", style={'fontWeight': 'bold', 'marginTop': '15px'}),
-                    dcc.Dropdown(
-                        id='dst-dropdown',
-                        options=get_airport_options(graph),
-                        placeholder="Type to search arrival...",
-                        value='HND' if 'HND' in graph.airports else None,
-                        searchable=True,
-                        clearable=True,
-                        className="airport-dd"
-                    ),
+                    html.Div([
+                        html.Div([
+                            html.Label("Origin", className="field-label"),
+                            dcc.Dropdown(
+                                id='src-dropdown',
+                                options=get_airport_options(graph),
+                                placeholder="Select departure airport",
+                                value='SIN' if 'SIN' in graph.airports else None,
+                                searchable=True,
+                                clearable=True,
+                                className="airport-dd"
+                            ),
+                        ], className="field-group"),
 
-                    html.Label("Optimize for:", style={'fontWeight': 'bold', 'marginTop': '15px'}),
-                    dcc.RadioItems(
-                        id='optimization-mode',
-                        options=[
-                            {'label': '🛬 Least Connections (BFS)', 'value': 'hops'},
-                            {'label': '📏 Shortest Distance', 'value': 'distance'},
-                            {'label': '⏱️ Fastest Time', 'value': 'time'},
-                            {'label': '💰 Cheapest Price', 'value': 'price'},
-                        ],
-                        value='distance',
-                        labelStyle={
-                            'display': 'flex',
-                            'alignItems': 'center',
-                            'gap': '10px',
-                            'marginBottom': '12px'
-                        }
-                    ),
+                        html.Div([
+                            html.Button("⇅", id='swap-airports-btn',
+                                        className="swap-icon", n_clicks=0),
+                        ], className="swap-container"),
 
-                    html.Button("🔍 Find Route", id='find-route-btn',
-                                className="btn-primary", n_clicks=0,
-                                style={'marginTop': '20px'}),
+                        html.Div([
+                            html.Label("Destination", className="field-label"),
+                            dcc.Dropdown(
+                                id='dst-dropdown',
+                                options=get_airport_options(graph),
+                                placeholder="Select arrival airport",
+                                value='HND' if 'HND' in graph.airports else None,
+                                searchable=True,
+                                clearable=True,
+                                className="airport-dd"
+                            ),
+                        ], className="field-group"),
+                    ], className="origin-dest-section"),
 
-                ], className="card layout-panel layout-left"),
-            ]),
+                    html.Div([
+                        html.Label("Optimize for", className="field-label"),
+                        dcc.RadioItems(
+                            id='optimization-mode',
+                            options=[
+                                {'label': 'Least hops', 'value': 'hops'},
+                                {'label': 'Shortest distance', 'value': 'distance'},
+                                {'label': 'Fastest time', 'value': 'time'},
+                                {'label': 'Cheapest price', 'value': 'price'},
+                            ],
+                            value='distance',
+                            className="opt-radio opt-radio-grid",
+                        ),
+                    ], className="optimize-section"),
+
+                    html.Button("Search flights", id='find-route-btn',
+                                className="btn-primary", n_clicks=0),
+
+                ], className="card"),
+            ], className="layout-panel layout-left"),
 
             # Center Column - Map & Charts
             html.Div([
                 dcc.Tabs(id='results-tabs', value='map-tab', children=[
 
-                    dcc.Tab(label='🗺️ Route Map', value='map-tab', children=[
+                    dcc.Tab(label='Route Map', value='map-tab', children=[
                         dl.Map(
                             id='flight-map',
                             center=[20, 0],
@@ -76,17 +93,26 @@ def create_basic_routing_tab(graph, get_airport_options):
                             worldCopyJump=True,
                             zoomSnap=0.25,
                             zoomDelta=0.5,
-                            style={'width': '100%', 'height': '420px', 'borderRadius': '18px'},
+                            style={'width': '100%', 'height': '420px',
+                                   'borderRadius': '12px'},
                             children=[
                                 dl.ScaleControl(position="bottomleft"),
                                 dl.LayersControl([
+                                    dl.BaseLayer(
+                                        dl.TileLayer(
+                                            url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
+                                            noWrap=True
+                                        ),
+                                        name="Dark",
+                                        checked=True
+                                    ),
                                     dl.BaseLayer(
                                         dl.TileLayer(
                                             url="https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png",
                                             noWrap=True
                                         ),
                                         name="Map",
-                                        checked=True
+                                        checked=False
                                     ),
                                     dl.BaseLayer(
                                         dl.TileLayer(
@@ -103,20 +129,23 @@ def create_basic_routing_tab(graph, get_airport_options):
                         )
                     ]),
 
-                    dcc.Tab(label='📊 Route Analysis', value='analysis-tab',
-                            children=[dcc.Graph(id='route-analysis', style={'height': '520px'})]),
+                    dcc.Tab(label='Route Analysis', value='analysis-tab',
+                            children=[dcc.Graph(id='route-analysis',
+                                                style={'height': '520px'})]),
 
-                    dcc.Tab(label='📈 Performance', value='performance-tab',
-                            children=[dcc.Graph(id='performance-metrics', style={'height': '520px'})])
+                    dcc.Tab(label='Performance', value='performance-tab',
+                            children=[dcc.Graph(id='performance-metrics',
+                                                style={'height': '520px'})])
                 ])
             ], className="layout-panel layout-center"),
 
             # Right Column - Route Summary
             html.Div([
-                html.Div("📋 Route Summary", className="card-header"),
+                html.Div("Flight Details", className="card-header"),
                 html.Div(id='route-summary', children=[
-                    html.P("Select airports and click 'Find Route'",
-                           style={'color': '#8f9bb3', 'textAlign': 'center'})
+                    html.P("Select airports and click 'Search flights'",
+                           style={'color': '#8f9bb3', 'textAlign': 'center',
+                                  'padding': '40px 20px'})
                 ])
             ], className="card layout-panel layout-right"),
 
