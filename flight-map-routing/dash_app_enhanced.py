@@ -102,6 +102,7 @@ app.layout = html.Div([
     html.Div([
         html.Div([
             html.Div([
+                html.Img(src='/assets/plane1.png', className="brand-logo"),
                 html.Span("FlightRoute Pro", className="brand-name"),
             ], className="brand-left"),
             html.Div([

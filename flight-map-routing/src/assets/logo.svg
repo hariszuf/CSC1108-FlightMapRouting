@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <!-- Circular background -->
+  <circle cx="32" cy="32" r="30" fill="#1e40af" opacity="0.15"/>
+  <circle cx="32" cy="32" r="30" stroke="#3b82f6" stroke-width="1.5" opacity="0.4"/>
+
+  <!-- Airplane body -->
+  <path d="M12 34 L44 18 C48 16 52 18 50 22 L36 38 L40 52 L34 50 L28 38 L18 42 L18 46 L14 44 L12 34Z"
+        fill="#3b82f6"/>
+
+  <!-- Wing highlight -->
+  <path d="M12 34 L44 18 C46 17 48 18 47 20 L36 38 L18 42 L12 34Z"
+        fill="#93c5fd" opacity="0.5"/>
+
+  <!-- Window dots -->
+  <circle cx="36" cy="28" r="1.5" fill="white" opacity="0.8"/>
+  <circle cx="40" cy="26" r="1.5" fill="white" opacity="0.6"/>
+</svg>
