@@ -259,23 +259,33 @@ class MultiCityPlanner:
         
         def bound(current_idx: int, visited: Set[int], current_dist: float) -> float:
             """Calculate lower bound for remaining path"""
-            # Simple bound: minimum spanning tree of unvisited nodes
             unvisited = [i for i in range(n) if i not in visited]
             
             if not unvisited:
                 return current_dist
             
-            # Minimum distance from current to any unvisited
+            # Min edge from current node into the unvisited subgraph
             min_out = min(dist_matrix[current_idx][j] for j in unvisited)
-            
-            # For each unvisited, minimum connection
-            remaining_sum = 0
-            for i in unvisited:
-                # Minimum edge from this unvisited node
-                min_edge = min(dist_matrix[i][j] for j in range(n) if j != i)
-                remaining_sum += min_edge
-            
-            return current_dist + min_out + remaining_sum / 2  # Each edge counted twice
+
+            # Prim's MST over the unvisited subgraph
+            in_mst = {unvisited[0]}
+            mst_cost = 0.0
+
+            # min_reachable[v] = cheapest edge cost from any in_mst node to v
+            min_reachable = {v: dist_matrix[unvisited[0]][v] for v in unvisited[1:]}
+
+            while len(in_mst) < len(unvisited):
+                # Pick the cheapest node to add
+                next_node = min(min_reachable, key=min_reachable.get)
+                mst_cost += min_reachable.pop(next_node)
+                in_mst.add(next_node)
+
+                # Update cheapest reachable costs from newly added node
+                for v in min_reachable:
+                    if dist_matrix[next_node][v] < min_reachable[v]:
+                        min_reachable[v] = dist_matrix[next_node][v]
+
+            return current_dist + min_out + mst_cost
         
         def branch(visited: Set[int], current_route: List[int], current_dist: float):
             nonlocal best_route, best_distance
