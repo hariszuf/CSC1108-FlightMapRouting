@@ -1,3 +1,4 @@
+import math
 import time
 from dash import html, Output, Input, State, no_update, callback_context
 import dash_leaflet as dl
@@ -5,6 +6,31 @@ import plotly.graph_objects as go
 
 from utils.helpers import path_to_coords, get_airport_options, format_duration
 from utils.charts import create_route_analysis, create_performance_comparison
+
+
+def make_curved_path(coords, arc_height=8, points_per_segment=30):
+    if len(coords) < 2:
+        return coords
+
+    curved = []
+
+    for i in range(len(coords) - 1):
+        lat1, lon1 = coords[i]
+        lat2, lon2 = coords[i + 1]
+
+        for j in range(points_per_segment):
+            t = j / points_per_segment
+
+            lat = lat1 + (lat2 - lat1) * t
+            lon = lon1 + (lon2 - lon1) * t
+
+            curve_offset = math.sin(t * math.pi) * arc_height
+            lat += curve_offset
+
+            curved.append([lat, lon])
+
+    curved.append(coords[-1])
+    return curved
 
 
 def register_routing_callbacks(app, graph, flight_system):
@@ -152,27 +178,54 @@ def register_routing_callbacks(app, graph, flight_system):
         ])
 
         coords = path_to_coords(graph, route_result.path)
+        curved_coords = make_curved_path(coords)
         markers = []
 
         for i, code in enumerate(route_result.path):
             airport = graph.airports[code]
-            color = 'green' if i == 0 else 'red' if i == len(route_result.path) - 1 else 'blue'
+
+            if i == 0:
+                color = "#22c55e"
+                radius = 10
+            elif i == len(route_result.path) - 1:
+                color = "#ef4444"
+                radius = 10
+            else:
+                color = "#60a5fa"
+                radius = 7
+
             markers.append(
-                dl.Marker(
-                    position=(airport.lat, airport.lon),
-                    children=[dl.Tooltip(f"{code} - {airport.city}")],
-                    icon={
-                        'iconUrl': f'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-{color}.png',
-                        'shadowUrl': 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
-                        'iconSize': [20, 32],
-                        'iconAnchor': [12, 41]
-                    }
+                dl.CircleMarker(
+                    center=(airport.lat, airport.lon),
+                    radius=radius,
+                    color=color,
+                    fill=True,
+                    fillColor=color,
+                    fillOpacity=0.9,
+                    weight=2,
+                    children=[
+                        dl.Tooltip(f"{code} - {airport.city}")
+                    ]
                 )
             )
 
+        glow_line = dl.Polyline(
+            positions=curved_coords,
+            color="#3b82f6",
+            weight=10,
+            opacity=0.18
+        )
+
+        route_line = dl.Polyline(
+            positions=curved_coords,
+            color="#67e8f9",
+            weight=4,
+            opacity=0.95
+        )
+
         plane = dl.Marker(
             id="plane-marker",
-            position=coords[0],
+            position=curved_coords[0],
             icon={
                 "iconUrl": "https://cdn-icons-png.flaticon.com/512/7893/7893979.png",
                 "iconSize": [40, 40],
@@ -181,16 +234,9 @@ def register_routing_callbacks(app, graph, flight_system):
             }
         )
 
-        route_line = dl.Polyline(
-            positions=coords,
-            color="#3bffef",
-            weight=3,
-            opacity=0.9
-        )
-
-        map_layers = [route_line] + markers + [plane]
+        map_layers = [glow_line, route_line] + markers + [plane]
         analysis_fig = create_route_analysis(graph, route_result.path)
         performance_fig = create_performance_comparison(graph, src, dst, mode)
 
-        route_data["coords"] = coords
+        route_data["coords"] = curved_coords
         return summary, map_layers, analysis_fig, performance_fig, route_data
