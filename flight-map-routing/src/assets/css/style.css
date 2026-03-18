@@ -121,6 +121,43 @@ body {
     margin-bottom: 8px !important;
 }
 
+/* Flight detail tabs */
+#flight-details-tabs {
+    margin-top: 0px !important;
+}
+
+#flight-details-tabs .dash-tabs-container {
+    margin-bottom: 0px !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
+    background: transparent !important;
+}
+
+#flight-details-tabs .dash-tab {
+    padding: 8px 12px !important;
+    font-size: 0.85em !important;
+    background: #0f172a !important;
+    color: #94a3b8 !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-bottom: none !important;
+    border-radius: 8px 8px 0 0 !important;
+    margin-right: 6px !important;
+}
+
+#flight-details-tabs .dash-tab--selected {
+    border-bottom: 2px solid #22c55e !important;
+    background: rgba(34, 197, 94, 0.12) !important;
+    color: #e2e8f0 !important;
+    border-color: rgba(34, 197, 94, 0.3) !important;
+}
+
+.flight-detail-tab {
+    padding: 16px 0px !important;
+}
+
+.flight-detail-tab > div {
+    padding: 0px !important;
+}
+
 /* ===== CARDS ===== */
 .card {
     background: #1e293b;

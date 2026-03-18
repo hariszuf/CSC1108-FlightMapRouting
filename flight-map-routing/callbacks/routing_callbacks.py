@@ -1,6 +1,6 @@
 import math
 import time
-from dash import html, Output, Input, State, no_update, callback_context
+from dash import html, dcc, Output, Input, State, no_update, callback_context
 import dash_leaflet as dl
 import plotly.graph_objects as go
 
@@ -176,89 +176,146 @@ def register_routing_callbacks(app, graph, flight_system):
                 [], empty_fig, empty_fig, None
             )
 
-        # Build trip summary
+        # Build trip summary with tabs for round trips
         trip_label = "Round Trip" if trip_type == 'roundtrip' else "One Way"
         total_price = outbound_route.total_price
         total_km = outbound_route.total_km
         total_minutes = outbound_route.total_minutes
         
-        outbound_summary = html.Div([
-            html.Div(f"✓ {trip_label} route found in {elapsed_time:.2f}ms", className="success-message"),
-            html.H4(f"Outbound: {outbound_route.pretty()}", style={'color': '#667eea'}),
+        # Outbound flight card content
+        outbound_content = html.Div([
+            html.H4(f"{src} → {dst}", style={'color': '#667eea', 'marginBottom': '12px', 'fontSize': '1em'}),
             html.Div([
+                html.Div(f"{outbound_route.pretty()}", style={'fontSize': '0.85em', 'color': '#94a3b8', 'marginBottom': '12px'}),
                 html.Div([
-                    html.Div("Connections", className="metric-label"),
-                    html.Div(f"{outbound_route.hops}", className="metric-value")
-                ], className="metric-box"),
-                html.Div([
-                    html.Div("Distance", className="metric-label"),
-                    html.Div(f"{outbound_route.total_km:.0f} km", className="metric-value")
-                ], className="metric-box"),
-                html.Div([
-                    html.Div("Duration", className="metric-label"),
-                    html.Div(format_duration(outbound_route.total_minutes), className="metric-value")
-                ], className="metric-box"),
-                html.Div([
-                    html.Div("Price", className="metric-label"),
-                    html.Div(f"${outbound_route.total_price:.2f}", className="metric-value")
-                ], className="metric-box"),
-            ], className="metric-grid")
+                    html.Div([
+                        html.Div("Connections", className="metric-label"),
+                        html.Div(f"{outbound_route.hops}", className="metric-value")
+                    ], className="metric-box"),
+                    html.Div([
+                        html.Div("Distance", className="metric-label"),
+                        html.Div(f"{outbound_route.total_km:.0f} km", className="metric-value")
+                    ], className="metric-box"),
+                    html.Div([
+                        html.Div("Duration", className="metric-label"),
+                        html.Div(format_duration(outbound_route.total_minutes), className="metric-value")
+                    ], className="metric-box"),
+                    html.Div([
+                        html.Div("Price", className="metric-label"),
+                        html.Div(f"${outbound_route.total_price:.2f}", className="metric-value")
+                    ], className="metric-box"),
+                ], className="metric-grid")
+            ])
         ])
 
-        # Add return route summary if round trip
-        return_summary = None
+        # Build summary based on trip type
         if trip_type == 'roundtrip' and return_route:
             total_price += return_route.total_price
             total_km += return_route.total_km
             total_minutes += return_route.total_minutes
-            
-            return_summary = html.Div([
-                html.Hr(style={'margin': '15px 0', 'borderColor': '#4a5568'}),
-                html.H4(f"Return: {return_route.pretty()}", style={'color': '#667eea'}),
+
+            # Return flight card content
+            return_content = html.Div([
+                html.H4(f"{dst} → {src}", style={'color': '#667eea', 'marginBottom': '12px', 'fontSize': '1em'}),
+                html.Div([
+                    html.Div(f"{return_route.pretty()}", style={'fontSize': '0.85em', 'color': '#94a3b8', 'marginBottom': '12px'}),
+                    html.Div([
+                        html.Div([
+                            html.Div("Connections", className="metric-label"),
+                            html.Div(f"{return_route.hops}", className="metric-value")
+                        ], className="metric-box"),
+                        html.Div([
+                            html.Div("Distance", className="metric-label"),
+                            html.Div(f"{return_route.total_km:.0f} km", className="metric-value")
+                        ], className="metric-box"),
+                        html.Div([
+                            html.Div("Duration", className="metric-label"),
+                            html.Div(format_duration(return_route.total_minutes), className="metric-value")
+                        ], className="metric-box"),
+                        html.Div([
+                            html.Div("Price", className="metric-label"),
+                            html.Div(f"${return_route.total_price:.2f}", className="metric-value")
+                        ], className="metric-box"),
+                    ], className="metric-grid")
+                ])
+            ])
+
+            # Total summary card content
+            total_content = html.Div([
+                html.H4("Trip Summary", style={'color': '#22c55e', 'marginBottom': '12px', 'fontSize': '1em'}),
+                html.Div([
+                    html.Div([
+                        html.Div("Total Connections", className="metric-label"),
+                        html.Div(f"{outbound_route.hops + return_route.hops}", className="metric-value")
+                    ], className="metric-box"),
+                    html.Div([
+                        html.Div("Total Distance", className="metric-label"),
+                        html.Div(f"{total_km:.0f} km", className="metric-value")
+                    ], className="metric-box"),
+                    html.Div([
+                        html.Div("Total Duration", className="metric-label"),
+                        html.Div(format_duration(total_minutes), className="metric-value")
+                    ], className="metric-box"),
+                    html.Div([
+                        html.Div("Total Price", className="metric-label"),
+                        html.Div(f"${total_price:.2f}", className="metric-value", 
+                                style={'color': '#22c55e', 'fontWeight': 'bold'})
+                    ], className="metric-box"),
+                ], className="metric-grid")
+            ])
+
+            # Use tabbed interface for round trip
+            tab_style = {
+                'backgroundColor': '#0f172a',
+                'color': '#94a3b8',
+                'border': '1px solid rgba(255, 255, 255, 0.08)',
+                'borderBottom': 'none',
+                'padding': '8px 12px',
+                'fontSize': '0.85em'
+            }
+            tab_selected_style = {
+                'backgroundColor': 'rgba(59, 130, 246, 0.18)',
+                'color': '#e2e8f0',
+                'border': '1px solid rgba(59, 130, 246, 0.35)',
+                'borderBottom': '2px solid #3b82f6',
+                'padding': '8px 12px',
+                'fontSize': '0.85em',
+                'fontWeight': '600'
+            }
+
+            summary = html.Div([
+                html.Div(f"✓ {trip_label} route found in {elapsed_time:.2f}ms", className="success-message", style={'marginBottom': '12px'}),
+                dcc.Tabs(id='flight-details-tabs', value='outbound-tab', children=[
+                    dcc.Tab(label='Outbound', value='outbound-tab', children=[outbound_content], className='flight-detail-tab', style=tab_style, selected_style=tab_selected_style),
+                    dcc.Tab(label='Return', value='return-tab', children=[return_content], className='flight-detail-tab', style=tab_style, selected_style=tab_selected_style),
+                    dcc.Tab(label='Total', value='total-tab', children=[total_content], className='flight-detail-tab', style=tab_style, selected_style=tab_selected_style),
+                ], style={'marginTop': '0px'})
+            ])
+        else:
+            # For one-way trips, show without tabs
+            summary = html.Div([
+                html.Div(f"✓ {trip_label} route found in {elapsed_time:.2f}ms", className="success-message"),
+                html.H4(f"{src} → {dst}", style={'color': '#667eea', 'marginTop': '12px', 'marginBottom': '12px', 'fontSize': '1.1em'}),
+                html.Div(f"{outbound_route.pretty()}", style={'fontSize': '0.85em', 'color': '#94a3b8', 'marginBottom': '12px'}),
                 html.Div([
                     html.Div([
                         html.Div("Connections", className="metric-label"),
-                        html.Div(f"{return_route.hops}", className="metric-value")
+                        html.Div(f"{outbound_route.hops}", className="metric-value")
                     ], className="metric-box"),
                     html.Div([
                         html.Div("Distance", className="metric-label"),
-                        html.Div(f"{return_route.total_km:.0f} km", className="metric-value")
+                        html.Div(f"{outbound_route.total_km:.0f} km", className="metric-value")
                     ], className="metric-box"),
                     html.Div([
                         html.Div("Duration", className="metric-label"),
-                        html.Div(format_duration(return_route.total_minutes), className="metric-value")
+                        html.Div(format_duration(outbound_route.total_minutes), className="metric-value")
                     ], className="metric-box"),
                     html.Div([
                         html.Div("Price", className="metric-label"),
-                        html.Div(f"${return_route.total_price:.2f}", className="metric-value")
+                        html.Div(f"${outbound_route.total_price:.2f}", className="metric-value")
                     ], className="metric-box"),
-                ], className="metric-grid"),
-                html.Hr(style={'margin': '15px 0', 'borderColor': '#4a5568'}),
-                html.Div([
-                    html.Div("Total Trip Summary", style={'fontWeight': 'bold', 'fontSize': '14px', 'marginBottom': '10px'}),
-                    html.Div([
-                        html.Div([
-                            html.Div("Total Connections", className="metric-label"),
-                            html.Div(f"{outbound_route.hops + return_route.hops}", className="metric-value")
-                        ], className="metric-box"),
-                        html.Div([
-                            html.Div("Total Distance", className="metric-label"),
-                            html.Div(f"{total_km:.0f} km", className="metric-value")
-                        ], className="metric-box"),
-                        html.Div([
-                            html.Div("Total Duration", className="metric-label"),
-                            html.Div(format_duration(total_minutes), className="metric-value")
-                        ], className="metric-box"),
-                        html.Div([
-                            html.Div("Total Price", className="metric-label"),
-                            html.Div(f"${total_price:.2f}", className="metric-value", 
-                                    style={'color': '#22c55e', 'fontWeight': 'bold'})
-                        ], className="metric-box"),
-                    ], className="metric-grid")
-                ], style={'backgroundColor': '#1f2937', 'padding': '10px', 'borderRadius': '6px'})
+                ], className="metric-grid")
             ])
-
-        summary = html.Div([outbound_summary, return_summary] if return_summary else [outbound_summary])
 
         # Build map layers for both routes
         coords_outbound = path_to_coords(graph, outbound_route.path)
