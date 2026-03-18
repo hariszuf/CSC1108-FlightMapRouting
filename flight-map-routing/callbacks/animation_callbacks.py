@@ -16,12 +16,14 @@ def register_animation_callbacks(app):
         State("current-route-store", "data")
     )
     def animate_plane(n, route_data):
-        if not route_data or "coords" not in route_data:
+        if not route_data:
             return [0, 0]
 
-        coords = route_data["coords"]
-        if len(coords) < 2:
-            return coords[0]
+        # Support both old and new route data structures
+        coords = route_data.get("coords") or route_data.get("outbound_coords")
+        
+        if not coords or len(coords) < 2:
+            return [0, 0] if not coords else coords[0]
 
         steps_per_segment = 15
         total_steps = (len(coords) - 1) * steps_per_segment
@@ -41,12 +43,14 @@ def register_animation_callbacks(app):
         State("current-route-store", "data")
     )
     def animate_route(n, route_data):
-        if not route_data or "coords" not in route_data:
+        if not route_data:
             return []
 
-        coords = route_data["coords"]
-        if len(coords) < 2:
-            return coords
+        # Support both old and new route data structures
+        coords = route_data.get("coords") or route_data.get("outbound_coords")
+        
+        if not coords or len(coords) < 2:
+            return [] if not coords else coords
 
         steps_per_segment = 40
         total_steps = (len(coords) - 1) * steps_per_segment

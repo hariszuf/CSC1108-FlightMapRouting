@@ -3,6 +3,7 @@ import dash_leaflet as dl
 
 
 def create_basic_routing_tab(graph, get_airport_options):
+    
     return dcc.Tab(label='Basic Routing', value='basic-routing', children=[
         html.Div([
             # Left Column - Route Configuration
@@ -53,6 +54,8 @@ def create_basic_routing_tab(graph, get_airport_options):
                         ], className="field-group"),
                     ], className="origin-dest-section"),
 
+
+
                     html.Div([
                         html.Label("Optimize for", className="field-label"),
                         dcc.RadioItems(
@@ -72,6 +75,9 @@ def create_basic_routing_tab(graph, get_airport_options):
                                 className="btn-primary", n_clicks=0),
 
                 ], className="card"),
+                
+                # Store for trip type
+                dcc.Store(id='trip-type-store', data='oneway'),
             ], className="layout-panel layout-left"),
 
             # Center Column - Map & Charts
