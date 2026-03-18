@@ -39,31 +39,26 @@ def register_routing_callbacks(app, graph, flight_system):
     @app.callback(
         [Output('trip-oneway', 'className'),
          Output('trip-roundtrip', 'className'),
-         Output('trip-multicity', 'className'),
          Output('trip-type-store', 'data')],
         [Input('trip-oneway', 'n_clicks'),
-         Input('trip-roundtrip', 'n_clicks'),
-         Input('trip-multicity', 'n_clicks')]
+         Input('trip-roundtrip', 'n_clicks')]
     )
-    def toggle_trip_type(n1, n2, n3):
+    def toggle_trip_type(n1, n2):
         ctx = callback_context
         base = "trip-type-btn"
         active = "trip-type-btn trip-type-active"
         if not ctx.triggered or ctx.triggered[0]['prop_id'] == '.':
-            return active, base, base, 'oneway'
+            return active, base, 'oneway'
         
         triggered_id = ctx.triggered[0]['prop_id'].split('.')[0]
         
         trip_type = 'oneway'
         if triggered_id == 'trip-roundtrip':
             trip_type = 'roundtrip'
-        elif triggered_id == 'trip-multicity':
-            trip_type = 'multicity'
         
         return (
             active if triggered_id == 'trip-oneway' else base,
             active if triggered_id == 'trip-roundtrip' else base,
-            active if triggered_id == 'trip-multicity' else base,
             trip_type
         )
 

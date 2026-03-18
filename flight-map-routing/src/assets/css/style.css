@@ -306,6 +306,25 @@ body {
     border-color: rgba(59, 130, 246, 0.3);
 }
 
+#clear-cache-btn {
+    background: rgba(239, 68, 68, 0.12);
+    border: 1px solid rgba(239, 68, 68, 0.35);
+    color: #fca5a5 !important;
+}
+
+#clear-cache-btn:hover {
+    background: rgba(239, 68, 68, 0.2);
+    border-color: rgba(248, 113, 113, 0.55);
+    color: #fee2e2 !important;
+}
+
+#clear-cache-btn:disabled {
+    background: rgba(148, 163, 184, 0.12);
+    border-color: rgba(148, 163, 184, 0.25);
+    color: #64748b !important;
+    cursor: not-allowed;
+}
+
 .download-btn {
     background: #3b82f6;
     color: #ffffff !important;

@@ -2,6 +2,7 @@ import time
 import io
 import json
 from datetime import datetime
+from urllib.parse import quote
 
 import pandas as pd
 from dash import html, dcc, Output, Input, State, no_update, callback_context
@@ -243,6 +244,7 @@ def register_advanced_callbacks(app, graph, flight_system, yen_available, compar
     # --- Export Route ---
     @app.callback(
         Output('download-data', 'data'),
+        Output('export-link', 'children'),
         Input('export-json-btn', 'n_clicks'),
         Input('export-csv-btn', 'n_clicks'),
         Input('export-text-btn', 'n_clicks'),
@@ -252,72 +254,161 @@ def register_advanced_callbacks(app, graph, flight_system, yen_available, compar
     def export_route(json_clicks, csv_clicks, text_clicks, route_data):
         ctx = callback_context
         if not ctx.triggered or not route_data:
-            return no_update
+            return no_update, no_update
 
-        required_fields = ['path', 'total_km', 'total_minutes', 'total_price']
-        if not all(field in route_data for field in required_fields):
-            return no_update
+        trip_type = route_data.get('trip_type', 'oneway')
+
+        # Backward compatibility: old one-way structure
+        if 'path' in route_data:
+            outbound_path = route_data.get('path', [])
+            outbound_km = route_data.get('total_km', 0)
+            outbound_minutes = route_data.get('total_minutes', 0)
+            outbound_price = route_data.get('total_price', 0)
+            return_path = []
+            return_km = 0
+            return_minutes = 0
+            return_price = 0
+            trip_type = 'oneway'
+        else:
+            # New route data structure
+            outbound_path = route_data.get('outbound_path', [])
+            outbound_km = route_data.get('outbound_km', 0)
+            outbound_minutes = route_data.get('outbound_minutes', 0)
+            outbound_price = route_data.get('outbound_price', 0)
+            return_path = route_data.get('return_path', [])
+            return_km = route_data.get('return_km', 0)
+            return_minutes = route_data.get('return_minutes', 0)
+            return_price = route_data.get('return_price', 0)
+
+        if not outbound_path:
+            return no_update, html.Div("No route data available to export", className="info-message")
 
         button_id = ctx.triggered[0]['prop_id'].split('.')[0]
-        path_str = '_'.join(route_data['path'])
+        path_str = '_'.join(outbound_path)
         filename_base = f"route_{path_str}"
+
+        total_connections = max(len(outbound_path) - 1, 0) + max(len(return_path) - 1, 0)
+        total_km = outbound_km + return_km
+        total_minutes = outbound_minutes + return_minutes
+        total_price = outbound_price + return_price
+
+        share_route = '-'.join(outbound_path)
+        if trip_type == 'roundtrip' and return_path:
+            share_route = f"{share_route}--{'-'.join(return_path)}"
+        share_link = f"https://flightroute.pro/share/{quote(share_route)}"
+
+        export_notice = html.Div([
+            html.Div("Export completed", className="success-message", style={'padding': '10px', 'marginBottom': '8px'}),
+            html.A("Share this route", href=share_link, target="_blank", style={'color': '#60a5fa', 'textDecoration': 'underline'})
+        ])
 
         try:
             if button_id == 'export-json-btn':
                 content = json.dumps({
-                    'path': route_data['path'],
-                    'from': route_data['path'][0],
-                    'to': route_data['path'][-1],
-                    'connections': len(route_data['path']) - 1,
-                    'total_distance_km': round(route_data['total_km'], 2),
-                    'total_minutes': round(route_data['total_minutes'], 2),
-                    'total_price': round(route_data['total_price'], 2),
+                    'trip_type': trip_type,
+                    'outbound': {
+                        'path': outbound_path,
+                        'from': outbound_path[0],
+                        'to': outbound_path[-1],
+                        'connections': max(len(outbound_path) - 1, 0),
+                        'distance_km': round(outbound_km, 2),
+                        'minutes': round(outbound_minutes, 2),
+                        'price': round(outbound_price, 2)
+                    },
+                    'return': {
+                        'path': return_path,
+                        'from': return_path[0] if return_path else None,
+                        'to': return_path[-1] if return_path else None,
+                        'connections': max(len(return_path) - 1, 0),
+                        'distance_km': round(return_km, 2),
+                        'minutes': round(return_minutes, 2),
+                        'price': round(return_price, 2)
+                    } if return_path else None,
+                    'totals': {
+                        'connections': total_connections,
+                        'distance_km': round(total_km, 2),
+                        'minutes': round(total_minutes, 2),
+                        'price': round(total_price, 2)
+                    },
+                    'share_link': share_link,
                     'export_date': datetime.now().isoformat()
                 }, indent=2)
-                return dcc.send_string(content, f"{filename_base}.json")
+                return dcc.send_string(content, f"{filename_base}.json"), export_notice
 
             elif button_id == 'export-csv-btn':
                 import csv
                 output = io.StringIO()
                 writer = csv.writer(output)
                 writer.writerow(['Field', 'Value'])
-                writer.writerow(['Route', ' → '.join(route_data['path'])])
-                writer.writerow(['From', route_data['path'][0]])
-                writer.writerow(['To', route_data['path'][-1]])
-                writer.writerow(['Connections', len(route_data['path']) - 1])
-                writer.writerow(['Total Distance (km)', round(route_data['total_km'], 2)])
-                writer.writerow(['Total Time (minutes)', round(route_data['total_minutes'], 2)])
-                writer.writerow(['Total Price ($)', round(route_data['total_price'], 2)])
+                writer.writerow(['Trip Type', trip_type])
+                writer.writerow(['Outbound Route', ' → '.join(outbound_path)])
+                writer.writerow(['Outbound From', outbound_path[0]])
+                writer.writerow(['Outbound To', outbound_path[-1]])
+                writer.writerow(['Outbound Connections', max(len(outbound_path) - 1, 0)])
+                writer.writerow(['Outbound Distance (km)', round(outbound_km, 2)])
+                writer.writerow(['Outbound Time (minutes)', round(outbound_minutes, 2)])
+                writer.writerow(['Outbound Price ($)', round(outbound_price, 2)])
+                if return_path:
+                    writer.writerow(['Return Route', ' → '.join(return_path)])
+                    writer.writerow(['Return From', return_path[0]])
+                    writer.writerow(['Return To', return_path[-1]])
+                    writer.writerow(['Return Connections', max(len(return_path) - 1, 0)])
+                    writer.writerow(['Return Distance (km)', round(return_km, 2)])
+                    writer.writerow(['Return Time (minutes)', round(return_minutes, 2)])
+                    writer.writerow(['Return Price ($)', round(return_price, 2)])
+                writer.writerow(['Total Connections', total_connections])
+                writer.writerow(['Total Distance (km)', round(total_km, 2)])
+                writer.writerow(['Total Time (minutes)', round(total_minutes, 2)])
+                writer.writerow(['Total Price ($)', round(total_price, 2)])
+                writer.writerow(['Share Link', share_link])
                 writer.writerow(['Export Date', datetime.now().strftime('%Y-%m-%d %H:%M:%S')])
-                return dcc.send_string(output.getvalue(), f"{filename_base}.csv")
+                return dcc.send_string(output.getvalue(), f"{filename_base}.csv"), export_notice
 
             elif button_id == 'export-text-btn':
+                return_section = ""
+                if return_path:
+                    return_section = f"""
+
+Return Route:
+------------
+Route: {' → '.join(return_path)}
+From: {return_path[0]}
+To: {return_path[-1]}
+Number of Connections: {max(len(return_path) - 1, 0)}
+📏 Distance: {round(return_km, 2)} km
+⏱️  Time: {format_duration(return_minutes)} ({round(return_minutes, 2)} minutes)
+💰 Price: ${round(return_price, 2)}
+"""
+
                 content = f"""========================================
            FLIGHT ROUTE REPORT
 ========================================
 
 Route Details:
 -------------
-Route: {' → '.join(route_data['path'])}
-From: {route_data['path'][0]}
-To: {route_data['path'][-1]}
-Number of Connections: {len(route_data['path']) - 1}
+Trip Type: {trip_type}
+Outbound Route: {' → '.join(outbound_path)}
+From: {outbound_path[0]}
+To: {outbound_path[-1]}
+Number of Connections: {max(len(outbound_path) - 1, 0)}
+{return_section}
 
 Journey Metrics:
 ---------------
-📏 Total Distance: {round(route_data['total_km'], 2)} km
-⏱️  Total Time: {format_duration(route_data['total_minutes'])} ({round(route_data['total_minutes'], 2)} minutes)
-💰 Total Price: ${round(route_data['total_price'], 2)}
+📏 Total Distance: {round(total_km, 2)} km
+⏱️  Total Time: {format_duration(total_minutes)} ({round(total_minutes, 2)} minutes)
+💰 Total Price: ${round(total_price, 2)}
+🔗 Share Link: {share_link}
 
 Export Information:
 ------------------
 Export Date: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
 ========================================"""
-                return dcc.send_string(content, f"{filename_base}.txt")
+                return dcc.send_string(content, f"{filename_base}.txt"), export_notice
 
         except Exception as e:
             import traceback
             traceback.print_exc()
-            return no_update
+            return no_update, html.Div(f"Export failed: {str(e)}", className="error-message")
 
-        return no_update
+        return no_update, no_update

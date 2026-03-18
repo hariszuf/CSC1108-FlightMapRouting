@@ -17,8 +17,6 @@ def create_basic_routing_tab(graph, get_airport_options):
                                     id='trip-oneway'),
                         html.Button("Round trip", className="trip-type-btn",
                                     id='trip-roundtrip'),
-                        html.Button("Multi-city", className="trip-type-btn",
-                                    id='trip-multicity'),
                     ], className="trip-type-group"),
 
                     html.Div([
