@@ -247,7 +247,7 @@ def register_advanced_callbacks(app, graph, flight_system, yen_available, compar
                             ], style={
                                 'padding': '8px 12px', 'background': 'rgba(255,255,255,0.05)',
                                 'borderRadius': '6px', 'marginBottom': '5px'
-                            }) for seg in result.segments[:5]
+                            }) for seg in result.segments
                         ])
                     ]) if result.segments else html.Div(),
                 ])
