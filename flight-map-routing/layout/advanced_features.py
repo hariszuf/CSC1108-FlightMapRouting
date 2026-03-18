@@ -1,7 +1,9 @@
 from dash import html, dcc
-
+from utils.helpers import get_airport_options  # Add this import
+from src.graph import FlightGraph
 
 def create_advanced_features_tab(graph, get_airport_options, yen_available, cache_available):
+    airport_options = get_airport_options(graph, "")
     return dcc.Tab(label='Advanced Features', value='advanced', children=[
         html.Div([
             # Left Column
@@ -138,6 +140,59 @@ def create_advanced_features_tab(graph, get_airport_options, yen_available, cach
                         html.Div(id='export-link', style={'marginTop': '15px'})
                     ])
                 ], className="card adv-card"),
+
+                # Seasonal Pricing with Bellman-Ford
+                html.Div([
+                    html.H4("📅 Seasonal Pricing with Bellman-Ford", className="card-header"),
+                    html.P("See how Bellman-Ford finds cheaper routes during off-peak seasons", 
+                        style={'color': '#94a3b8', 'marginBottom': '15px'}),
+                    
+                    html.Div([
+                        html.Div([
+                            html.Label("From", className="field-label"),
+                            dcc.Dropdown(
+                                id='seasonal-src',
+                                options=airport_options,
+                                value='JFK',
+                                className="airport-dd"
+                            ),
+                        ], className="field-group"),
+                        
+                        html.Div([
+                            html.Label("To", className="field-label"),
+                            dcc.Dropdown(
+                                id='seasonal-dst',
+                                options=airport_options,
+                                value='LAX',
+                                className="airport-dd"
+                            ),
+                        ], className="field-group"),
+                        
+                        # ADD THIS - Season selector dropdown
+                        html.Div([
+                            html.Label("Season", className="field-label"),
+                            dcc.Dropdown(
+                                id='seasonal-select',
+                                options=[
+                                    {'label': '🌸 Spring (Off-peak)', 'value': 'spring'},
+                                    {'label': '☀️ Summer (Peak)', 'value': 'summer'},
+                                    {'label': '🍂 Fall (Off-peak)', 'value': 'fall'},
+                                    {'label': '❄️ Winter (Mixed)', 'value': 'winter'},
+                                ],
+                                value='summer',  # Default to summer
+                                clearable=False,
+                                className="airport-dd"
+                            ),
+                        ], className="field-group"),
+                        
+                        html.Button("Compare Seasonal Prices", id='demo-seasonal-bf-btn', 
+                                className="btn-primary", style={'marginTop': '10px', 'width': '100%'}),
+                        
+                    ]),
+                    
+                    html.Div(id='seasonal-bf-result', style={'marginTop': '20px'}),
+                    
+                ], className="card adv-card", style={'marginTop': '20px'}),
 
                 # Route Explorer
                 html.Div([

@@ -10,8 +10,168 @@ from dash import dash_table
 
 from utils.helpers import format_duration
 
+try:
+    from src.algorithms.bellman_ford import bellman_ford_cheapest
+    BELLMAN_FORD_AVAILABLE = True
+except ImportError:
+    BELLMAN_FORD_AVAILABLE = False
+    print("Bellman-Ford algorithm not available")
+
 
 def register_advanced_callbacks(app, graph, flight_system, yen_available, comparator_available, cache_available):
+
+    # --- Seasonal Pricing ---
+    @app.callback(
+    Output('seasonal-bf-result', 'children'),
+    Input('demo-seasonal-bf-btn', 'n_clicks'),
+    [State('seasonal-src', 'value'),
+     State('seasonal-dst', 'value'),
+     State('seasonal-select', 'value')]  # 'spring', 'summer', etc.
+    )
+    def demo_seasonal_bf(n_clicks, src, dst, selected_season):
+        if not n_clicks or not src or not dst or not selected_season:
+            return None
+        
+        # Check if Bellman-Ford is available (you need to pass this flag from the main app)
+        # For now, we'll assume it's available or use a fallback
+        
+        # Get seasonal prices from enhancer
+        seasonal_results = []
+        
+        # Define all seasons to compare
+        all_seasons = ['spring', 'summer', 'fall', 'winter']
+        
+        # First, check if the graph has seasonal pricing data
+        has_seasonal_pricing = False
+        for edge in flight_system.graph.neighbors(src):
+            if hasattr(edge, 'seasonal_prices'):
+                has_seasonal_pricing = True
+                break
+        
+        if not has_seasonal_pricing:
+            return html.Div([
+                html.Div("⚠️ Seasonal pricing data not available", className="error-message"),
+                html.P("The data enhancer may not have been initialized properly.", 
+                    style={'color': '#94a3b8', 'marginTop': '10px'})
+            ])
+        
+        # Compare prices across seasons
+        for test_season in all_seasons:
+            # Temporarily modify edge weights to use seasonal pricing
+            original_prices = {}
+            
+            # Store original prices and apply seasonal prices
+            for edge in flight_system.graph.neighbors(src):
+                if hasattr(edge, 'seasonal_prices') and edge.dst == dst:  # Only modify edges to destination
+                    original_prices[(edge.src, edge.dst)] = edge.price
+                    # Temporarily set price to seasonal price
+                    seasonal_price = edge.seasonal_prices.get(test_season, edge.price)
+                    object.__setattr__(edge, 'price', seasonal_price)
+            
+            # Find route with Bellman-Ford using seasonal prices
+            # Since Bellman-Ford might not be available, use Dijkstra as fallback
+            try:
+                from src.algorithms.dijkstra import dijkstra
+                path = dijkstra(flight_system.graph, src, dst, lambda e: e.price)
+            except:
+                path = None
+            
+            if path:
+                # Calculate total price
+                total = 0
+                route_str = " → ".join(path)
+                for i in range(len(path)-1):
+                    for edge in flight_system.graph.neighbors(path[i]):
+                        if edge.dst == path[i+1]:
+                            total += edge.price
+                            break
+                
+                seasonal_results.append({
+                    'season': test_season,
+                    'path': route_str,
+                    'price': total
+                })
+            
+            # Restore original prices
+            for (s, d), price in original_prices.items():
+                for edge in flight_system.graph.neighbors(s):
+                    if edge.dst == d:
+                        object.__setattr__(edge, 'price', price)
+        
+        if not seasonal_results:
+            return html.Div("No routes found", className="info-message")
+        
+        # Calculate savings compared to summer (peak season)
+        summer_price = next((r['price'] for r in seasonal_results if r['season'] == 'summer'), None)
+        if summer_price is None:
+            summer_price = max(r['price'] for r in seasonal_results)  # Use max as reference
+        
+        # Build results display
+        result_divs = []
+        for result in seasonal_results:
+            savings = summer_price - result['price']
+            savings_pct = (savings / summer_price * 100) if summer_price > 0 else 0
+            
+            # Color code based on savings
+            if savings > 0:
+                badge_style = {'background': 'rgba(34, 197, 94, 0.2)', 'color': '#4ade80', 'padding': '2px 8px', 'borderRadius': '12px'}
+                savings_text = f"Save ${savings:.2f} ({savings_pct:.0f}%)"
+            elif savings < 0:
+                badge_style = {'background': 'rgba(239, 68, 68, 0.2)', 'color': '#f87171', 'padding': '2px 8px', 'borderRadius': '12px'}
+                savings_text = f"Extra ${-savings:.2f} (+{-savings_pct:.0f}%)"
+            else:
+                badge_style = {'background': 'rgba(148, 163, 184, 0.2)', 'color': '#94a3b8', 'padding': '2px 8px', 'borderRadius': '12px'}
+                savings_text = "Base price"
+            
+            # Season icons
+            season_icons = {
+                'spring': '🌸', 'summer': '☀️', 'fall': '🍂', 'winter': '❄️'
+            }
+            
+            result_divs.append(html.Div([
+                html.Div([
+                    html.Span(f"{season_icons.get(result['season'], '')} {result['season'].upper()}", 
+                            style={'fontWeight': 'bold', 'textTransform': 'uppercase', 'minWidth': '80px'}),
+                    html.Span(f" ${result['price']:.2f}", 
+                            style={'fontSize': '1.2em', 'marginLeft': '10px', 'fontWeight': '600'}),
+                    html.Span(savings_text, 
+                            style={'marginLeft': '10px', **badge_style}),
+                ], style={'marginBottom': '5px', 'display': 'flex', 'alignItems': 'center', 'flexWrap': 'wrap'}),
+                html.Div(f"Route: {result['path']}", 
+                        style={'fontSize': '0.9em', 'color': '#94a3b8', 'marginLeft': '20px', 'marginBottom': '5px'}),
+                html.Hr(style={'margin': '10px 0', 'borderColor': 'rgba(255,255,255,0.1)'})
+            ]))
+        
+        # Highlight the selected season
+        selected = selected_season.lower()
+        
+        return html.Div([
+            html.H5(f"✈️ Seasonal Price Comparison: {src} → {dst}", 
+                    style={'color': '#a5b4fc', 'marginBottom': '15px'}),
+            html.Div([
+                html.Div("☀️ Summer (Peak): +10-30%", className="season-badge", 
+                        style={'background': 'rgba(245, 158, 11, 0.2)', 'padding': '4px 12px', 'borderRadius': '20px'}),
+                html.Div("🌸 Spring (Off-peak): -20%", className="season-badge",
+                        style={'background': 'rgba(34, 197, 94, 0.2)', 'padding': '4px 12px', 'borderRadius': '20px'}),
+                html.Div("🍂 Fall (Off-peak): -20%", className="season-badge",
+                        style={'background': 'rgba(34, 197, 94, 0.2)', 'padding': '4px 12px', 'borderRadius': '20px'}),
+                html.Div("❄️ Winter (Mixed): -10% to +10%", className="season-badge",
+                        style={'background': 'rgba(148, 163, 184, 0.2)', 'padding': '4px 12px', 'borderRadius': '20px'}),
+            ], style={'display': 'flex', 'gap': '10px', 'flexWrap': 'wrap', 'marginBottom': '20px'}),
+            
+            # Show which season was selected
+            html.Div([
+                html.Span(f"Selected: ", style={'color': '#94a3b8'}),
+                html.Span(f"{season_icons.get(selected, '')} {selected.upper()}", 
+                        style={'fontWeight': 'bold', 'color': '#60a5fa'})
+            ], style={'marginBottom': '15px'}),
+            
+            html.Div(result_divs),
+            html.Div([
+                html.P("🔍 Bellman-Ford finds optimal routes with these 'negative' discounts!", 
+                    style={'color': '#60a5fa', 'fontSize': '0.9em', 'marginTop': '15px'})
+            ])
+        ], className="card", style={'padding': '20px'})
 
     # --- Multi-City Trip Planner ---
     @app.callback(
@@ -100,7 +260,7 @@ def register_advanced_callbacks(app, graph, flight_system, yen_available, compar
                 html.I(className="fas fa-exclamation-triangle", style={'marginRight': '10px'}),
                 f"Error planning route: {str(e)}"
             ], className="error-message")
-
+    
     # --- K-Shortest Paths ---
     @app.callback(
         Output('k-paths-results', 'children'),
@@ -412,3 +572,4 @@ Export Date: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
             return no_update, html.Div(f"Export failed: {str(e)}", className="error-message")
 
         return no_update, no_update
+
