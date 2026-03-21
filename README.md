@@ -1,320 +1,265 @@
-# Flight Map Routing (CSC1108 Project)
+# Flight Map Routing — CSC1108
 
-## ✈️ A Comprehensive Flight Route Planning System
-
-An advanced flight routing system that demonstrates the practical application of Data Structures & Algorithms in solving real-world transportation network problems. The system finds optimal routes between airports based on different criteria and provides sophisticated network analysis capabilities.
+A flight route planning web app built for the CSC1108 Data Structures & Algorithms module. It finds optimal paths between airports using five graph algorithms and wraps them in an interactive Dash dashboard with live map visualisation.
 
 ---
 
-## 📑 Table of Contents
-- [Core Algorithms Implemented](#core-algorithms-implemented)
-- [Advanced Features](#advanced-features)
-- [Non-Advanced (Essential) Features](#non-advanced-essential-features)
+## Table of Contents
+
+- [Algorithms](#algorithms)
+- [Features](#features)
 - [System Architecture](#system-architecture)
-- [Setup Instructions](#setup-instructions)
-- [Usage Guide](#usage-guide)
-- [Performance Comparison](#performance-comparison)
 - [Project Structure](#project-structure)
+- [Setup](#setup)
+- [Running the App](#running-the-app)
+- [Usage Guide](#usage-guide)
+- [Algorithm Performance Reference](#algorithm-performance-reference)
 
 ---
 
-## 🧮 Core Algorithms Implemented
+## Algorithms
 
-### 1. **BFS (Breadth-First Search)**
-**Purpose:** Finds route with the fewest connections (minimum hops)
+### BFS — Breadth-First Search
+Finds the route with the fewest stopovers by exploring the graph level by level. The first time the destination is reached, it is guaranteed to be via the minimum number of edges.
 
-**How it works:** Explores the graph level by level, guaranteeing that the first time we reach the destination, we've taken the path with the fewest edges.
+- **Time:** O(V + E) &nbsp; **Space:** O(V)
+- **Best for:** Passengers who want the least connections regardless of distance or cost.
 
-**Time Complexity:** O(V + E) where V = airports, E = routes
-**Space Complexity:** O(V)
-
-**Use Case:** When passengers prioritize minimizing layovers over distance or cost.
 ---
 
-### 2. **Dijkstra's Algorithm**
-**Purpose:** Finds shortest path based on weighted criteria (distance, time, or price)
+### Dijkstra's Algorithm
+Finds the shortest weighted path using a min-priority queue. Always expands the node with the lowest cumulative cost, guaranteeing optimality when edge weights are non-negative.
 
-**How it works:** Uses a priority queue to always expand the node with the smallest cumulative cost, guaranteeing optimal paths with non-negative weights.
+Three weight modes are implemented:
+- **Shortest Distance** — kilometres
+- **Fastest Time** — flight minutes
+- **Cheapest Price** — ticket price
 
-**Time Complexity:** O((V + E) log V) with binary heap
-**Space Complexity:** O(V)
+- **Time:** O((V + E) log V) &nbsp; **Space:** O(V)
 
-**Variants Implemented:**
-- **Shortest Distance** (weight = route kilometers)
-- **Fastest Time** (weight = flight minutes)
-- **Cheapest Price** (weight = ticket price)
 ---
 
-### 3. **A* (A-Star) Search**
-**Purpose:** Optimized pathfinding using heuristics for better performance
+### A\* Search
+Extends Dijkstra with a heuristic that estimates remaining distance using the **Haversine formula** (great-circle distance). This guides the search toward the goal and reduces unnecessary exploration.
 
-**How it works:** Enhances Dijkstra by adding a heuristic function (great-circle distance) that estimates remaining distance, guiding the search toward the goal more efficiently.
+- **Time:** O(E) best case, O(b^d) worst case &nbsp; **Space:** O(V)
+- **Advantage:** Typically 30–50% faster than Dijkstra on long-haul routes.
 
-**Heuristic Used:** Haversine formula for great-circle distance between airports
-
-**Time Complexity:** O(E) in best case, O(b^d) in worst case
-**Advantage:** 30-50% faster than Dijkstra for long-haul routes
 ---
 
-### 4. **Bellman-Ford Algorithm**
-**Purpose:** Handles negative weights (promotional fares, discounts)
+### Bellman-Ford
+Handles negative edge weights (e.g. promotional fares or discounts) by relaxing all edges V−1 times. Also detects negative cycles in the pricing network.
 
-**How it works:** Relaxes all edges V-1 times, can detect negative cycles in the network.
+- **Time:** O(V × E) &nbsp; **Space:** O(V)
+- **Use case:** Routes involving discounted or dynamic pricing.
 
-**Time Complexity:** O(V × E)
-**Space Complexity:** O(V)
-
-**Advanced Feature:** Detects negative price cycles (arbitrage opportunities in flight pricing)
 ---
 
-### 5. **Yen's K-Shortest Paths Algorithm**
-**Purpose:** Finds multiple alternative routes between airports
+### Yen's K-Shortest Paths
+Returns the K best routes between two airports. Runs Dijkstra to find the primary shortest path, then generates alternative "spur" paths as deviations from it.
 
-**How it works:** Uses Dijkstra to find the first shortest path, then finds deviations (spur paths) from that path to generate alternatives.
+- **Time:** O(K × V × (E + V log V)) &nbsp; **Space:** O(K × V)
+- **Use case:** Giving travellers a ranked list of route options.
 
-**Time Complexity:** O(K × V × (E + V log V))
-**Use Case:** Providing travelers with multiple options ranked by preference
 ---
 
-## 🔧 Advanced Features
+## Features
 
-### 1. **Multi-City Trip Planner (Traveling Salesman Problem)**
-**Purpose:** Plans optimal routes visiting multiple cities
+### Advanced
 
-**Algorithm Selection Strategy:**
-- **≤ 8 cities:** Held-Karp DP (exact solution, O(n²2ⁿ))
-- **9-12 cities:** Branch & Bound (near-optimal with pruning)
-- **> 12 cities:** Heuristic approaches (Nearest Neighbor + 2-opt)
-- **Very large:** Genetic Algorithm (metaheuristic)
+| Feature | Description |
+|---|---|
+| **Multi-City Trip Planner** | Solves a Travelling Salesman Problem variant. Uses Held-Karp DP (≤8 cities), Branch & Bound (9–12 cities), Nearest Neighbour + 2-opt (>12 cities), or Genetic Algorithm for very large inputs. |
+| **Network Analytics & Hub Detection** | Calculates degree, betweenness, closeness, and eigenvector centrality to identify the most critical airports in the network. |
+| **Route Explorer** | Finds balanced routes that trade off distance, time, price, and number of connections simultaneously. |
+| **Intelligent Caching** | TTL-based query cache (1-hour default) with LRU-style eviction and automatic cleanup of stale entries. |
+| **New Route Suggestion Engine** | Identifies hub pairs with no direct connection and high estimated demand, surfacing potentially profitable new routes. |
+| **Data Enhancement** | Adds realistic flight schedules, seasonal pricing, airport facilities, and price variation to the base dataset. |
 
+### Essential
 
-### 2. **Network Analytics & Hub Detection**
-**Purpose:** Identifies critically important airports using centrality measures
+| Feature | Description |
+|---|---|
+| **Graph Representation** | Adjacency-list structure with O(1) neighbour lookup and multi-attribute weighted edges. |
+| **Multi-Format Export** | Export route results as JSON, CSV, plain text, or a shareable link. |
+| **Airport & Edge Models** | Immutable dataclasses enforcing data integrity throughout the pipeline. |
+| **Interactive Map** | Live Plotly/Dash map that renders routes, stopovers, and airport markers in real time. |
 
-**Metrics Calculated:**
-- **Degree Centrality:** Number of direct connections
-- **Betweenness Centrality:** How often an airport lies on shortest paths between others
-- **Closeness Centrality:** How quickly you can reach all other airports
-- **Eigenvector Centrality:** Connection quality (connections to well-connected airports)
 ---
 
-### 3. **Route Explorer with Balanced Scoring**
-**Purpose:** Finds routes that balance multiple factors
----
-
-### 4. **Intelligent Caching System**
-**Purpose:** Optimizes repeated queries for better performance
-
-**Features:**
-- TTL-based expiration (1 hour default)
-- LRU-like behavior with timestamp tracking
-- Automatic cleanup of expired entries
----
-
-### 5. **New Route Suggestion Engine**
-**Purpose:** Identifies potentially profitable new flight connections
-
-**Algorithm:**
-1. Identify hub airports using centrality measures
-2. Check if direct connection exists between hubs
-3. Calculate potential demand based on hub sizes
-4. Filter by distance and demand threshold
----
-
-### 6. **Data Enhancement Features**
-**Purpose:** Adds realism to the flight network
-
-- **Flight Schedules:** Multiple daily flights with realistic timing
-- **Seasonal Pricing:** Dynamic pricing based on season
-- **Airport Facilities:** Amenities and ratings
-- **Price Variations:** Realistic fluctuations
----
-
-## 📋 Non-Advanced (Essential) Features
-
-### 1. **Graph Representation**
-- **Adjacency List** implementation for memory efficiency
-- **O(1)** neighbor lookup
-- Supports weighted edges with multiple attributes
-
-### 2. **Multiple Export Formats**
-- **JSON** - Structured data for APIs
-- **CSV** - Spreadsheet compatibility
-- **Plain Text** - Human-readable reports
-- **Shareable Links** - Simple route sharing
-
-### 3. **Route Result Formatting**
-
-### 4. **Airport and Edge Models**
-Immutable dataclasses ensuring data integrity
----
-
-## 🏗️ System Architecture
+## System Architecture
 
 ```
-┌─────────────────────────────────────────────┐
-│           Dash Web Interface                 │
-├─────────────────────────────────────────────┤
-│         Unified Interface Layer               │
-├─────────────────────────────────────────────┤
-│  ┌──────────┬──────────┬──────────────────┐ │
-│  │ BFS      │ Dijkstra │ A*               │ │
-│  ├──────────┼──────────┼──────────────────┤ │
-│  │Bellman-  │ Yen's K- │ Multi-City       │ │
-│  │Ford      │ Shortest │ Planner          │ │
-│  └──────────┴──────────┴──────────────────┘ │
-├─────────────────────────────────────────────┤
-│    Cache Manager  │  Export Manager         │
-├─────────────────────────────────────────────┤
-│         Flight Graph (Adjacency List)       │
-├─────────────────────────────────────────────┤
-│         JSON Dataset Loader                  │
-└─────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────┐
+│              Dash Web Interface                   │
+│         dash_app_enhanced.py  (port 8051)        │
+├────────────────────┬─────────────────────────────┤
+│   layout/          │   callbacks/                 │
+│   basic_routing.py │   routing_callbacks.py       │
+│   advanced_        │   advanced_callbacks.py      │
+│   features.py      │   animation_callbacks.py     │
+├────────────────────┴─────────────────────────────┤
+│              utils/  (charts, helpers)            │
+├──────────────────────────────────────────────────┤
+│           src/services/unified_interface.py       │
+├───────────┬───────────┬──────────────────────────┤
+│ bfs.py    │dijkstra.py│ astar.py                 │
+│bellman_   │yen_k_     │ (src/algorithms/)         │
+│ford.py    │shortest.py│                           │
+├───────────┴───────────┴──────────────────────────┤
+│  features: multi_city_planner · network_analyzer  │
+│            cache_manager · export_manager         │
+│            enhancer · route_explorer              │
+├──────────────────────────────────────────────────┤
+│     src/graph.py  (adjacency list)               │
+│     src/loader.py (JSON parser)                  │
+│     src/models.py (Airport, Edge dataclasses)    │
+├──────────────────────────────────────────────────┤
+│          data/airline_routes.json                │
+└──────────────────────────────────────────────────┘
 ```
 
 ---
 
-## 🚀 Performance Comparison
+## Project Structure
 
-| Algorithm | Time Complexity | Space Complexity | Best Use Case |
-|-----------|----------------|------------------|---------------|
-| BFS | O(V + E) | O(V) | Minimum connections |
-| Dijkstra | O((V+E) log V) | O(V) | Weighted shortest path |
-| A* | O(E) to O(b^d) | O(V) | Long-haul with heuristic |
-| Bellman-Ford | O(V×E) | O(V) | Negative weight detection |
-| Yen's K-Shortest | O(K×V×(E+V log V)) | O(K×V) | Multiple alternatives |
-| Held-Karp DP | O(n²2ⁿ) | O(n2ⁿ) | Exact TSP (≤8 cities) |
+```
+CSC1108-FlightMapRouting/
+├── README.md
+├── requirements.txt                  # Root-level pinned deps
+└── flight-map-routing/
+    ├── dash_app_enhanced.py          # Entry point — runs on port 8051
+    ├── requirements.txt              # App-level deps (same pins)
+    ├── data/
+    │   └── airline_routes.json       # Airport and route dataset (~22 MB)
+    ├── src/
+    │   ├── graph.py                  # Adjacency-list flight graph
+    │   ├── loader.py                 # JSON dataset loader
+    │   ├── models.py                 # Airport and Edge dataclasses
+    │   ├── algorithms/
+    │   │   ├── bfs.py
+    │   │   ├── dijkstra.py
+    │   │   ├── astar.py
+    │   │   ├── bellman_ford.py
+    │   │   └── yen_k_shortest.py
+    │   ├── services/
+    │   │   ├── routing.py            # Basic routing service
+    │   │   └── unified_interface.py  # Single interface for all features
+    │   ├── features/
+    │   │   ├── multi_city_planner.py
+    │   │   ├── network_analyzer.py
+    │   │   ├── algorithm_comparator.py
+    │   │   ├── cache_manager.py
+    │   │   ├── export_manager.py
+    │   │   ├── enhancer.py
+    │   │   └── route_explorer.py
+    │   └── assets/
+    │       ├── css/style.css
+    │       ├── logo.svg
+    │       └── plane.jpg / plane1.png
+    ├── layout/
+    │   ├── basic_routing.py          # Basic routing tab layout
+    │   └── advanced_features.py      # Advanced features tab layout
+    ├── callbacks/
+    │   ├── routing_callbacks.py
+    │   ├── advanced_callbacks.py
+    │   └── animation_callbacks.py
+    ├── utils/
+    │   ├── charts.py                 # Plotly chart helpers
+    │   └── helpers.py
+    └── legacy/
+        └── app.py                    # Original Streamlit prototype (reference only)
+```
 
 ---
 
-## 🐍 Setup Instructions
+## Setup
 
-### 1️⃣ Clone the Repository
+### Prerequisites
+
+- Python 3.10 or higher
+- `pip`
+
+### 1. Clone the repository
+
 ```bash
 git clone <your-repo-url>
-cd flight-map-routing
+cd CSC1108-FlightMapRouting/flight-map-routing
 ```
 
-### 2️⃣ Create a Virtual Environment
-**Windows:**
+### 2. Create a virtual environment
+
+**Windows**
 ```bash
 python -m venv .venv
 .venv\Scripts\activate
 ```
 
-**Mac / Linux:**
+**macOS / Linux**
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
 ```
 
-### 3️⃣ Install Dependencies
-**Windows:**
+### 3. Install dependencies
+
 ```bash
-py -m pip install pandas
-py -m pip install -r requirements.txt
-py -m pip install dash-bootstrap-components
-py -m pip install dash pandas networkx plotly
+pip install -r requirements.txt
 ```
 
-**Mac:**
-```bash
-python3 -m pip install -r requirements.txt
-pip3 install dash-bootstrap-components
-pip3 install networkx
-```
+> **Note:** The requirements file includes all pinned dependencies. If you hit any issues on macOS with `numpy` or `pandas`, try `pip install --upgrade pip` first.
 
-### 4️⃣ Dataset Setup
-Ensure the dataset exists at: `data/airline_routes.json`
+### 4. Verify the dataset
 
-### 5️⃣ Run the Application
+Confirm that `data/airline_routes.json` exists inside `flight-map-routing/`. This file is ~22 MB and must be present before the app will start.
+
+---
+
+## Running the App
+
 ```bash
 python dash_app_enhanced.py
 ```
 
-The application will be available at: **http://localhost:8051**
+Then open **http://localhost:8051** in your browser.
+
+On startup the console prints a summary of loaded airports, routes, countries, and which optional modules loaded successfully.
 
 ---
 
-## 📊 Usage Guide
+## Usage Guide
 
 ### Basic Routing
-1. Select departure and arrival airports
-2. Choose optimization criteria:
-   - 🛬 **Least Connections** (BFS)
-   - 📏 **Shortest Distance** (Dijkstra)
-   - ⏱️ **Fastest Time** (Dijkstra)
-   - 💰 **Cheapest Price** (Dijkstra)
-3. View route on interactive map
+
+1. Go to the **Basic Routing** tab.
+2. Select a departure and arrival airport.
+3. Choose an optimisation mode:
+   - **Least Connections** — BFS
+   - **Shortest Distance** — Dijkstra (km)
+   - **Fastest Time** — Dijkstra (minutes)
+   - **Cheapest Price** — Dijkstra (price)
+4. The route appears on the map with a breakdown of stops, distance, time, and cost.
 
 ### Advanced Features
-- **Multi-City Planning:** Plan optimal routes visiting multiple cities
-- **K-Shortest Paths:** Find alternative routes
-- **Network Analytics:** Identify hub airports and connectivity issues
-- **Route Suggestions:** Discover potential new flight connections
-- **Export Options:** Save routes in multiple formats
+
+- **K-Shortest Paths** — Enter source, destination, and K to get ranked alternative routes.
+- **Multi-City Planner** — Add multiple cities; the planner selects the appropriate TSP algorithm based on city count.
+- **Network Analytics** — View centrality rankings to identify the busiest and most critical hub airports.
+- **Route Suggestions** — Discover airport pairs with high demand and no existing direct connection.
+- **Export** — Download any result as JSON, CSV, or plain text from the results panel.
 
 ---
 
-## 📁 Project Structure
+## Algorithm Performance Reference
 
-```
-flight-map-routing/
-├── dash_app_enhanced.py        # Main Dash application
-├── requirements.txt            # Dependencies
-├── src/
-│   ├── graph.py                # Flight graph implementation
-│   ├── loader.py               # JSON data loader
-│   ├── models.py               # Airport and Edge dataclasses
-│   ├── services/
-│   │   ├── routing.py          # Basic routing service
-│   │   └── unified_interface.py # Unified feature interface
-│   ├── algorithms/
-│   │   ├── bfs.py              # BFS implementation
-│   │   ├── dijkstra.py         # Dijkstra's algorithm
-│   │   ├── astar.py            # A* with haversine heuristic
-│   │   ├── bellman_ford.py     # Bellman-Ford for negative weights
-│   │   └── yen_k_shortest.py   # Yen's K-shortest paths
-│   └── features/
-│       ├── multi_city_planner.py # TSP solver
-│       ├── network_analyzer.py   # NetworkX analytics
-│       ├── cache_manager.py      # Query caching
-│       ├── export_manager.py     # Multi-format export
-│       ├── enhancer.py           # Data enhancement
-│       └── route_explorer.py     # Alternative route exploration
-├── data/
-│   └── airline_routes.json     # Airport and route dataset
-└── legacy/
-    └── streamlit_app.py        # Legacy prototype (reference only)
-```
+| Algorithm | Time Complexity | Space | Best Use Case |
+|---|---|---|---|
+| BFS | O(V + E) | O(V) | Fewest connections |
+| Dijkstra | O((V + E) log V) | O(V) | Weighted shortest path |
+| A* | O(E) | O(V) | Faster with heuristic |
+| Bellman-Ford | O(VE) | O(V) | Negative weights |
+| Yen's KSP | O(K (E + V log V)) | O(KV) | Multiple paths |
+| Held-Karp DP | O(n² 2ⁿ) | O(n 2ⁿ) | Small TSP |
 
 ---
 
-## 🎯 Key Strengths
-
-1. **Comprehensive Algorithm Coverage:** From basic BFS to advanced TSP solvers
-2. **Real-world Optimization:** Handles multiple criteria (distance, time, price, connections)
-3. **Scalable Architecture:** Different algorithms for different problem sizes
-4. **Interactive Visualization:** Real-time map display of routes
-5. **Production-ready Features:** Caching, export, error handling
-6. **Educational Value:** Demonstrates practical DSA applications
-
----
-
-## 🔮 Future Enhancements
-
-- Real-time flight data integration
-- Machine learning for price prediction
-- Airline preference learning
-- Mobile app interface
-- Weather-aware routing
-
----
-
-## 📝 License
-
-This project is developed for CSC1108 - Data Structures and Algorithms.
-
----
-
-**Built with ❤️ using Python, Dash, and advanced algorithms**
