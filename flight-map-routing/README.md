@@ -180,12 +180,14 @@ CSC1108-FlightMapRouting/
 - Python 3.10 or higher
 - `pip`
 
-### 1. Clone the repository
+### 1. Clone the repository and navigate to the app directory
 
 ```bash
 git clone <your-repo-url>
 cd CSC1108-FlightMapRouting/flight-map-routing
 ```
+
+> **Note:** All subsequent commands must be run from inside the `flight-map-routing/` directory.
 
 ### 2. Create a virtual environment
 
@@ -207,7 +209,7 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-> **Note:** The requirements file includes all pinned dependencies. If you hit any issues on macOS with `numpy` or `pandas`, try `pip install --upgrade pip` first.
+> **Note:** If you hit any issues on macOS with `numpy` or `pandas`, try `pip install --upgrade pip` first.
 
 ### 4. Verify the dataset
 
@@ -262,4 +264,3 @@ On startup the console prints a summary of loaded airports, routes, countries, a
 | Held-Karp DP | O(n² 2ⁿ) | O(n 2ⁿ) | Small TSP |
 
 ---
-
