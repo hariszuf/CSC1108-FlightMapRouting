@@ -168,23 +168,6 @@ def create_advanced_features_tab(graph, get_airport_options, yen_available, cach
                             ),
                         ], className="field-group"),
                         
-                        # ADD THIS - Season selector dropdown
-                        html.Div([
-                            html.Label("Season", className="field-label"),
-                            dcc.Dropdown(
-                                id='seasonal-select',
-                                options=[
-                                    {'label': '🌸 Spring (Off-peak)', 'value': 'spring'},
-                                    {'label': '☀️ Summer (Peak)', 'value': 'summer'},
-                                    {'label': '🍂 Fall (Off-peak)', 'value': 'fall'},
-                                    {'label': '❄️ Winter (Mixed)', 'value': 'winter'},
-                                ],
-                                value='summer',  # Default to summer
-                                clearable=False,
-                                className="airport-dd"
-                            ),
-                        ], className="field-group"),
-                        
                         html.Button("Compare Seasonal Prices", id='demo-seasonal-bf-btn', 
                                 className="btn-primary", style={'marginTop': '10px', 'width': '100%'}),
                         

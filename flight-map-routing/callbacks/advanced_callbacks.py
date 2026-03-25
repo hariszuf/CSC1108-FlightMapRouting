@@ -25,11 +25,10 @@ def register_advanced_callbacks(app, graph, flight_system, yen_available, compar
     Output('seasonal-bf-result', 'children'),
     Input('demo-seasonal-bf-btn', 'n_clicks'),
     [State('seasonal-src', 'value'),
-     State('seasonal-dst', 'value'),
-     State('seasonal-select', 'value')]  # 'spring', 'summer', etc.
+     State('seasonal-dst', 'value')]
     )
-    def demo_seasonal_bf(n_clicks, src, dst, selected_season):
-        if not n_clicks or not src or not dst or not selected_season:
+    def demo_seasonal_bf(n_clicks, src, dst):
+        if not n_clicks or not src or not dst:
             return None
         
         # Check if Bellman-Ford is available (you need to pass this flag from the main app)
@@ -136,9 +135,6 @@ def register_advanced_callbacks(app, graph, flight_system, yen_available, compar
                 html.Hr(style={'margin': '10px 0', 'borderColor': 'rgba(255,255,255,0.1)'})
             ]))
         
-        # Highlight the selected season
-        selected = selected_season.lower()
-        
         return html.Div([
             html.H5(f"✈️ Seasonal Price Comparison: {src} → {dst}", 
                     style={'color': '#a5b4fc', 'marginBottom': '15px'}),
@@ -152,13 +148,6 @@ def register_advanced_callbacks(app, graph, flight_system, yen_available, compar
                 html.Div("❄️ Winter (Mixed): -10% to +10%", className="season-badge",
                         style={'background': 'rgba(148, 163, 184, 0.2)', 'padding': '4px 12px', 'borderRadius': '20px'}),
             ], style={'display': 'flex', 'gap': '10px', 'flexWrap': 'wrap', 'marginBottom': '20px'}),
-            
-            # Show which season was selected
-            html.Div([
-                html.Span(f"Selected: ", style={'color': '#94a3b8'}),
-                html.Span(f"{season_icons.get(selected, '')} {selected.upper()}", 
-                        style={'fontWeight': 'bold', 'color': '#60a5fa'})
-            ], style={'marginBottom': '15px'}),
             
             html.Div(result_divs),
             html.Div([
@@ -276,12 +265,18 @@ def register_advanced_callbacks(app, graph, flight_system, yen_available, compar
             if not paths:
                 return html.Div("No paths found", className="info-message")
 
+            cost_formatter = {
+                'distance': lambda value: f"{value:.2f} km",
+                'time': lambda value: f"{value:.2f} minutes",
+                'price': lambda value: f"${value:.2f}"
+            }.get(mode, lambda value: f"{value:.2f}")
+
             results = []
             for path_info in paths:
                 path = path_info['path']
                 cost = path_info['cost']
                 results.append(html.Div([
-                    html.H5(f"Path #{path_info['rank']} - Cost: {cost:.2f}"),
+                    html.H5(f"Path #{path_info['rank']} - {cost_formatter(cost)}"),
                     html.P(f"{' → '.join(path)}"),
                     html.Hr()
                 ]))
@@ -327,17 +322,29 @@ def register_advanced_callbacks(app, graph, flight_system, yen_available, compar
             if not results:
                 return html.Div("No comparison results", className="info-message")
 
+            def format_comparison_cost(algorithm_name, info):
+                mode = info.get('mode')
+                if mode == 'distance' or 'distance' in algorithm_name.lower():
+                    return f"{info['cost']:.2f} km"
+                if mode == 'time' or 'time' in algorithm_name.lower():
+                    return f"{info['cost']:.2f} minutes"
+                if mode == 'price' or 'price' in algorithm_name.lower() or 'cheapest' in algorithm_name.lower():
+                    return f"${info['cost']:.2f}"
+                if 'hops' in algorithm_name.lower():
+                    return f"{int(round(info['cost']))} hops"
+                return f"{info['cost']:.2f}"
+
             data = [{
                 'Algorithm': name,
                 'Found': '✓',
-                'Cost': f"{info['cost']:.2f}",
+                'Data': format_comparison_cost(name, info),
                 'Path': ' → '.join(info['path'][:3]) + ('...' if len(info['path']) > 3 else '')
             } for name, info in results.items()]
 
             return html.Div([
                 dash_table.DataTable(
                     data=data,
-                    columns=[{'name': i, 'id': i} for i in ['Algorithm', 'Found', 'Cost', 'Path']],
+                    columns=[{'name': i, 'id': i} for i in ['Algorithm', 'Found', 'Data', 'Path']],
                     style_table={'overflowX': 'auto'},
                     style_cell={'textAlign': 'left', 'padding': '10px', 'color': '#e5e9f0', 'backgroundColor': '#1e2b4a', 'border': '1px solid rgba(255,255,255,0.08)'},
                     style_data={'color': '#e5e9f0', 'backgroundColor': '#1e2b4a'},
