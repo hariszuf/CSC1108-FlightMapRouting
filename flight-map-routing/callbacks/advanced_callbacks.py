@@ -40,12 +40,21 @@ def register_advanced_callbacks(app, graph, flight_system, yen_available, compar
         
         # Define all seasons to compare
         all_seasons = ['spring', 'summer', 'fall', 'winter']
+
+        def get_seasonal_price(edge, season):
+            seasonal_prices = getattr(edge, 'seasonal_prices', None)
+            if seasonal_prices:
+                return seasonal_prices.get(season, edge.price)
+            return edge.price
         
         # First, check if the graph has seasonal pricing data
         has_seasonal_pricing = False
-        for edge in flight_system.graph.neighbors(src):
-            if hasattr(edge, 'seasonal_prices'):
-                has_seasonal_pricing = True
+        for airport_code in flight_system.graph.airports:
+            for edge in flight_system.graph.neighbors(airport_code):
+                if getattr(edge, 'seasonal_prices', None):
+                    has_seasonal_pricing = True
+                    break
+            if has_seasonal_pricing:
                 break
         
         if not has_seasonal_pricing:
@@ -54,27 +63,18 @@ def register_advanced_callbacks(app, graph, flight_system, yen_available, compar
                 html.P("The data enhancer may not have been initialized properly.", 
                     style={'color': '#94a3b8', 'marginTop': '10px'})
             ])
+
+        try:
+            from src.algorithms.dijkstra import dijkstra
+        except:
+            dijkstra = None
         
         # Compare prices across seasons
         for test_season in all_seasons:
-            # Temporarily modify edge weights to use seasonal pricing
-            original_prices = {}
-            
-            # Store original prices and apply seasonal prices
-            for edge in flight_system.graph.neighbors(src):
-                if hasattr(edge, 'seasonal_prices') and edge.dst == dst:  # Only modify edges to destination
-                    original_prices[(edge.src, edge.dst)] = edge.price
-                    # Temporarily set price to seasonal price
-                    seasonal_price = edge.seasonal_prices.get(test_season, edge.price)
-                    object.__setattr__(edge, 'price', seasonal_price)
-            
-            # Find route with Bellman-Ford using seasonal prices
-            # Since Bellman-Ford might not be available, use Dijkstra as fallback
-            try:
-                from src.algorithms.dijkstra import dijkstra
-                path = dijkstra(flight_system.graph, src, dst, lambda e: e.price)
-            except:
-                path = None
+            seasonal_weight = lambda edge, season=test_season: get_seasonal_price(edge, season)
+
+            # Find route using seasonal prices for every edge in the graph
+            path = dijkstra(flight_system.graph, src, dst, seasonal_weight) if dijkstra else None
             
             if path:
                 # Calculate total price
@@ -83,7 +83,7 @@ def register_advanced_callbacks(app, graph, flight_system, yen_available, compar
                 for i in range(len(path)-1):
                     for edge in flight_system.graph.neighbors(path[i]):
                         if edge.dst == path[i+1]:
-                            total += edge.price
+                            total += seasonal_weight(edge)
                             break
                 
                 seasonal_results.append({
@@ -91,12 +91,6 @@ def register_advanced_callbacks(app, graph, flight_system, yen_available, compar
                     'path': route_str,
                     'price': total
                 })
-            
-            # Restore original prices
-            for (s, d), price in original_prices.items():
-                for edge in flight_system.graph.neighbors(s):
-                    if edge.dst == d:
-                        object.__setattr__(edge, 'price', price)
         
         if not seasonal_results:
             return html.Div("No routes found", className="info-message")
